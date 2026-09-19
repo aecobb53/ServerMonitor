@@ -1,0 +1,339 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.loginCard {
+  max-width: 32rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 1rem;
+  background: rgba(17, 24, 39, 0.7);
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.28);
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.fieldLabel {
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.input,
+.inlineField input,
+.inlineField select,
+.itemEditor input,
+.itemEditor textarea {
+  width: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 0.625rem;
+  background: rgba(15, 23, 42, 0.9);
+  color: #f8fafc;
+  padding: 0.75rem 0.85rem;
+  box-sizing: border-box;
+}
+
+.input:focus,
+.inlineField input:focus,
+.inlineField select:focus,
+.itemEditor input:focus,
+.itemEditor textarea:focus {
+  outline: 2px solid rgba(96, 165, 250, 0.6);
+  outline-offset: 2px;
+}
+
+.headerActions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.notice {
+  margin-top: 0.25rem;
+}
+
+.restartBanner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  border-radius: 1rem;
+  background: rgba(120, 53, 15, 0.2);
+}
+
+.restartBanner h3 {
+  margin: 0;
+  color: #fcd34d;
+}
+
+.restartBanner p {
+  margin: 0;
+  color: #fef3c7;
+}
+
+.bannerActions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.emptyState {
+  padding: 1.5rem;
+  border: 1px dashed rgba(148, 163, 184, 0.4);
+  border-radius: 0.9rem;
+  color: #cbd5e1;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.serverGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.serverCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(17, 24, 39, 0.75);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.2);
+}
+
+.serverHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.serverHeader h2 {
+  margin: 0;
+  color: #f8fafc;
+}
+
+.statusRow {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.statusGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.statusLabel {
+  color: #94a3b8;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.up {
+  background: rgba(34, 197, 94, 0.12);
+  color: #86efac;
+}
+
+.up .dot {
+  background: #22c55e;
+}
+
+.down {
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+}
+
+.down .dot {
+  background: #ef4444;
+}
+
+.unknown {
+  background: rgba(148, 163, 184, 0.12);
+  color: #cbd5e1;
+}
+
+.unknown .dot {
+  background: #94a3b8;
+}
+
+.serverActions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.metricsGrid div,
+.errorBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.metricsGrid label,
+.errorBlock label {
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.metricsGrid strong {
+  color: #f8fafc;
+}
+
+.errorBlock ul {
+  margin: 0;
+  padding-left: 1rem;
+  color: #e2e8f0;
+}
+
+.modsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.modsSection h3 {
+  margin: 0;
+  color: #f8fafc;
+}
+
+.modRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 0.8rem;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.modDisabled {
+  opacity: 0.6;
+}
+
+.modMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.modName {
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.modState {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #cbd5e1;
+}
+
+.modInputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.inlineField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  color: #cbd5e1;
+}
+
+.changedFlag {
+  display: inline-flex;
+  align-self: flex-start;
+  border-radius: 999px;
+  padding: 0.3rem 0.6rem;
+  background: rgba(59, 130, 246, 0.14);
+  color: #bfdbfe;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.contentCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(17, 24, 39, 0.72);
+}
+
+.contentCard h3 {
+  margin: 0;
+  color: #f8fafc;
+}
+
+.itemEditor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.itemEditor textarea {
+  min-height: 4rem;
+  resize: vertical;
+}
+
+@media (max-width: 720px) {
+  .serverHeader,
+  .modMeta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .modInputs,
+  .metricsGrid {
+    grid-template-columns: 1fr;
+  }
+}

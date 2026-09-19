@@ -1,0 +1,187 @@
+openapi: 3.0.3
+info:
+  title: Friendly Neighborhood Server Monitor API
+  version: 0.1.0
+  description: Minimal backend contract for the UI while the backend is being built.
+servers:
+  - url: /api
+
+paths:
+  /server-status:
+    get:
+      summary: List servers grouped by game
+      responses:
+        '200':
+          description: Server status payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerStatusResponse'
+              examples:
+                example:
+                  value:
+                    last_updated: '2026-07-27T15:00:00Z'
+                    games:
+                      - name: Valheim
+                        image: /static/valheim.jpg
+                        servers:
+                          - id: hellheim
+                            name: Hellheim
+                            game: Valheim
+                            container_status: running
+                            server_status: ONLINE
+                            healthy: true
+                            last_message: Server started successfully
+                            updated: '2026-07-27T14:55:00Z'
+        '503':
+          description: Backend data source unavailable
+        '500':
+          description: Unexpected error
+
+  /server-info/{server_name}:
+    get:
+      summary: Get details for one server
+      parameters:
+        - name: server_name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Server details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerInfo'
+              examples:
+                example:
+                  value:
+                    server_name: Hellheim
+                    display_name: Hellheim
+                    game: Valheim
+                    description: Our main Valheim survival world.
+                    container_status: running
+                    timestamp: '2026-07-27T15:00:00Z'
+                    server_status_list:
+                      - status: ONLINE
+                        message: Server started successfully
+                        timestamp: '2026-07-27T14:55:00Z'
+                    display_status: ONLINE
+        '404':
+          description: Server not found
+        '503':
+          description: Backend data source unavailable
+        '500':
+          description: Unexpected error
+
+  /feed:
+    get:
+      summary: Get community feed messages
+      responses:
+        '200':
+          description: Ordered list of ticker messages
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedResponse'
+              examples:
+                example:
+                  value:
+                    - '⚔ Boss fight Friday at 8 PM'
+                    - '💡 Repair your gear before sailing'
+                    - '🎉 Happy Birthday Andrew!'
+        '503':
+          description: Backend data source unavailable
+        '500':
+          description: Unexpected error
+
+components:
+  schemas:
+    ServerStatusResponse:
+      type: object
+      required: [last_updated, games]
+      properties:
+        last_updated:
+          type: string
+          format: date-time
+        games:
+          type: array
+          items:
+            $ref: '#/components/schemas/GameGroup'
+
+    GameGroup:
+      type: object
+      required: [name, image, servers]
+      properties:
+        name:
+          type: string
+        image:
+          type: string
+        servers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServerSummary'
+
+    ServerSummary:
+      type: object
+      required: [id, name, game, container_status, server_status, healthy, last_message, updated]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        game:
+          type: string
+        container_status:
+          type: string
+        server_status:
+          type: string
+        healthy:
+          type: boolean
+        last_message:
+          type: string
+        updated:
+          type: string
+          format: date-time
+
+    ServerInfo:
+      type: object
+      required: [server_name, display_name, game, description, container_status, timestamp, server_status_list, display_status]
+      properties:
+        server_name:
+          type: string
+        display_name:
+          type: string
+        game:
+          type: string
+        description:
+          type: string
+        container_status:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        server_status_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServerStatusEntry'
+        display_status:
+          type: string
+
+    ServerStatusEntry:
+      type: object
+      required: [status, message, timestamp]
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    FeedResponse:
+      type: array
+      items:
+        type: string

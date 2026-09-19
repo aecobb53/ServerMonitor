@@ -1,0 +1,18 @@
+{
+  "server_name": "RockandStone",
+  "game": "Valheim",
+  "display_name": "RockandStone",
+  "expected": true,
+  "description": "Main Valheim server \n - Current mod code: `01a09ae2-7f29-22b2-565b-97609ee86d8f` _(updated 09/13/2026)_\n### [color:orange]Notice: The mods for all servers after 1.0 may not be fully compatible and could require updates from the mod authors. Also, expect balancing patches and more mod updates with those.[/color]\n## Current failing mods list\n- Plant Everything\n    - This should still work with local versions so it sems like only the server is broken.\n- Better UI\n    - I dont even remember what this offers.\n- Server Dev Commands\n    - Something we were looking at adding but is by no means a requirement\n### [color:orange]Notice: Craft From Containers has been marked as depreciated. We need to find a replacement soon.[/color]",
+  "news": [
+    "1.0 broke a lot of mods, not all have been updated by the mod owners so things will be in flux for a little while.",
+    "Reviving the server for 1.0!!",
+    "Castle is open! Claim a room if you have not yet."
+  ],
+  "rules": [
+    "Have fun!",
+    "Be kind and respectful to everyone in the community.",
+    "Try to add more to the server than you take.",
+    "Encourage and celebrate."
+  ]
+}

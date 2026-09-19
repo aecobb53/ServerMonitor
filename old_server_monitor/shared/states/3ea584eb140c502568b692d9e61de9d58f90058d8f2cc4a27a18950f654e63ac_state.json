@@ -1,0 +1,24 @@
+{
+    "container_id": "3ea584eb140c502568b692d9e61de9d58f90058d8f2cc4a27a18950f654e63ac",
+    "container_status": "stopped",
+    "game_name": "Valheim",
+    "server_name": "Unknown Server Name",
+    "timestamp": "2026-09-07T02:26:37.021675Z",
+    "server_status_list": [
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "timestamp": "2026-09-07T02:52:59.469238Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "timestamp": "2026-09-13T00:35:31.027877Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "timestamp": "2026-09-19T19:13:42.063643Z"
+        }
+    ]
+}

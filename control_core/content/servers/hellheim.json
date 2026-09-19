@@ -1,0 +1,13 @@
+{
+  "server_name": "Hellheim",
+  "game": "Valheim",
+  "display_name": "Hellheim",
+  "expected": true,
+  "description": "Hard mode high rewards Valheim server \n - Current mod code: `01a09ae2-1e3f-c6b3-2078-66eaff7dd1a7` _(updated 09/13/2026)_\n### [color:orange]Notice: The mods for all servers after 1.0 may not be fully compatible and could require updates from the mod authors. Also, expect balancing patches and more mod updates with those.[/color]\n## Current failing mods list\n- Plant Everything\n    - This should still work with local versions so it sems like only the server is broken.\n- Better UI\n    - I dont even remember what this offers.\n- Server Dev Commands\n    - Something we were looking at adding but is by no means a requirement\n### [color:orange]Notice: Craft From Containers has been marked as depreciated. We need to find a replacement soon.[/color]\n### Server settings\n- combat: [color:red]Very Hard[/color]\n- deathpenalty: [color:green]Casual[/color] [highlight:green](keep items and minimal exp loss)[/highlight]\n- resourcerate: x3\n- raidrate: [color:green]Much More[/color]",
+  "news": [
+    "Trying out a new hard combat server!"
+  ],
+  "rules": [
+    "Have fun!"
+  ]
+}

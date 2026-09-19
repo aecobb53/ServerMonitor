@@ -1,0 +1,39 @@
+services:
+  monitor:
+    build: ./monitor
+    container_name: GameServerMonitor
+    volumes:
+      - ./shared/states:/app/storage
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+  api:
+    build: ./api
+    container_name: GameServerMonitorAPI
+    depends_on:
+      - monitor
+    env_file:
+      - .env
+    volumes:
+      - ./shared/states:/app/storage:ro
+      - ./api/content:/app/content
+      # - ./tmp_images:/app/images
+      - /srv2t/server_monitor:/app/images
+    ports:
+      - "8208:8000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.server_monitor.rule=Host(`server-monitor.nax.lol`)"
+      - "traefik.http.routers.server_monitor.entrypoints=websecure"
+      - "traefik.http.routers.server_monitor.tls.certresolver=myresolver"
+  ui:
+    build: ./ui
+    container_name: GameServerMonitorUI
+    depends_on:
+      - api
+    ports:
+      - "8209:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.server_monitor_ui.rule=Host(`server-monitor-ui.nax.lol`)"
+      - "traefik.http.routers.server_monitor_ui.entrypoints=websecure"
+      - "traefik.http.routers.server_monitor_ui.tls.certresolver=myresolver"
+

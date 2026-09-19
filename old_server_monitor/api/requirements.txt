@@ -1,0 +1,13 @@
+# Functionality
+requests
+# websocket
+# websockets
+pyyaml
+# sqlmodel
+
+# Daemon
+uvicorn
+fastapi
+jinja2
+pydantic
+python-multipart

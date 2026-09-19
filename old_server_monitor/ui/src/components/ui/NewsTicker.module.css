@@ -1,0 +1,112 @@
+.ticker {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border-subtle);
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ── "News" pill ─────────────────────── */
+
+.label {
+  flex-shrink: 0;
+  padding: 0 var(--space-4);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  border-right: 1px solid var(--color-border-subtle);
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Scroll window ───────────────────── */
+
+.window {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  /* fade edges */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 3%,
+    black 97%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 3%,
+    black 97%,
+    transparent 100%
+  );
+}
+
+/* ── Scrolling track ─────────────────── */
+
+.track {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: scroll linear infinite;
+  will-change: transform;
+}
+
+.track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── Item ────────────────────────────── */
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-6);
+}
+
+.typeLabel {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.tip {
+  color: var(--color-accent-blue);
+  background: color-mix(in srgb, var(--color-accent-blue) 15%, transparent);
+}
+
+.announcement {
+  color: var(--color-warning);
+  background: color-mix(in srgb, var(--color-warning) 15%, transparent);
+}
+
+.event {
+  color: var(--color-accent-purple);
+  background: color-mix(in srgb, var(--color-accent-purple) 15%, transparent);
+}
+
+.text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.separator {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  padding-left: var(--space-6);
+}

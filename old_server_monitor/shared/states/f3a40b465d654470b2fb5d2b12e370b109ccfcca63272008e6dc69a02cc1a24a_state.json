@@ -1,0 +1,49 @@
+{
+    "container_id": "f3a40b465d654470b2fb5d2b12e370b109ccfcca63272008e6dc69a02cc1a24a",
+    "container_status": "stopped",
+    "game_name": "Valheim",
+    "server_name": "Hellheim",
+    "timestamp": "2026-09-07T21:58:37.738062Z",
+    "server_status_list": [
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "line": "Container log stream ended",
+            "timestamp": "2026-09-07T21:43:52.856702Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: kill",
+            "line": "Docker event 'kill' received",
+            "timestamp": "2026-09-07T21:58:28.203822Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: stop",
+            "line": "Docker event 'stop' received",
+            "timestamp": "2026-09-07T21:58:37.607052Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: die",
+            "line": "Docker event 'die' received",
+            "timestamp": "2026-09-07T21:58:37.622830Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: destroy",
+            "line": "Docker event 'destroy' received",
+            "timestamp": "2026-09-07T21:58:37.738031Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "timestamp": "2026-09-13T00:35:31.035292Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "timestamp": "2026-09-19T19:13:42.070897Z"
+        }
+    ]
+}

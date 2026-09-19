@@ -1,0 +1,1394 @@
+{
+    "container_id": "7388c66d650c5b1abc478278103fc85a9d88e6e1ea0a20982c8c1b24906b0ee6",
+    "container_status": "stopped",
+    "game_name": "Valheim",
+    "server_name": "Hellheim",
+    "timestamp": "2026-09-14T02:21:57.042507Z",
+    "server_status_list": [
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "line": "Container log stream ended",
+            "timestamp": "2026-09-14T02:05:03.286848Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:05:04.013052Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[----] Downloading update (58 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.488293Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  0%] Downloading update (1,687 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.488891Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  4%] Downloading update (6,340 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.489008Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 15%] Downloading update (11,124 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.489109Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 27%] Downloading update (15,802 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.489170Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 39%] Downloading update (19,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.489256Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 47%] Downloading update (22,234 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.489318Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 54%] Downloading update (25,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.489374Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 62%] Downloading update (28,319 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.489428Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 70%] Downloading update (30,351 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.489487Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 75%] Downloading update (32,079 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.489559Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 79%] Downloading update (33,631 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.489643Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 83%] Downloading update (35,103 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.489707Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 86%] Downloading update (36,575 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.489762Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 90%] Downloading update (38,367 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.489816Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 94%] Downloading update (39,887 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.489871Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 98%] Downloading update (40,430 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:05:21.489925Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Update complete, launching Steamcmd",
+            "line": "[----] Update complete, launching Steamcmd...",
+            "timestamp": "2026-09-14T02:05:21.490652Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "line": "Container log stream ended",
+            "timestamp": "2026-09-14T02:07:26.965461Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: die",
+            "line": "Docker event 'die' received",
+            "timestamp": "2026-09-14T02:07:27.259465Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:07:27.828072Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[----] Downloading update (58 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.832768Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  0%] Downloading update (1,687 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.833484Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  4%] Downloading update (6,340 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.833554Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 15%] Downloading update (11,124 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.833794Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 27%] Downloading update (15,802 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.833858Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 39%] Downloading update (19,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.833914Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 47%] Downloading update (22,234 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.833969Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 54%] Downloading update (25,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.834024Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 62%] Downloading update (28,319 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.834078Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 70%] Downloading update (30,351 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.834132Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 75%] Downloading update (32,079 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.834186Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 79%] Downloading update (33,631 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.834240Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 83%] Downloading update (35,103 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.834294Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 86%] Downloading update (36,575 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.834347Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 90%] Downloading update (38,367 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.834401Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 94%] Downloading update (39,887 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.834455Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 98%] Downloading update (40,430 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:07:27.834508Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Update complete, launching Steamcmd",
+            "line": "[----] Update complete, launching Steamcmd...",
+            "timestamp": "2026-09-14T02:07:27.835325Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:07:27.839740Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "line": "Container log stream ended",
+            "timestamp": "2026-09-14T02:09:24.476881Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: die",
+            "line": "Docker event 'die' received",
+            "timestamp": "2026-09-14T02:09:24.769804Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:09:25.157040Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[----] Downloading update (58 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.161403Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  0%] Downloading update (1,687 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.162313Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  4%] Downloading update (6,340 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.162380Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 15%] Downloading update (11,124 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.162540Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 27%] Downloading update (15,802 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.162611Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 39%] Downloading update (19,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.162673Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 47%] Downloading update (22,234 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.162741Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 54%] Downloading update (25,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.162799Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 62%] Downloading update (28,319 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.162854Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 70%] Downloading update (30,351 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.162908Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 75%] Downloading update (32,079 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.162962Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 79%] Downloading update (33,631 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.163017Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 83%] Downloading update (35,103 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.163072Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 86%] Downloading update (36,575 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.163126Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 90%] Downloading update (38,367 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.163180Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 94%] Downloading update (39,887 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.163234Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 98%] Downloading update (40,430 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:09:25.163287Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Update complete, launching Steamcmd",
+            "line": "[----] Update complete, launching Steamcmd...",
+            "timestamp": "2026-09-14T02:09:25.164013Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:09:25.168288Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:09:25.176499Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "line": "Container log stream ended",
+            "timestamp": "2026-09-14T02:11:23.947890Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: die",
+            "line": "Docker event 'die' received",
+            "timestamp": "2026-09-14T02:11:24.231569Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:11:24.603095Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[----] Downloading update (58 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.607595Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  0%] Downloading update (1,687 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.608936Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  4%] Downloading update (6,340 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.609000Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 15%] Downloading update (11,124 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.609057Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 27%] Downloading update (15,802 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.609112Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 39%] Downloading update (19,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.609167Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 47%] Downloading update (22,234 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.609221Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 54%] Downloading update (25,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.609276Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 62%] Downloading update (28,319 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.609331Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 70%] Downloading update (30,351 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.609386Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 75%] Downloading update (32,079 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.609440Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 79%] Downloading update (33,631 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.609494Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 83%] Downloading update (35,103 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.609548Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 86%] Downloading update (36,575 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.609636Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 90%] Downloading update (38,367 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.609710Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 94%] Downloading update (39,887 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.609768Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 98%] Downloading update (40,430 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:11:24.609822Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Update complete, launching Steamcmd",
+            "line": "[----] Update complete, launching Steamcmd...",
+            "timestamp": "2026-09-14T02:11:24.610521Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:11:24.616163Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:11:24.627301Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:11:24.635774Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "line": "Container log stream ended",
+            "timestamp": "2026-09-14T02:13:21.734556Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: die",
+            "line": "Docker event 'die' received",
+            "timestamp": "2026-09-14T02:13:22.013700Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:13:22.583182Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[----] Downloading update (58 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.589864Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  0%] Downloading update (1,687 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.591929Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  4%] Downloading update (6,340 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.591992Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 15%] Downloading update (11,124 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.592157Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 27%] Downloading update (15,802 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.592219Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 39%] Downloading update (19,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.592276Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 47%] Downloading update (22,234 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.592330Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 54%] Downloading update (25,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.592385Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 62%] Downloading update (28,319 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.592440Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 70%] Downloading update (30,351 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.592495Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 75%] Downloading update (32,079 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.592549Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 79%] Downloading update (33,631 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.592703Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 83%] Downloading update (35,103 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.592774Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 86%] Downloading update (36,575 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.592831Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 90%] Downloading update (38,367 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.592886Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 94%] Downloading update (39,887 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.592941Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 98%] Downloading update (40,430 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:13:22.592995Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Update complete, launching Steamcmd",
+            "line": "[----] Update complete, launching Steamcmd...",
+            "timestamp": "2026-09-14T02:13:22.593822Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:13:22.598394Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:13:22.609574Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:13:22.619350Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:13:22.627746Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "line": "Container log stream ended",
+            "timestamp": "2026-09-14T02:15:08.962160Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: die",
+            "line": "Docker event 'die' received",
+            "timestamp": "2026-09-14T02:15:09.240887Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:15:09.604809Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[----] Downloading update (58 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.610235Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  0%] Downloading update (1,687 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.612107Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  4%] Downloading update (6,340 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.612185Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 15%] Downloading update (11,124 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.612353Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 27%] Downloading update (15,802 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.612415Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 39%] Downloading update (19,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.612470Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 47%] Downloading update (22,234 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.612526Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 54%] Downloading update (25,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.612580Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 62%] Downloading update (28,319 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.612655Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 70%] Downloading update (30,351 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.612721Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 75%] Downloading update (32,079 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.612777Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 79%] Downloading update (33,631 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.612831Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 83%] Downloading update (35,103 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.612886Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 86%] Downloading update (36,575 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.612941Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 90%] Downloading update (38,367 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.612995Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 94%] Downloading update (39,887 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.613049Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 98%] Downloading update (40,430 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:15:09.613103Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Update complete, launching Steamcmd",
+            "line": "[----] Update complete, launching Steamcmd...",
+            "timestamp": "2026-09-14T02:15:09.613929Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:15:09.618180Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:15:09.627868Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:15:09.636362Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:15:09.643484Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:15:09.650536Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "line": "Container log stream ended",
+            "timestamp": "2026-09-14T02:16:27.550942Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: die",
+            "line": "Docker event 'die' received",
+            "timestamp": "2026-09-14T02:16:27.869923Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:16:28.250881Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[----] Downloading update (58 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.257056Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  0%] Downloading update (1,687 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.259215Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  4%] Downloading update (6,340 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.259292Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 15%] Downloading update (11,124 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.259460Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 27%] Downloading update (15,802 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.259522Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 39%] Downloading update (19,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.259577Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 47%] Downloading update (22,234 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.259659Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 54%] Downloading update (25,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.259724Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 62%] Downloading update (28,319 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.259782Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 70%] Downloading update (30,351 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.259838Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 75%] Downloading update (32,079 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.259893Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 79%] Downloading update (33,631 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.259948Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 83%] Downloading update (35,103 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.260003Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 86%] Downloading update (36,575 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.260073Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 90%] Downloading update (38,367 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.260131Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 94%] Downloading update (39,887 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.260204Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 98%] Downloading update (40,430 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:16:28.260294Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Update complete, launching Steamcmd",
+            "line": "[----] Update complete, launching Steamcmd...",
+            "timestamp": "2026-09-14T02:16:28.261155Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:16:28.265426Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:16:28.275286Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:16:28.282428Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:16:28.289223Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:16:28.296452Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:16:28.303058Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "line": "Container log stream ended",
+            "timestamp": "2026-09-14T02:18:14.075620Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: die",
+            "line": "Docker event 'die' received",
+            "timestamp": "2026-09-14T02:18:14.377780Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:18:14.787307Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[----] Downloading update (58 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.793888Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  0%] Downloading update (1,687 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.796587Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  4%] Downloading update (6,340 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.796675Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 15%] Downloading update (11,124 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.796734Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 27%] Downloading update (15,802 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.796790Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 39%] Downloading update (19,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.796845Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 47%] Downloading update (22,234 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.796899Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 54%] Downloading update (25,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.796954Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 62%] Downloading update (28,319 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.797008Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 70%] Downloading update (30,351 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.797063Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 75%] Downloading update (32,079 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.797117Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 79%] Downloading update (33,631 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.797171Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 83%] Downloading update (35,103 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.797225Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 86%] Downloading update (36,575 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.797279Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 90%] Downloading update (38,367 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.797333Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 94%] Downloading update (39,887 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.797388Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 98%] Downloading update (40,430 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:18:14.797441Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Update complete, launching Steamcmd",
+            "line": "[----] Update complete, launching Steamcmd...",
+            "timestamp": "2026-09-14T02:18:14.798177Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:18:14.802447Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:18:14.812007Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:18:14.819117Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:18:14.826552Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:18:14.834156Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:18:14.840778Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:18:14.847559Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "line": "Container log stream ended",
+            "timestamp": "2026-09-14T02:20:13.670928Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: die",
+            "line": "Docker event 'die' received",
+            "timestamp": "2026-09-14T02:20:13.971391Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:20:14.549005Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[----] Downloading update (58 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.557000Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  0%] Downloading update (1,687 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.560390Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  4%] Downloading update (6,340 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.560468Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 15%] Downloading update (11,124 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.560680Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 27%] Downloading update (15,802 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.560757Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 39%] Downloading update (19,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.560824Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 47%] Downloading update (22,234 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.560890Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 54%] Downloading update (25,178 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.560956Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 62%] Downloading update (28,319 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.561021Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 70%] Downloading update (30,351 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.561087Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 75%] Downloading update (32,079 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.561152Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 79%] Downloading update (33,631 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.561218Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 83%] Downloading update (35,103 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.561283Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 86%] Downloading update (36,575 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.561349Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 90%] Downloading update (38,367 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.561425Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 94%] Downloading update (39,887 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.561493Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 98%] Downloading update (40,430 of 40,430 KB)...",
+            "timestamp": "2026-09-14T02:20:14.561558Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Update complete, launching Steamcmd",
+            "line": "[----] Update complete, launching Steamcmd...",
+            "timestamp": "2026-09-14T02:20:14.562448Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:20:14.567424Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:20:14.579887Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:20:14.589019Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:20:14.597795Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:20:14.606359Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:20:14.614510Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:20:14.622528Z"
+        },
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T02:20:14.629503Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: kill",
+            "line": "Docker event 'kill' received",
+            "timestamp": "2026-09-14T02:21:45.551226Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: kill",
+            "line": "Docker event 'kill' received",
+            "timestamp": "2026-09-14T02:21:55.585957Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "line": "Container log stream ended",
+            "timestamp": "2026-09-14T02:21:55.639333Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: stop",
+            "line": "Docker event 'stop' received",
+            "timestamp": "2026-09-14T02:21:56.811409Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: die",
+            "line": "Docker event 'die' received",
+            "timestamp": "2026-09-14T02:21:56.824983Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: destroy",
+            "line": "Docker event 'destroy' received",
+            "timestamp": "2026-09-14T02:21:57.042475Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "timestamp": "2026-09-19T19:13:42.088077Z"
+        }
+    ]
+}

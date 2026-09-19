@@ -1,0 +1,14 @@
+{
+    "id": "resp-001",
+    "poll_id": "poll-001",
+    "user_id": "nax",
+    "choice_ids": [
+        "opt-1"
+    ],
+    "rankings": [],
+    "rating": null,
+    "text": null,
+    "availability_windows": [],
+    "created_at": "2026-09-07T16:31:23.014543Z",
+    "updated_at": "2026-09-07T16:31:23.014552Z"
+}

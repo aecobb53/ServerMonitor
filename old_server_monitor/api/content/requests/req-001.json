@@ -1,0 +1,17 @@
+{
+    "id": "req-001",
+    "server": "RockandStone",
+    "title": "Example request for fine wood",
+    "requested_by": "Nax",
+    "urgency": "WHENEVER",
+    "description": "The castle needs some fine wood... nice!",
+    "image": null,
+    "quick_links": [],
+    "created_at": "2026-07-27T18:00:00Z",
+    "completed": true,
+    "archived": false,
+    "updated_at": "2026-08-06T23:14:25.662426Z",
+    "changelog": [
+        "2026-08-06T23:14:25.662320Z Changed completed from False to True"
+    ]
+}

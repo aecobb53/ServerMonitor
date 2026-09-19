@@ -1,0 +1,236 @@
+{
+    "container_id": "c891c78aefa8258603232b240008aa37c068abf033ac4d4fa06741e916b6c2fd",
+    "container_status": "stopped",
+    "game_name": "Valheim",
+    "server_name": "RockandStone",
+    "timestamp": "2026-09-19T19:08:54.432204Z",
+    "server_status_list": [
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-14T03:01:52.504162Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[----] Downloading update (0 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.447626Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  0%] Downloading update (1,519 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.448228Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  3%] Downloading update (6,415 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.448351Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 15%] Downloading update (11,215 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.448467Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 27%] Downloading update (15,376 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.448587Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 38%] Downloading update (18,448 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.448759Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 45%] Downloading update (22,176 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.448898Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 54%] Downloading update (25,280 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.449046Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 62%] Downloading update (27,423 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.449204Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 67%] Downloading update (29,487 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.449360Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 72%] Downloading update (30,847 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.449489Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 76%] Downloading update (32,767 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.449580Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 81%] Downloading update (34,415 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.449695Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 85%] Downloading update (35,951 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.449784Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 88%] Downloading update (37,567 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.449869Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 92%] Downloading update (39,087 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.450009Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 96%] Downloading update (40,430 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.450099Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[100%] Downloading update (40,430 of 40,430 KB)...",
+            "timestamp": "2026-09-14T03:02:23.450184Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Update complete, launching Steamcmd",
+            "line": "[----] Update complete, launching Steamcmd...",
+            "timestamp": "2026-09-14T03:02:23.451350Z"
+        },
+        {
+            "status": "INSTALLING_MODS",
+            "message": "Installing Server Mods",
+            "line": "INFO odin: [Valheim] Installing mods from MODS env via Odin",
+            "timestamp": "2026-09-14T03:05:26.688474Z"
+        },
+        {
+            "status": "REGISTERING",
+            "message": "Registering Server Lobby with Valheim Master Server",
+            "line": "2026-09-14T03:11:16.408825Z  INFO odin::commands::logs: [valheim_server.log]: 09/14/2026 03:11:16: Registering lobby",
+            "timestamp": "2026-09-14T03:11:16.408825Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "2026-09-14T03:11:16.611378Z  INFO odin::commands::logs: [valheim_server.log]: 09/14/2026 03:11:16: Game server connected",
+            "timestamp": "2026-09-14T03:11:16.611378Z"
+        },
+        {
+            "status": "REGISTERING",
+            "message": "Retrying registration with Valheim Master Server",
+            "line": "2026-09-15T22:01:32.280576Z  INFO odin::commands::logs: [valheim_server.log]: 09/15/2026 22:01:32: Game server connected failed",
+            "timestamp": "2026-09-15T22:01:32.280576Z"
+        },
+        {
+            "status": "REGISTERING",
+            "message": "Retrying registration with Valheim Master Server",
+            "line": "2026-09-15T22:02:19.780519Z  INFO odin::commands::logs: [valheim_server.log]: 09/15/2026 22:02:19: Game server connected failed",
+            "timestamp": "2026-09-15T22:02:19.780519Z"
+        },
+        {
+            "status": "REGISTERING",
+            "message": "Retrying registration with Valheim Master Server",
+            "line": "2026-09-15T22:03:30.717947Z  INFO odin::commands::logs: [valheim_server.log]: 09/15/2026 22:03:30: Game server connected failed",
+            "timestamp": "2026-09-15T22:03:30.717947Z"
+        },
+        {
+            "status": "REGISTERING",
+            "message": "Retrying registration with Valheim Master Server",
+            "line": "2026-09-15T22:05:14.985842Z  INFO odin::commands::logs: [valheim_server.log]: 09/15/2026 22:05:14: Game server connected failed",
+            "timestamp": "2026-09-15T22:05:14.985842Z"
+        },
+        {
+            "status": "REGISTERING",
+            "message": "Retrying registration with Valheim Master Server",
+            "line": "2026-09-15T22:06:05.580765Z  INFO odin::commands::logs: [valheim_server.log]: 09/15/2026 22:06:05: Game server connected failed",
+            "timestamp": "2026-09-15T22:06:05.580765Z"
+        },
+        {
+            "status": "REGISTERING",
+            "message": "Retrying registration with Valheim Master Server",
+            "line": "2026-09-15T22:11:13.812975Z  INFO odin::commands::logs: [valheim_server.log]: 09/15/2026 22:11:13: Game server connected failed",
+            "timestamp": "2026-09-15T22:11:13.812975Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "2026-09-15T22:17:20.026794Z  INFO odin::commands::logs: [valheim_server.log]: 09/15/2026 22:17:19: Game server connected",
+            "timestamp": "2026-09-15T22:17:20.026794Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "2026-09-16T12:31:18.249350Z  INFO odin::commands::logs: [valheim_server.log]: 09/16/2026 12:31:18: Game server connected",
+            "timestamp": "2026-09-16T12:31:18.249350Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: kill",
+            "line": "Docker event 'kill' received",
+            "timestamp": "2026-09-19T19:08:43.766870Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: kill",
+            "line": "Docker event 'kill' received",
+            "timestamp": "2026-09-19T19:08:53.787048Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "line": "Container log stream ended",
+            "timestamp": "2026-09-19T19:08:54.107716Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: stop",
+            "line": "Docker event 'stop' received",
+            "timestamp": "2026-09-19T19:08:54.343068Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: die",
+            "line": "Docker event 'die' received",
+            "timestamp": "2026-09-19T19:08:54.349498Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: destroy",
+            "line": "Docker event 'destroy' received",
+            "timestamp": "2026-09-19T19:08:54.432165Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "timestamp": "2026-09-19T19:13:42.518174Z"
+        }
+    ]
+}

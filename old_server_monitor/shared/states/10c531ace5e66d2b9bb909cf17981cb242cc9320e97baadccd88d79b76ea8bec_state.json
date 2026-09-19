@@ -1,0 +1,15 @@
+{
+    "container_id": "10c531ace5e66d2b9bb909cf17981cb242cc9320e97baadccd88d79b76ea8bec",
+    "container_status": "stopped",
+    "game_name": "Valheim",
+    "server_name": "Hellheim",
+    "timestamp": "2026-09-19T19:14:09.671893Z",
+    "server_status_list": [
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "line": "Container log stream ended",
+            "timestamp": "2026-09-19T19:14:09.671878Z"
+        }
+    ]
+}

@@ -1,0 +1,42 @@
+[
+    {
+        "id": "home-1",
+        "image": "/static/images/carousel/Valheim.png",
+        "alt": "Community build at sunset",
+        "title": "RockandStone server is back and 1.0 is here!",
+        "subtitle": "Restart our journey in Valheim in the Deep North.",
+        "href": "/servers/RockandStone"
+    },
+    {
+        "id": "home-2",
+        "image": "/static/images/carousel/Valheim.png",
+        "alt": "Another page",
+        "title": "Hellheim",
+        "subtitle": "There is a new server we're considering supporting! Hardcore mode coming to you!",
+        "href": "/servers/Hellheim"
+    },
+    {
+        "id": "home-3",
+        "image": "/api/gallery/gal-007/media/Fader",
+        "alt": "Another page",
+        "title": "When do we take on Fader?",
+        "subtitle": "The fight for the Ashlands is upon us!.",
+        "href": "/events?id=evt-002"
+    },
+    {
+        "id": "home-4",
+        "image": "/static/images/carousel/Minecraft.png",
+        "alt": "Another page",
+        "title": "Do we want to start a Minecraft server?",
+        "subtitle": "There were some talks about this if anybody is interested.",
+        "href": "/"
+    },
+    {
+        "id": "home-5",
+        "image": "/static/images/carousel/Windrose.png",
+        "alt": "Another page",
+        "title": "Windrose",
+        "subtitle": "Windrose is similar to Valheim, we could look into hosting that as another game.",
+        "href": "/"
+    }
+]

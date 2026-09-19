@@ -1,0 +1,15 @@
+{
+    "id": "evt-001",
+    "server": "RockandStone",
+    "title": "Getting back into Valheim",
+    "description": "Hang out and plan for whats next!",
+    "event_date": "2026-08-07",
+    "start_time": "23:00:00",
+    "end_time": null,
+    "meetup_location": "Castle Base",
+    "expanded_details": "Reviving the game and we want to figure out whats next. We want to take on Fader at some point, make sure everybody has a room in the Castle, and anything else we want to explore!",
+    "image_url": "/static/images/Valheim.png",
+    "created_at": "2026-07-29T14:30:00Z",
+    "updated_at": null,
+    "changelog": []
+}

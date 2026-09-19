@@ -1,0 +1,364 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.feedback {
+  margin: 0;
+  color: #a7f3d0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.emptyCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 1.4rem;
+}
+
+.emptyTitle {
+  margin: 0;
+  color: #f4f4f5;
+}
+
+.emptyText {
+  margin: 0;
+  color: #9ca3af;
+}
+
+/* ── Overlay ─────────────────────────────────── */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 50;
+}
+
+/* ── Shared modal chrome ─────────────────────── */
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.modalTitle {
+  margin: 0;
+  color: #f4f4f5;
+}
+
+.closeButton {
+  border: 0;
+  background: transparent;
+  color: #f4f4f5;
+  font-size: 1.4rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* ── Detail modal ────────────────────────────── */
+
+.detailModal {
+  width: min(100%, 860px);
+  max-height: 92vh;
+  overflow-y: auto;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mediaViewer {
+  position: relative;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #020617;
+  line-height: 0;
+}
+
+.mediaImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 60vh;
+  object-fit: contain;
+}
+
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  color: #f4f4f5;
+  cursor: pointer;
+  width: 2.4rem;
+  height: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.navButton:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.navLeft {
+  left: 0.75rem;
+}
+
+.navRight {
+  right: 0.75rem;
+}
+
+.mediaCounter {
+  position: absolute;
+  bottom: 0.6rem;
+  right: 0.75rem;
+  background: rgba(0, 0, 0, 0.6);
+  color: #f4f4f5;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+
+.noMedia {
+  padding: 3rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.detailMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.copyImageButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0.3rem 0.45rem;
+  font: inherit;
+  font-size: 0.78rem;
+  flex-shrink: 0;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.copyImageButton:hover {
+  color: #e5e7eb;
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.serverBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: rgba(59, 130, 246, 0.16);
+  color: #bfdbfe;
+}
+
+.mediaCountLabel {
+  color: #9ca3af;
+  font-size: 0.88rem;
+}
+
+.detailDescription {
+  margin: 0;
+  color: #e5e7eb;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+/* ── Upload modal ────────────────────────────── */
+
+.modal {
+  width: min(100%, 560px);
+  background: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: #e5e7eb;
+  font-size: 0.95rem;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: #f4f4f5;
+  padding: 0.75rem 0.85rem;
+  font: inherit;
+  box-sizing: border-box;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.optional {
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-weight: normal;
+}
+
+.uploadNote {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.fileList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.7rem;
+  background: rgba(2, 6, 23, 0.4);
+  max-height: 9rem;
+  overflow-y: auto;
+}
+
+.fileItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.55rem 0.7rem;
+  color: #d1d5db;
+  font-size: 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.fileItem:last-child {
+  border-bottom: 0;
+}
+
+.fileSize {
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .toolbar {
+    justify-content: stretch;
+  }
+
+  .toolbar > * {
+    width: 100%;
+  }
+
+  .detailModal,
+  .modal {
+    width: calc(100% - 1.25rem);
+    padding: 1rem;
+    border-radius: 0.85rem;
+  }
+
+  .detailModal {
+    max-height: calc(100vh - 1.25rem);
+  }
+
+  .mediaImage {
+    max-height: 52vh;
+  }
+
+  .modalActions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .modalActions > * {
+    width: 100%;
+  }
+}
+
+@media (max-width: 680px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .navButton {
+    width: 2.7rem;
+    height: 2.7rem;
+  }
+
+  .closeButton {
+    min-width: 2.25rem;
+    min-height: 2.25rem;
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .overlay {
+    padding: 0.625rem;
+  }
+}

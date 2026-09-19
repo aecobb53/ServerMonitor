@@ -1,0 +1,490 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.feedback {
+  margin: 0;
+  color: #a7f3d0;
+}
+
+.filterBanner {
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: 1rem;
+  padding: 0.75rem 1.1rem;
+  background: rgba(59, 130, 246, 0.08);
+  color: #bfdbfe;
+  font-size: 0.92rem;
+}
+
+.clearFilter {
+  background: transparent;
+  border: 0;
+  color: #93c5fd;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.92rem;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.clearFilter:hover {
+  color: #bfdbfe;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.2rem;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.title {
+  margin: 0;
+  color: #f4f4f5;
+  font-size: 1.05rem;
+}
+
+.meta {
+  margin: 0.2rem 0 0;
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.description {
+  margin: 0;
+  color: #e5e7eb;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.badges {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.countBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  background: rgba(59, 130, 246, 0.16);
+  color: #bfdbfe;
+}
+
+.previewList {
+  margin: 0;
+  padding-left: 1rem;
+  color: #d1d5db;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.resultsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.breakdownSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+}
+
+.breakdownError {
+  margin: 0;
+  color: #fca5a5;
+  font-size: 0.92rem;
+}
+
+.breakdownList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.breakdownGroup {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.75rem;
+  padding: 0.7rem 0.8rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.breakdownLabel {
+  margin: 0;
+  color: #f4f4f5;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.breakdownEntries {
+  margin: 0.45rem 0 0;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: #d1d5db;
+}
+
+.resultsTitle {
+  margin: 0;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+}
+
+.resultsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.textResultItem {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.7rem;
+  padding: 0.55rem 0.65rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.textResultUser {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #93c5fd;
+}
+
+.textResultBody {
+  margin: 0.15rem 0 0;
+  font-size: 0.9rem;
+  color: #d1d5db;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.timestamp {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.footerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.copyButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  font: inherit;
+  font-size: 0.82rem;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.copyButton:hover {
+  color: #e5e7eb;
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.copiedLabel {
+  color: #a7f3d0;
+  font-size: 0.8rem;
+}
+
+.emptyCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 1.4rem;
+}
+
+.emptyTitle {
+  margin: 0;
+  color: #f4f4f5;
+}
+
+.emptyText {
+  margin: 0;
+  color: #9ca3af;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 50;
+}
+
+.modal {
+  width: min(100%, 700px);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.modalTitle {
+  margin: 0;
+  color: #f4f4f5;
+  overflow-wrap: anywhere;
+}
+
+.closeButton {
+  border: 0;
+  background: transparent;
+  color: #f4f4f5;
+  font-size: 1.4rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: #e5e7eb;
+  font-size: 0.95rem;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: #f4f4f5;
+  padding: 0.75rem 0.85rem;
+  font: inherit;
+  box-sizing: border-box;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.checkboxRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #d1d5db;
+  font-size: 0.92rem;
+}
+
+.optionList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.resultRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.7rem;
+  padding: 0.45rem 0.65rem;
+}
+
+.resultValue {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  white-space: nowrap;
+}
+
+.helperText {
+  margin: 0;
+  color: #9ca3af;
+  font-size: 0.86rem;
+  overflow-wrap: anywhere;
+}
+
+.rankButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.02);
+  color: #e5e7eb;
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+
+.rankBadge {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.ratingRow {
+  display: flex;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.optional {
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-weight: normal;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 820px) {
+  .toolbar {
+    justify-content: stretch;
+  }
+
+  .toolbar > * {
+    width: 100%;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .badges {
+    width: 100%;
+  }
+
+  .modal {
+    width: calc(100% - 1.25rem);
+    max-height: calc(100vh - 1.25rem);
+    padding: 1rem;
+    border-radius: 0.85rem;
+  }
+
+  .resultRow,
+  .rankButton {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .resultValue,
+  .rankBadge {
+    white-space: normal;
+  }
+
+  .modalActions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .modalActions > * {
+    width: 100%;
+  }
+
+  .fieldRow {
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footerActions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .overlay {
+    padding: 0.625rem;
+  }
+
+  .closeButton {
+    min-width: 2.25rem;
+    min-height: 2.25rem;
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+}

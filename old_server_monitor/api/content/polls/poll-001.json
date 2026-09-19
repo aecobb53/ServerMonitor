@@ -1,0 +1,25 @@
+{
+    "id": "poll-001",
+    "title": "Who is excited to get back into Valheim?!",
+    "description": "",
+    "poll_type": "single_choice",
+    "status": "open",
+    "anonymous_responses": false,
+    "allow_vote_changes": true,
+    "options": [
+        {
+            "id": "opt-1",
+            "label": "Yes!"
+        },
+        {
+            "id": "opt-2",
+            "label": "No :("
+        }
+    ],
+    "questions": [],
+    "created_by": null,
+    "created_at": "2026-09-07T02:24:32.442401Z",
+    "updated_at": "2026-09-07T16:31:23.015264Z",
+    "changelog": [],
+    "response_count": 1
+}

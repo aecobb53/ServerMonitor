@@ -1,0 +1,37 @@
+{
+    "id": "poll-002",
+    "title": "What attack style do you plan to main for Fader",
+    "description": "We need to ensure we have weapons, armor, and damage types covered. For peak damage a lot of these can be run at the same time. \n\n**Anybody can do magic and do another damage type while their Eitr is recharging.**",
+    "poll_type": "multi_choice",
+    "status": "open",
+    "anonymous_responses": false,
+    "allow_vote_changes": true,
+    "options": [
+        {
+            "id": "opt-1",
+            "label": "Bows/Crossbows"
+        },
+        {
+            "id": "opt-2",
+            "label": "Magic"
+        },
+        {
+            "id": "opt-3",
+            "label": "Melee"
+        }
+    ],
+    "questions": [],
+    "created_by": "Nax",
+    "created_at": "2026-09-07T21:06:09.100160Z",
+    "updated_at": "2026-09-07T21:09:25.107864Z",
+    "changelog": [
+        "2026-09-07T21:06:31.145355Z Changed options",
+        "2026-09-07T21:06:57.519662Z Changed options",
+        "2026-09-07T21:08:41.015721Z Changed description from We need to ensure we have weapons, armor, and damage types covered to We need to ensure we have weapons, armor, and damage types covered. For peak damage a lot of these can be run at the same time. Anybody can do magic and do another damage type while their Eitr is recharging.",
+        "2026-09-07T21:08:50.387372Z Changed description from We need to ensure we have weapons, armor, and damage types covered. For peak damage a lot of these can be run at the same time. Anybody can do magic and do another damage type while their Eitr is recharging. to We need to ensure we have weapons, armor, and damage types covered. For peak damage a lot of these can be run at the same time. \\nAnybody can do magic and do another damage type while their Eitr is recharging.",
+        "2026-09-07T21:09:00.560297Z Changed description from We need to ensure we have weapons, armor, and damage types covered. For peak damage a lot of these can be run at the same time. \\nAnybody can do magic and do another damage type while their Eitr is recharging. to We need to ensure we have weapons, armor, and damage types covered. For peak damage a lot of these can be run at the same time. \n\nAnybody can do magic and do another damage type while their Eitr is recharging.",
+        "2026-09-07T21:09:14.879563Z Changed description from We need to ensure we have weapons, armor, and damage types covered. For peak damage a lot of these can be run at the same time. \n\nAnybody can do magic and do another damage type while their Eitr is recharging. to We need to ensure we have weapons, armor, and damage types covered. For peak damage a lot of these can be run at the same time. \n\n> Anybody can do magic and do another damage type while their Eitr is recharging.",
+        "2026-09-07T21:09:25.107812Z Changed description from We need to ensure we have weapons, armor, and damage types covered. For peak damage a lot of these can be run at the same time. \n\n> Anybody can do magic and do another damage type while their Eitr is recharging. to We need to ensure we have weapons, armor, and damage types covered. For peak damage a lot of these can be run at the same time. \n\n**Anybody can do magic and do another damage type while their Eitr is recharging.**"
+    ],
+    "response_count": 1
+}

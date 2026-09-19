@@ -1,0 +1,17 @@
+{
+    "id": "req-002",
+    "server": "RockandStone",
+    "title": "Needs for Fader",
+    "requested_by": "Nax",
+    "urgency": "SOON",
+    "description": "Fader wiki: https://valheim.fandom.com/wiki/Fader",
+    "image": "/api/gallery/gal-007/media/Fader",
+    "quick_links": [],
+    "created_at": "2026-07-30T16:47:30.326000Z",
+    "completed": true,
+    "archived": true,
+    "updated_at": "2026-07-30T23:31:13.902967Z",
+    "changelog": [
+        "2026-07-30T23:31:13.902883Z Changed completed from False to True"
+    ]
+}

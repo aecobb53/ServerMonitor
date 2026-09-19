@@ -1,0 +1,300 @@
+{
+    "container_id": "b0cc5e9d4eea2914d178b26eb49f758aff86175694ab6a078a23190a0604de43",
+    "container_status": "stopped",
+    "game_name": "Valheim",
+    "server_name": "Hellheim",
+    "timestamp": "2026-09-07T01:54:55.058846Z",
+    "server_status_list": [
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-08-05T19:24:20.361555Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[----] Downloading update (0 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.374723Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  0%] Downloading update (1,471 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.399291Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  3%] Downloading update (5,824 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.404590Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 14%] Downloading update (10,333 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.404695Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 25%] Downloading update (15,349 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.404792Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 38%] Downloading update (18,081 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.404886Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 44%] Downloading update (21,923 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.404999Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 54%] Downloading update (25,008 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.405093Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 62%] Downloading update (27,674 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.405189Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 68%] Downloading update (29,830 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.405282Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 73%] Downloading update (31,372 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.405377Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 77%] Downloading update (32,861 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.405473Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 81%] Downloading update (34,508 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.405575Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 85%] Downloading update (35,980 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.405669Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 89%] Downloading update (37,420 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.405765Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 92%] Downloading update (38,844 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.405860Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 96%] Downloading update (40,324 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.405969Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[100%] Downloading update (40,324 of 40,324 KB)...",
+            "timestamp": "2026-08-05T19:24:20.406065Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Update complete, launching Steamcmd",
+            "line": "[----] Update complete, launching Steamcmd...",
+            "timestamp": "2026-08-05T19:24:20.406912Z"
+        },
+        {
+            "status": "INSTALLING_MODS",
+            "message": "Installing Server Mods",
+            "line": "INFO odin: [Valheim] Installing mods from MODS env via Odin",
+            "timestamp": "2026-08-05T19:24:20.408933Z"
+        },
+        {
+            "status": "REGISTERING",
+            "message": "Registering Server Lobby with Valheim Master Server",
+            "line": "\u001b[2m2026-07-30T16:00:10.624246Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 07/30/2026 16:00:10: Registering lobby",
+            "timestamp": "2026-08-05T19:24:20.485189Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-07-30T16:00:21.250386Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 07/30/2026 16:00:21: Game server connected",
+            "timestamp": "2026-08-05T19:24:20.498027Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-04T22:08:24.174028Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/04/2026 22:08:24: Game server connected",
+            "timestamp": "2026-08-05T19:24:21.679313Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-06T12:30:38.075584Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/06/2026 12:30:38: Game server connected",
+            "timestamp": "2026-08-06T12:30:38.076238Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-06T13:30:36.114337Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/06/2026 13:30:36: Game server connected",
+            "timestamp": "2026-08-06T13:30:36.114844Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-11T22:03:03.526742Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/11/2026 22:03:03: Game server connected failed",
+            "timestamp": "2026-08-11T22:03:03.527379Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-11T22:03:22.007094Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/11/2026 22:03:21: Game server connected",
+            "timestamp": "2026-08-11T22:03:22.007760Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-12T10:06:55.558101Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/12/2026 10:06:55: Game server connected",
+            "timestamp": "2026-08-12T10:06:55.558768Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-17T13:50:56.005124Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/17/2026 13:50:55: Game server connected",
+            "timestamp": "2026-08-17T13:50:56.005735Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-18T22:06:35.239881Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/18/2026 22:06:35: Game server connected failed",
+            "timestamp": "2026-08-18T22:06:35.240537Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-18T22:07:27.158776Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/18/2026 22:07:27: Game server connected failed",
+            "timestamp": "2026-08-18T22:07:27.159389Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-18T22:08:17.370919Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/18/2026 22:08:17: Game server connected failed",
+            "timestamp": "2026-08-18T22:08:17.371529Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-18T22:09:40.421690Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/18/2026 22:09:40: Game server connected failed",
+            "timestamp": "2026-08-18T22:09:40.422396Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-18T22:11:20.837883Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/18/2026 22:11:20: Game server connected failed",
+            "timestamp": "2026-08-18T22:11:20.838543Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-18T22:15:51.883078Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/18/2026 22:15:51: Game server connected failed",
+            "timestamp": "2026-08-18T22:15:51.883744Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-18T22:20:25.818280Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/18/2026 22:20:25: Game server connected",
+            "timestamp": "2026-08-18T22:20:25.818951Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-19T13:30:40.083099Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/19/2026 13:30:40: Game server connected",
+            "timestamp": "2026-08-19T13:30:40.083613Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-25T16:44:05.074367Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/25/2026 16:44:04: Game server connected",
+            "timestamp": "2026-08-25T16:44:05.075011Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-25T22:08:28.873982Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/25/2026 22:08:28: Game server connected failed",
+            "timestamp": "2026-08-25T22:08:28.874637Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-25T22:09:16.143187Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/25/2026 22:09:16: Game server connected failed",
+            "timestamp": "2026-08-25T22:09:16.144028Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-08-25T22:10:03.094485Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 08/25/2026 22:10:03: Game server connected",
+            "timestamp": "2026-08-25T22:10:03.095240Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-09-01T22:04:58.204707Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 09/01/2026 22:04:58: Game server connected failed",
+            "timestamp": "2026-09-01T22:04:58.205361Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-09-01T22:05:36.462207Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 09/01/2026 22:05:36: Game server connected",
+            "timestamp": "2026-09-01T22:05:36.462843Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-09-03T10:00:47.097737Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 09/03/2026 10:00:47: Game server connected",
+            "timestamp": "2026-09-03T10:00:47.098432Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "\u001b[2m2026-09-03T12:31:26.867149Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2modin::commands::logs\u001b[0m\u001b[2m:\u001b[0m [valheim_server.log]: 09/03/2026 12:31:26: Game server connected",
+            "timestamp": "2026-09-03T12:31:26.867802Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "timestamp": "2026-09-07T02:52:59.503568Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "timestamp": "2026-09-13T00:35:31.052306Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "timestamp": "2026-09-19T19:13:42.098433Z"
+        }
+    ]
+}

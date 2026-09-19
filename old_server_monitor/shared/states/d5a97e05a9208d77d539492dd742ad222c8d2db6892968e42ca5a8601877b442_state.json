@@ -1,0 +1,187 @@
+{
+    "container_id": "d5a97e05a9208d77d539492dd742ad222c8d2db6892968e42ca5a8601877b442",
+    "container_status": "stopped",
+    "game_name": "Valheim",
+    "server_name": "RockandStone",
+    "timestamp": "2026-09-07T03:04:28.656533Z",
+    "server_status_list": [
+        {
+            "status": "STARTING",
+            "message": "Initializing Server in Container",
+            "line": "INFO odin: Initializing your container...",
+            "timestamp": "2026-09-07T02:52:59.468855Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[----] Downloading update (58 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.474463Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  0%] Downloading update (1,628 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.475373Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[  4%] Downloading update (6,620 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.475486Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 16%] Downloading update (10,844 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.475553Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 26%] Downloading update (15,196 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.475610Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 37%] Downloading update (18,285 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.475666Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 45%] Downloading update (22,061 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.475720Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 54%] Downloading update (25,213 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.475788Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 62%] Downloading update (27,791 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.475844Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 68%] Downloading update (29,887 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.475920Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 73%] Downloading update (31,439 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.475988Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 77%] Downloading update (32,991 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.476049Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 81%] Downloading update (34,719 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.476124Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 85%] Downloading update (36,207 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.476181Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 89%] Downloading update (37,727 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.476236Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 93%] Downloading update (39,359 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.476290Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Downloading update from Steam",
+            "line": "[ 97%] Downloading update (40,430 of 40,430 KB)...",
+            "timestamp": "2026-09-07T02:52:59.476355Z"
+        },
+        {
+            "status": "UPDATING",
+            "message": "Update complete, launching Steamcmd",
+            "line": "[----] Update complete, launching Steamcmd...",
+            "timestamp": "2026-09-07T02:52:59.477080Z"
+        },
+        {
+            "status": "INSTALLING_MODS",
+            "message": "Installing Server Mods",
+            "line": "INFO odin: [Valheim] Installing mods from MODS env via Odin",
+            "timestamp": "2026-09-07T02:52:59.480084Z"
+        },
+        {
+            "status": "REGISTERING",
+            "message": "Registering Server Lobby with Valheim Master Server",
+            "line": "2026-09-07T02:52:42.021161Z  INFO odin::commands::logs: [valheim_server.log]: 09/07/2026 02:52:41: Registering lobby",
+            "timestamp": "2026-09-07T02:52:42.021161Z"
+        },
+        {
+            "status": "ONLINE",
+            "message": "Server is Running and Connected to Master Server",
+            "line": "2026-09-07T02:52:51.333520Z  INFO odin::commands::logs: [valheim_server.log]: 09/07/2026 02:52:51: Game server connected",
+            "timestamp": "2026-09-07T02:52:51.333520Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: kill",
+            "line": "Docker event 'kill' received",
+            "timestamp": "2026-09-07T03:04:17.640213Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: kill",
+            "line": "Docker event 'kill' received",
+            "timestamp": "2026-09-07T03:04:27.665821Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "line": "Container log stream ended",
+            "timestamp": "2026-09-07T03:04:28.245321Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: stop",
+            "line": "Docker event 'stop' received",
+            "timestamp": "2026-09-07T03:04:28.506697Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: die",
+            "line": "Docker event 'die' received",
+            "timestamp": "2026-09-07T03:04:28.520296Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Container event: destroy",
+            "line": "Docker event 'destroy' received",
+            "timestamp": "2026-09-07T03:04:28.656496Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "timestamp": "2026-09-13T00:35:31.310256Z"
+        },
+        {
+            "status": "OFFLINE",
+            "message": "Server has been shut down",
+            "timestamp": "2026-09-19T19:13:43.279052Z"
+        }
+    ]
+}
