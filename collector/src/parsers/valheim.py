@@ -5,6 +5,8 @@ from .common import BaseParser, ServerStatus
 
 
 class ValheimParser(BaseParser):
+    name = "valheim"
+    version = "1.0.0"
     status_pattern = {
         r"Initializing your container": {
             "status": ServerStatus.STARTING,
@@ -19,11 +21,11 @@ class ValheimParser(BaseParser):
             "message": "Update complete, launching Steamcmd"
         },
         r"Installing mods": {
-            "status": ServerStatus.INSTALLING_MODS,
+            "status": ServerStatus.UPDATING,
             "message": "Installing Server Mods"
         },
         r"Registering lobby": {
-            "status": ServerStatus.REGISTERING,
+            "status": ServerStatus.UPDATING,
             "message": "Registering Server Lobby with Valheim Master Server"
         },
         r"Game server connected$": {
@@ -33,13 +35,6 @@ class ValheimParser(BaseParser):
     }
     game_name = "Valheim"
 
-    # def __init__(self):
-    #     self.statuses = []
-
-    # @property
-    # def status(self):
-    #     return self.statuses[-1] if self.statuses else None
-
     def parse(self, line: str):
         # Normalize ANSI-decorated log lines so patterns only evaluate message text.
         clean_line = re.sub(r"\x1b\[[0-9;]*m", "", line).strip()
@@ -47,7 +42,7 @@ class ValheimParser(BaseParser):
         # Explicitly treat failed master-server connection attempts as REGISTERING.
         if re.search(r"Game server connected failed", clean_line):
             content = {
-                "status": ServerStatus.REGISTERING,
+                "status": ServerStatus.UPDATING,
                 "message": "Retrying registration with Valheim Master Server",
                 "line": clean_line,
             }

@@ -5,16 +5,15 @@ import json
 from dataclasses import dataclass, field
 from enum import Enum
 from parsers.common import BaseParser, ServerStatus
-from parsers.valheim import ValheimParser
+from parsers.registry import create_parser
+from config import load_config
 from datetime import datetime, timezone
 
 
+CONFIG = load_config()
 LABEL = "server_monitor.enabled=true"
-HEARTBEAT_SECONDS = int(os.getenv("SERVER_MONITOR_HEARTBEAT_SECONDS", "60"))
-SHARED_STORAGE = os.path.join(
-    '/app',
-    'storage',
-)
+HEARTBEAT_SECONDS = CONFIG.reconcile_seconds
+SHARED_STORAGE = CONFIG.storage
 
 
 class ContainerStatus(Enum):
@@ -113,7 +112,7 @@ def initialize():
         server_name = labels.get("server_monitor.server_name", "Unknown Server Name")
         tracked[container.id] = TrackedContainer(
             container=container,
-            parser=ValheimParser(),
+            parser=create_parser(labels["server_monitor.parser"]),
             container_status=ContainerStatus.RUNNING,
             server_name=server_name
         )
@@ -153,7 +152,7 @@ def watch_containers(client, tracked):
                 server_name = labels.get("server_monitor.server_name", "Unknown Server Name")
                 tracked[cid] = TrackedContainer(
                     container=container,
-                    parser=ValheimParser(),
+                    parser=create_parser(labels["server_monitor.parser"]),
                     container_status=ContainerStatus.RUNNING,
                     server_name=server_name,
                 )
