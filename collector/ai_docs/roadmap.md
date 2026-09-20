@@ -2,7 +2,7 @@
 
 This roadmap implements `architecture-new.md` in small, testable phases. The Collector remains a single Docker-aware process that publishes bounded JSON files; no database, API, queue, or new service is required.
 
-Current progress: Phases 1 through 5 are complete. Phase 6 is next.
+Current progress: Phases 1 through 6 are complete. Phase 7 is next.
 
 ## Phase 1: Establish the New Contracts (Complete)
 
@@ -66,7 +66,7 @@ Current progress: Phases 1 through 5 are complete. Phase 6 is next.
 
 **Done when:** a noisy container is bounded by configuration, a quiet container is not falsely declared offline, and a lost log stream recovers.
 
-## Phase 6: Reconciliation
+## Phase 6: Reconciliation (Complete)
 
 - Run reconciliation every 60 seconds by default.
 - List currently running labeled containers.

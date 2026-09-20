@@ -260,6 +260,39 @@ def watch_containers(client, tracked):
                 del tracked[cid]
 
 
+def reconcile_once(client, tracked):
+    containers = client.containers.list(filters={"label": LABEL})
+    active_names = set()
+    active_ids = set()
+    for container in containers:
+        active_ids.add(container.id)
+        labels = container.labels
+        if labels.get("server_monitor.enabled", "").lower() == "true":
+            name = labels.get(SERVER_NAME_LABEL, "").strip()
+            if name:
+                active_names.add(name)
+        add_container(container, tracked)
+
+    for cid, tracked_container in list(tracked.items()):
+        if cid not in active_ids:
+            tracked_container._close("reconciliation")
+            del tracked[cid]
+        else:
+            STATE_STORE.update(
+                tracked_container.server_name,
+                lambda state: state["collector"].update({
+                    "last_reconciled_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+                }),
+            )
+    STATE_STORE.mark_stopped_except(active_names)
+
+
+def reconcile_containers(client, tracked):
+    while True:
+        reconcile_once(client, tracked)
+        threading.Event().wait(HEARTBEAT_SECONDS)
+
+
 def heartbeat_tracked_states(tracked):
     while True:
         if HEARTBEAT_SECONDS <= 0:
@@ -276,4 +309,5 @@ def heartbeat_tracked_states(tracked):
 if __name__ == "__main__":
     client, tracked = initialize()
     threading.Thread(target=heartbeat_tracked_states, args=(tracked,), daemon=True).start()
+    threading.Thread(target=reconcile_containers, args=(client, tracked), daemon=True).start()
     watch_containers(client, tracked)

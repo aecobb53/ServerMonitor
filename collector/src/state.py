@@ -111,6 +111,34 @@ class StateStore:
     def record_error(self, server_name: str, error: dict):
         self.update(server_name, lambda state: state.setdefault("errors", []).append(error))
 
+    def mark_stopped_except(self, active_names: set[str]):
+        for server_name, path in list(self._files.items()):
+            if server_name in active_names:
+                continue
+            with self._lock(server_name):
+                with open(path) as file:
+                    state = json.load(file)
+                container = state.setdefault("container", {})
+                if container.get("status") == "stopped":
+                    continue
+                container["status"] = "stopped"
+                state.setdefault("history", []).append({
+                    "status": "OFFLINE",
+                    "message": "Container is no longer running",
+                    "line": None,
+                    "timestamp": now(),
+                    "source": "reconciliation",
+                    "parser_name": state.get("parser", {}).get("name"),
+                    "parser_version": state.get("parser", {}).get("version"),
+                })
+                state["health"] = {
+                    "status": "OFFLINE",
+                    "message": "Container is no longer running",
+                    "updated_at": now(),
+                    "confidence": "high",
+                }
+                self._write(path, state)
+
     def _write(self, path: str, state: dict):
         temporary = f"{path}.{uuid.uuid4().hex}.tmp"
         try:
