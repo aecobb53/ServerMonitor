@@ -32,6 +32,10 @@ class ValheimParser(BaseParser):
             "status": ServerStatus.ONLINE,
             "message": "Server is Running and Connected to Master Server"
         },
+        r"World save (5/5) done": {
+            "status": ServerStatus.ONLINE,
+            "message": "Server is Running and Connected to Master Server"
+        },
     }
     game_name = "Valheim"
 

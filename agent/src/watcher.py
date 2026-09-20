@@ -20,20 +20,29 @@ class WatchHandler(FileSystemEventHandler):
         self.storage = storage
         self.agent = agent
         self.loop = loop
+        self._locks = {}
+
+    def _is_state_file(self, path: str) -> bool:
+        file_path = Path(path)
+        return file_path.suffix == ".json" and not file_path.name.startswith(".")
 
     def _relative(self, path: str) -> str:
         return str(Path(path).relative_to(self.storage))
 
     def on_created(self, event):
-        if not event.is_directory:
+        if not event.is_directory and self._is_state_file(event.src_path):
             self._schedule_update(event.src_path)
 
     def on_modified(self, event):
-        if not event.is_directory:
+        if not event.is_directory and self._is_state_file(event.src_path):
             self._schedule_update(event.src_path)
 
+    def on_moved(self, event):
+        if not event.is_directory and self._is_state_file(event.dest_path):
+            self._schedule_update(event.dest_path)
+
     def on_deleted(self, event):
-        if not event.is_directory:
+        if not event.is_directory and self._is_state_file(event.src_path):
             relative = self._relative(event.src_path)
 
             asyncio.run_coroutine_threadsafe(
@@ -44,23 +53,26 @@ class WatchHandler(FileSystemEventHandler):
     def _schedule_update(self, path: str):
         file_path = Path(path)
 
-        if file_path.name == ".agent_uid":
-            return
-
         if not file_path.exists():
             return
 
         modified_time = file_path.stat().st_mtime
         relative = self._relative(path)
 
+        lock = self._locks.setdefault(relative, asyncio.Lock())
         asyncio.run_coroutine_threadsafe(
-            self.agent.send_file(
-                file_path,
-                relative,
-                modified_time,
-            ),
+            self._send_update(lock, file_path, relative, modified_time),
             self.loop,
         )
+
+    async def _send_update(self, lock, path: Path, relative: str, modified_time: float):
+        async with lock:
+            if path.exists():
+                await self.agent.send_file(path, relative, modified_time)
+
+    def sync_existing_files(self):
+        for path in self.storage.rglob("*.json"):
+            self._schedule_update(str(path))
 
 
 def start_watcher(
@@ -73,5 +85,6 @@ def start_watcher(
     observer = Observer()
     observer.schedule(handler, str(storage), recursive=True)
     observer.start()
+    handler.sync_existing_files()
 
     return observer

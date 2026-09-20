@@ -1,4 +1,4 @@
-import json
+import hashlib
 import logging
 import uuid
 from pathlib import Path
@@ -14,6 +14,7 @@ class Agent:
     def __init__(self, config: Config):
         self.config = config
         self.uid = self._load_uid()
+        self._digests = {}
 
     def _load_uid(self) -> str:
         path = Path(self.config.storage) / ".agent_uid"
@@ -57,6 +58,11 @@ class Agent:
         modified_time: float,
     ) -> None:
         content = path.read_bytes()
+        digest = hashlib.sha256(content).hexdigest()
+
+        if self._digests.get(relative_path) == digest:
+            await self._patch_file(relative_path, modified_time)
+            return
 
         payload = {
             "agent_uid": self.uid,
@@ -66,6 +72,19 @@ class Agent:
         }
 
         await self._post("/api/v1/agents/files", payload)
+        self._digests[relative_path] = digest
+
+    async def _patch_file(self, relative_path: str, modified_time: float) -> None:
+        await self._request(
+            "PATCH",
+            "/api/v1/agents/files",
+            {
+                "agent_uid": self.uid,
+                "path": relative_path,
+                "modified_time": modified_time,
+                "changed": False,
+            },
+        )
 
     async def send_delete(self, relative_path: str) -> None:
         payload = {
@@ -74,14 +93,19 @@ class Agent:
         }
 
         await self._post("/api/v1/agents/files/deleted", payload)
+        self._digests.pop(relative_path, None)
 
     async def _post(self, endpoint: str, payload: dict) -> None:
+        await self._request("POST", endpoint, payload)
+
+    async def _request(self, method: str, endpoint: str, payload: dict) -> None:
         headers = {
             "Authorization": f"Bearer {self.config.control_core_key}",
         }
 
         async with httpx.AsyncClient() as client:
-            response = await client.post(
+            response = await client.request(
+                method,
                 f"{self.config.control_core_url}{endpoint}",
                 json=payload,
                 headers=headers,
