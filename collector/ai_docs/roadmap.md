@@ -2,7 +2,9 @@
 
 This roadmap implements `architecture-new.md` in small, testable phases. The Collector remains a single Docker-aware process that publishes bounded JSON files; no database, API, queue, or new service is required.
 
-## Phase 1: Establish the New Contracts
+Current progress: Phases 1 and 2 are complete. Phase 3 is next.
+
+## Phase 1: Establish the New Contracts (Complete)
 
 - Move runtime code under `collector/src` cleanly.
 - Update the Dockerfile entrypoint and Python import path for the `src` layout.
@@ -18,7 +20,7 @@ This roadmap implements `architecture-new.md` in small, testable phases. The Col
 
 **Done when:** the collector can load configuration, resolve the Valheim parser by label, and reject unknown parsers without silently falling back.
 
-## Phase 2: Improve the Parser Boundary
+## Phase 2: Improve the Parser Boundary (Complete)
 
 - Update `BaseParser` to expose the shared contract.
 - Update the Valheim parser to return normalized uppercase statuses:

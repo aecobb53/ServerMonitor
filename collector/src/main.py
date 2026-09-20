@@ -35,7 +35,8 @@ class TrackedContainer:
     @property
     def server_status(self):
         if self.server_status_list:
-            return self.server_status_list[-1]['status']
+            status = self.server_status_list[-1]['status']
+            return status if isinstance(status, ServerStatus) else ServerStatus(status)
         return ServerStatus.UNKNOWN
 
     def start(self):
@@ -58,11 +59,11 @@ class TrackedContainer:
         save_change = False
         try:
             for line in self.container.logs(stream=True, follow=True):
-                server_status, status_content = self.parser.parse(line.decode())
-                if server_status and (server_status.name != self.server_status.name):
+                event = self.parser.parse(line.decode(errors="replace"))
+                if event and (event.status is not self.server_status):
                     save_change = True
-                if server_status:
-                    self.server_status_list.append(status_content)
+                if event:
+                    self.server_status_list.append(event.to_dict())
                 if save_change:
                     self._save_current_state()
                     save_change = False
@@ -81,8 +82,9 @@ class TrackedContainer:
         state_timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         server_status_list = []
         for ssl in self.server_status_list:
+            status = ssl['status']
             server_status_list.append({
-                "status": ssl['status'].name,
+                "status": status.value if isinstance(status, ServerStatus) else status,
                 "message": ssl['message'],
                 "line": ssl['line'],
                 "timestamp": ssl['timestamp'],

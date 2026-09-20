@@ -155,6 +155,7 @@ The Collector status vocabulary is:
   "line": "Game server connected",
   "timestamp": "2026-09-20T12:05:00Z",
   "source": "log_parser",
+  "parser_name": "valheim",
   "parser_version": "1.0.0"
 }
 ```
@@ -166,6 +167,7 @@ The Collector status vocabulary is:
 | `line` | string or null | no | Relevant source log line, when available. |
 | `timestamp` | timestamp | yes | Time associated with the event. |
 | `source` | string | yes | Usually `log_parser`, `docker_event`, `reconciliation`, or `collector`. |
+| `parser_name` | string or null | no | Parser that produced the event. |
 | `parser_version` | string or null | no | Parser version that produced the event. |
 
 History contains meaningful transitions and lifecycle events, not every log line. Repeated evidence for the current status should update health timestamps without creating duplicate history entries.

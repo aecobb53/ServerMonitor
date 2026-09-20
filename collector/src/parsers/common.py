@@ -18,7 +18,19 @@ class StatusEvent:
     line: str | None = None
     timestamp: str | None = None
     source: str = "log_parser"
+    parser_name: str | None = None
     parser_version: str | None = None
+
+    def to_dict(self) -> dict:
+        return {
+            "status": self.status.value,
+            "message": self.message,
+            "line": self.line,
+            "timestamp": self.timestamp,
+            "source": self.source,
+            "parser_name": self.parser_name,
+            "parser_version": self.parser_version,
+        }
 
 
 @dataclass
@@ -35,7 +47,7 @@ class BaseParser:
     name = "unknown"
     version = "0.0.0"
 
-    def parse(self, line: str):
+    def parse(self, line: str) -> StatusEvent | None:
         raise NotImplementedError("Subclasses should implement this method.")
 
     def analyze(self, lines: list[str]) -> AnalysisResult:
