@@ -1,12 +1,11 @@
-import os
 import docker
 import threading
-import json
 from dataclasses import dataclass, field
 from enum import Enum
 from parsers.common import BaseParser, ServerStatus
 from parsers.registry import create_parser
 from config import load_config
+from state import StateStore
 from datetime import datetime, timezone
 
 
@@ -14,6 +13,7 @@ CONFIG = load_config()
 LABEL = "server_monitor.enabled=true"
 HEARTBEAT_SECONDS = CONFIG.reconcile_seconds
 SHARED_STORAGE = CONFIG.storage
+STATE_STORE = StateStore(CONFIG.storage, CONFIG.version, CONFIG.max_history, CONFIG.max_errors)
 
 
 class ContainerStatus(Enum):
@@ -25,12 +25,17 @@ class ContainerStatus(Enum):
 class TrackedContainer:
     container: docker.models.containers.Container
     parser: BaseParser
+    state_store: StateStore
 
     thread: threading.Thread | None = field(init=False, default=None)
 
     container_status: ContainerStatus
     server_status_list: list = field(init=False, default_factory=list)
     server_name: str = "Unknown Server Name"
+
+    def __post_init__(self):
+        state = self.state_store.ensure(self.server_name, self.parser)
+        self.server_status_list = state.get("history", []).copy()
 
     @property
     def server_status(self):
@@ -89,20 +94,28 @@ class TrackedContainer:
                 "line": ssl['line'],
                 "timestamp": ssl['timestamp'],
             })
-        state = {
-            "container_id": self.container.id,
-            "container_status": self.container_status.value,
-            "game_name": self.parser.game_name,
-            "server_name": self.server_name,
-            "timestamp": state_timestamp,
-            "server_status_list": server_status_list,
-        }
-        path = os.path.join(
-            SHARED_STORAGE,
-            f"{self.container.id}_state.json"
-        )
-        with open(path, "w") as f:
-            json.dump(state, f, indent=4)
+        def update(state):
+            state["game_name"] = self.parser.game_name
+            state["parser"] = {"name": self.parser.name, "version": self.parser.version}
+            state["container"] = {
+                "id": self.container.id,
+                "name": self.container.name,
+                "status": self.container_status.value,
+                "started_at": self.container.attrs.get("State", {}).get("StartedAt"),
+            }
+            if server_status_list:
+                latest = server_status_list[-1]
+                state["latest_status"] = latest
+                state["health"] = {
+                    "status": latest["status"],
+                    "message": latest["message"],
+                    "updated_at": latest["timestamp"],
+                    "confidence": "high" if latest["status"] == ServerStatus.ONLINE.value else "medium",
+                }
+                state["collector"]["last_log_at"] = latest["timestamp"]
+            state["history"] = server_status_list
+
+        STATE_STORE.update(self.server_name, update)
 
 
 def initialize():
@@ -115,24 +128,11 @@ def initialize():
         tracked[container.id] = TrackedContainer(
             container=container,
             parser=create_parser(labels["server_monitor.parser"]),
+            state_store=STATE_STORE,
             container_status=ContainerStatus.RUNNING,
             server_name=server_name
         )
         tracked[container.id].start()
-
-    for file_path in os.listdir(SHARED_STORAGE):
-        if file_path.replace("_state.json", '') not in tracked:
-            # Ensure its been marked Closed
-            with open(os.path.join(SHARED_STORAGE, file_path)) as jf:
-                content = json.load(jf)
-                content['container_status'] = ContainerStatus.STOPPED.value
-                content['server_status_list'].append({
-                    "status": ServerStatus.OFFLINE.name,
-                    "message": "Server has been shut down",
-                    "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-                })
-                with open(os.path.join(SHARED_STORAGE, file_path), "w") as f:
-                    json.dump(content, f, indent=4)
 
     return client, tracked
 
@@ -155,6 +155,7 @@ def watch_containers(client, tracked):
                 tracked[cid] = TrackedContainer(
                     container=container,
                     parser=create_parser(labels["server_monitor.parser"]),
+                    state_store=STATE_STORE,
                     container_status=ContainerStatus.RUNNING,
                     server_name=server_name,
                 )

@@ -2,7 +2,7 @@
 
 This roadmap implements `architecture-new.md` in small, testable phases. The Collector remains a single Docker-aware process that publishes bounded JSON files; no database, API, queue, or new service is required.
 
-Current progress: Phases 1 and 2 are complete. Phase 3 is next.
+Current progress: Phases 1 through 3 are complete. Phase 4 is next.
 
 ## Phase 1: Establish the New Contracts (Complete)
 
@@ -31,7 +31,7 @@ Current progress: Phases 1 and 2 are complete. Phase 3 is next.
 
 **Done when:** parser tests can analyze a log tail and live lines without depending on Docker or file storage.
 
-## Phase 3: Build Server State and Persistence
+## Phase 3: Build Server State and Persistence (Complete)
 
 - Replace container-oriented state with logical server state keyed by `server_name`.
 - Discover existing UUID-named JSON files at startup.
