@@ -84,20 +84,70 @@ class TrackedContainer:
             return True
 
     def _watch_logs(self):
-        save_change = False
         try:
-            for line in self.container.logs(stream=True, follow=True):
-                event = self.parser.parse(line.decode(errors="replace"))
-                if event and (event.status is not self.server_status):
-                    save_change = True
-                if event:
-                    self.server_status_list.append(event.to_dict())
-                if save_change:
-                    self._save_current_state()
-                    save_change = False
+            tail = self.container.logs(stream=False, tail=CONFIG.log_tail, timestamps=True)
+            lines = tail.decode(errors="replace").splitlines() if isinstance(tail, bytes) else tail
+            analysis = self.parser.analyze(lines)
+            if analysis.event:
+                self._record_event(analysis.event)
+            else:
+                self.state_store.update(self.server_name, lambda state: state["health"].update({
+                    "status": analysis.status.value,
+                    "message": analysis.message,
+                    "updated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+                    "confidence": analysis.confidence,
+                }))
+
+            while not self.closed:
+                stream = self.container.logs(stream=True, follow=True, tail=0, timestamps=True)
+                for line in stream:
+                    self._process_line(line)
+                if not self._container_running():
+                    self._close("log_stream_ended")
+                    break
+                threading.Event().wait(1)
+        except Exception as error:
+            self._record_error("watcher_error", str(error))
+            if not self._container_running():
+                self._close("watcher_error")
         finally:
             self.thread = None
-            self._close("log_stream_ended")
+            if not self.closed and self._container_running():
+                self.start()
+
+    def _process_line(self, line):
+        text = line.decode(errors="replace") if isinstance(line, bytes) else line
+        try:
+            event = self.parser.parse(text)
+        except Exception as error:
+            self._record_error("parser_error", str(error), text)
+            return
+        if event:
+            self._record_event(event)
+
+    def _record_event(self, event):
+        if event.status is self.server_status:
+            return
+        self.server_status_list.append(event.to_dict())
+        self._save_current_state()
+
+    def _record_error(self, error_type, message, line=None):
+        self.state_store.record_error(self.server_name, {
+            "type": error_type,
+            "message": message,
+            "line": line,
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "source": "log_parser" if error_type == "parser_error" else "collector",
+            "parser_name": self.parser.name,
+            "parser_version": self.parser.version,
+        })
+
+    def _container_running(self):
+        try:
+            self.container.reload()
+            return self.container.attrs.get("State", {}).get("Status") == "running"
+        except Exception:
+            return self.container_status is ContainerStatus.RUNNING
 
     def _save_current_state(self):
         state_timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")

@@ -2,7 +2,7 @@
 
 This roadmap implements `architecture-new.md` in small, testable phases. The Collector remains a single Docker-aware process that publishes bounded JSON files; no database, API, queue, or new service is required.
 
-Current progress: Phases 1 through 4 are complete. Phase 5 is next.
+Current progress: Phases 1 through 5 are complete. Phase 6 is next.
 
 ## Phase 1: Establish the New Contracts (Complete)
 
@@ -55,7 +55,7 @@ Current progress: Phases 1 through 4 are complete. Phase 5 is next.
 
 **Done when:** start, stop, restart, duplicate-name, and recreated-container scenarios produce one coherent server file without duplicate lifecycle entries.
 
-## Phase 5: Log Watching and Recovery
+## Phase 5: Log Watching and Recovery (Complete)
 
 - Read only the configured last `N` log lines when a watcher starts.
 - Analyze that tail before following new log output.
