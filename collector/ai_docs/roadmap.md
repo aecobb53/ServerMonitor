@@ -2,7 +2,7 @@
 
 This roadmap implements `architecture-new.md` in small, testable phases. The Collector remains a single Docker-aware process that publishes bounded JSON files; no database, API, queue, or new service is required.
 
-Current progress: Phases 1 through 3 are complete. Phase 4 is next.
+Current progress: Phases 1 through 4 are complete. Phase 5 is next.
 
 ## Phase 1: Establish the New Contracts (Complete)
 
@@ -43,7 +43,7 @@ Current progress: Phases 1 through 3 are complete. Phase 4 is next.
 
 **Done when:** concurrent updates cannot produce partial JSON or lose in-process state changes, and malformed state files do not prevent startup.
 
-## Phase 4: Container Discovery and Lifecycle
+## Phase 4: Container Discovery and Lifecycle (Complete)
 
 - Require all three labels before tracking a container.
 - Validate `server_monitor.enabled`, `server_monitor.parser`, and `server_monitor.server_name`.

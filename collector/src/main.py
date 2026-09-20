@@ -11,6 +11,8 @@ from datetime import datetime, timezone
 
 CONFIG = load_config()
 LABEL = "server_monitor.enabled=true"
+PARSER_LABEL = "server_monitor.parser"
+SERVER_NAME_LABEL = "server_monitor.server_name"
 HEARTBEAT_SECONDS = CONFIG.reconcile_seconds
 SHARED_STORAGE = CONFIG.storage
 STATE_STORE = StateStore(CONFIG.storage, CONFIG.version, CONFIG.max_history, CONFIG.max_errors)
@@ -32,6 +34,8 @@ class TrackedContainer:
     container_status: ContainerStatus
     server_status_list: list = field(init=False, default_factory=list)
     server_name: str = "Unknown Server Name"
+    closed: bool = field(init=False, default=False)
+    lifecycle_lock: threading.RLock = field(init=False, default_factory=threading.RLock)
 
     def __post_init__(self):
         state = self.state_store.ensure(self.server_name, self.parser)
@@ -45,6 +49,8 @@ class TrackedContainer:
         return ServerStatus.UNKNOWN
 
     def start(self):
+        self.container_status = ContainerStatus.RUNNING
+        self.closed = False
         if self.thread is None or not self.thread.is_alive():
             self.thread = threading.Thread(
                 target=self._watch_logs,
@@ -54,11 +60,28 @@ class TrackedContainer:
             self.thread.start()
         else:
             print(f"Thread for container {self.container.id} is already running.")
-        self.container_status = ContainerStatus.RUNNING
         self._save_current_state()
 
     def stop(self):
-        raise NotImplementedError("Stopping threads is not implemented. You would need to implement a stopping mechanism.")
+        self._close("collector")
+
+    def _close(self, reason: str):
+        with self.lifecycle_lock:
+            if self.closed:
+                return False
+            self.closed = True
+            self.container_status = ContainerStatus.STOPPED
+            self.server_status_list.append({
+                "status": ServerStatus.OFFLINE.value,
+                "message": "Server has been shut down",
+                "line": f"Container closed: {reason}",
+                "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+                "source": reason,
+                "parser_name": self.parser.name,
+                "parser_version": self.parser.version,
+            })
+            self._save_current_state()
+            return True
 
     def _watch_logs(self):
         save_change = False
@@ -74,14 +97,7 @@ class TrackedContainer:
                     save_change = False
         finally:
             self.thread = None
-            self.container_status = ContainerStatus.STOPPED
-            self.server_status_list.append({
-                "status": ServerStatus.OFFLINE,
-                "message": "Server has been shut down",
-                "line": "Container log stream ended",
-                "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-            })
-            self._save_current_state()
+            self._close("log_stream_ended")
 
     def _save_current_state(self):
         state_timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
@@ -91,8 +107,11 @@ class TrackedContainer:
             server_status_list.append({
                 "status": status.value if isinstance(status, ServerStatus) else status,
                 "message": ssl['message'],
-                "line": ssl['line'],
-                "timestamp": ssl['timestamp'],
+                "line": ssl.get('line'),
+                "timestamp": ssl.get('timestamp'),
+                "source": ssl.get('source', 'collector'),
+                "parser_name": ssl.get('parser_name'),
+                "parser_version": ssl.get('parser_version'),
             })
         def update(state):
             state["game_name"] = self.parser.game_name
@@ -123,18 +142,48 @@ def initialize():
     tracked = {}
 
     for container in client.containers.list(filters={"label": LABEL}):
-        labels = container.labels
-        server_name = labels.get("server_monitor.server_name", "Unknown Server Name")
-        tracked[container.id] = TrackedContainer(
-            container=container,
-            parser=create_parser(labels["server_monitor.parser"]),
-            state_store=STATE_STORE,
-            container_status=ContainerStatus.RUNNING,
-            server_name=server_name
-        )
-        tracked[container.id].start()
+        add_container(container, tracked)
 
     return client, tracked
+
+
+def add_container(container, tracked):
+    labels = container.labels
+    server_name = labels.get(SERVER_NAME_LABEL, "").strip()
+    parser_name = labels.get(PARSER_LABEL, "").strip()
+    if labels.get("server_monitor.enabled", "").lower() != "true" or not server_name or not parser_name:
+        print(f"Skipping container {container.id}: required server_monitor labels are missing")
+        return None
+    try:
+        parser = create_parser(parser_name)
+    except ValueError as error:
+        print(f"Skipping container {container.id}: {error}")
+        return None
+    existing = next((item for item in tracked.values() if item.server_name == server_name), None)
+    if existing and existing.container.id != container.id:
+        STATE_STORE.ensure(server_name, parser)
+        STATE_STORE.record_error(server_name, {
+            "type": "duplicate_server_name",
+            "message": f"Container {container.id} conflicts with {existing.container.id}",
+            "line": None,
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "source": "collector",
+            "parser_name": parser.name,
+            "parser_version": parser.version,
+        })
+        return None
+    if container.id in tracked:
+        tracked[container.id].start()
+        return tracked[container.id]
+    tracked[container.id] = TrackedContainer(
+        container=container,
+        parser=parser,
+        state_store=STATE_STORE,
+        container_status=ContainerStatus.RUNNING,
+        server_name=server_name,
+    )
+    tracked[container.id].start()
+    return tracked[container.id]
 
 def watch_containers(client, tracked):
     for event in client.events(
@@ -150,31 +199,15 @@ def watch_containers(client, tracked):
         if action in ['start', 'create']:
             if cid not in tracked:
                 container = client.containers.get(cid)
-                labels = container.labels
-                server_name = labels.get("server_monitor.server_name", "Unknown Server Name")
-                tracked[cid] = TrackedContainer(
-                    container=container,
-                    parser=create_parser(labels["server_monitor.parser"]),
-                    state_store=STATE_STORE,
-                    container_status=ContainerStatus.RUNNING,
-                    server_name=server_name,
-                )
-                tracked[cid].start()
+                add_container(container, tracked)
             else:
-                tracked[cid].container_status = ContainerStatus.RUNNING
                 tracked[cid].start()
 
         if action in ['die', 'stop', 'destroy', 'kill']:
             if cid in tracked:
                 tracked_container = tracked[cid]
-                tracked_container.container_status = ContainerStatus.STOPPED
-                tracked_container.server_status_list.append({
-                    "status": ServerStatus.OFFLINE,
-                    "message": f"Container event: {action}",
-                    "line": f"Docker event '{action}' received",
-                    "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-                })
-                tracked_container._save_current_state()
+                tracked_container._close(f"docker_event:{action}")
+                del tracked[cid]
 
 
 def heartbeat_tracked_states(tracked):

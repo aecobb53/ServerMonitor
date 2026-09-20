@@ -49,8 +49,20 @@ class StateStore:
             if path:
                 with open(path) as file:
                     state = json.load(file)
+                previous = state.get("parser", {})
+                if previous.get("name") != parser.name or previous.get("version") != parser.version:
+                    state.setdefault("history", []).append({
+                        "status": state.get("health", {}).get("status", "UNKNOWN"),
+                        "message": f"Parser changed to {parser.name} {parser.version}",
+                        "line": None,
+                        "timestamp": now(),
+                        "source": "collector",
+                        "parser_name": parser.name,
+                        "parser_version": parser.version,
+                    })
                 state["parser"] = {"name": parser.name, "version": parser.version}
                 state["game_name"] = parser.game_name
+                self._write(path, state)
                 return state
 
             state = {
@@ -95,6 +107,9 @@ class StateStore:
             collector["collector_version"] = self.collector_version
             collector["updated_at"] = now()
             self._write(path, state)
+
+    def record_error(self, server_name: str, error: dict):
+        self.update(server_name, lambda state: state.setdefault("errors", []).append(error))
 
     def _write(self, path: str, state: dict):
         temporary = f"{path}.{uuid.uuid4().hex}.tmp"
