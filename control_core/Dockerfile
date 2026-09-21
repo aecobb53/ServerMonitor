@@ -1,12 +1,12 @@
-FROM python:3.13
+FROM python:3.13-slim
 
 WORKDIR /app
 
 ENV PYTHONUNBUFFERED=1
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY pyproject.toml .
+COPY src ./src
+COPY content ./content
+RUN pip install --no-cache-dir .
 
-COPY . .
-
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--app-dir", "/app/src", "--host", "0.0.0.0", "--port", "8000"]

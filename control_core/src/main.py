@@ -2,7 +2,7 @@ from pathlib import Path
 import json
 from datetime import datetime, timezone
 import random
-from typing import Annotated
+from typing import Annotated, Any
 
 import yaml
 from pydantic import BaseModel
@@ -42,11 +42,12 @@ app.include_router(gallery_router)
 app.include_router(map_router)
 app.include_router(login_router)
 app.include_router(admin_router)
-app.add_exception_handler(ServerNotFoundError, server_not_found)
+# app.add_exception_handler(ServerNotFoundError, server_not_found)
 
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+SRC_DIR = Path(__file__).resolve().parent
+app.mount("/static", StaticFiles(directory=SRC_DIR / "static"), name="static")
+templates = Jinja2Templates(directory=SRC_DIR / "templates")
 
 
 @app.get('/api/feed', status_code=200)
@@ -131,3 +132,51 @@ def carousel(page: str | None = None):
         "success": True,
         "data": response
     }
+
+
+
+
+from fastapi import APIRouter, Body, HTTPException, Request
+
+router = APIRouter(
+    prefix='/control-core',
+    tags=['control-core'],
+)
+
+"""
+POST /control-core/register
+POST /control-core/files
+PATCH /control-core/files
+POST /control-core/files/deleted
+"""
+
+
+
+def log_reporter_payload(payload: Any, endpoint: str) -> None:
+    serialized = json.dumps(payload, default=str)
+    logger.info("Reporter payload received: endpoint=%s bytes=%d payload=%s", endpoint, len(serialized.encode("utf-8")), serialized)
+
+
+@router.post('/register', status_code=204)
+def register_reporter(payload: Any = Body(default=None)):
+    log_reporter_payload(payload, "/control-core/register")
+
+
+@router.post('/files', status_code=204)
+def receive_reporter_file(payload: Any = Body(default=None)):
+    log_reporter_payload(payload, "/control-core/files")
+
+
+@router.patch('/files', status_code=204)
+def patch_reporter_file(payload: Any = Body(default=None)):
+    log_reporter_payload(payload, "/control-core/files")
+
+
+app.include_router(router)
+
+# @router.delete('/files', status_code=204)
+# def register_reporter():
+#     return {
+#         "success": True,
+#         "data": None
+#     }

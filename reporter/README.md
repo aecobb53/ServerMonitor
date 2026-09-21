@@ -6,7 +6,7 @@ The Reporter watches the shared Collector storage and sends complete JSON state 
 
 Required environment variables:
 
-- `CONTROL_CORE_URL`: Control Core base URL reachable from the agent container.
+- `CONTROL_CORE_URL`: Control Core base URL reachable from the Reporter container.
 - `CONTROL_CORE_KEY`: Bearer credential for Reporter requests.
 
 Optional environment variables:
@@ -22,7 +22,7 @@ The Reporter starts watching files immediately and retries Control Core registra
 
 ### File handling
 
-- Existing UUID-named files under `servers/` are uploaded when the agent starts.
+- Existing UUID-named files under `servers/` are uploaded when the Reporter starts.
 - Collector temporary files, `.reporter_uid`, and unrelated JSON files are ignored.
 - Collector atomic renames are handled as updates to the destination file.
 - Updates are serialized per relative path so rapid filesystem events do not upload concurrently.

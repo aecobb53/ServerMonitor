@@ -19,7 +19,7 @@ class WatchHandler(FileSystemEventHandler):
         reporter: Reporter,
         loop: asyncio.AbstractEventLoop,
     ):
-        self.storage = storage
+        self.storage = Path(storage)
         self.reporter = reporter
         self.loop = loop
         self._locks = {}
@@ -89,6 +89,7 @@ def start_watcher(
     reporter: Reporter,
     loop: asyncio.AbstractEventLoop,
 ) -> Observer:
+    storage = Path(storage)
     handler = WatchHandler(storage, reporter, loop)
 
     observer = Observer()
