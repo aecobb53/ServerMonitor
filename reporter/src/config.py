@@ -5,7 +5,7 @@ from importlib.metadata import PackageNotFoundError, version
 
 def _project_version() -> str:
     try:
-        return version("server-manager-agent")
+        return version("server-manager-reporter")
     except PackageNotFoundError:
         return "0.1.0"
 
@@ -25,6 +25,8 @@ class Config:
     control_core_key: str
     callback_url: str | None
     reconcile_seconds: int
+    retry_initial_seconds: float
+    retry_max_seconds: float
     log_level: str
 
 
@@ -49,5 +51,7 @@ def load_config() -> Config:
             60,
             1,
         ),
+        retry_initial_seconds=float(os.getenv("REPORTER_RETRY_INITIAL_SECONDS", "1")),
+        retry_max_seconds=float(os.getenv("REPORTER_RETRY_MAX_SECONDS", "60")),
         log_level=os.getenv("SERVER_MONITOR_LOG_LEVEL", "INFO").upper(),
     )

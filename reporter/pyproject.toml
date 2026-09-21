@@ -1,5 +1,5 @@
 [project]
-name = "server-manager-agent"
+name = "server-manager-reporter"
 version = "0.1.0"
 requires-python = ">=3.12"
 
@@ -16,4 +16,4 @@ dev = [
 ]
 
 [project.scripts]
-server-manager-agent = "agent.main:app"
+server-manager-reporter = "src.main:app"

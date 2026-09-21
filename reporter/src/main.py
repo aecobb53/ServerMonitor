@@ -4,40 +4,41 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from .agent import Agent
+from .reporter import Reporter
 from .config import load_config
 from .watcher import start_watcher
 
 config = load_config()
+logger = logging.getLogger(__name__)
 
 logging.basicConfig(
     level=config.log_level,
 )
 
-agent = Agent(config)
+reporter = Reporter(config)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await agent.register()
-
     loop = asyncio.get_running_loop()
-
     observer = start_watcher(
         storage=config.storage,
-        agent=agent,
+        reporter=reporter,
         loop=loop,
     )
+    registration = asyncio.create_task(reporter.register_forever())
+    logger.info("Reporter started: storage=%s", config.storage)
 
     try:
         yield
     finally:
+        registration.cancel()
         observer.stop()
         observer.join()
 
 
 app = FastAPI(
-    title="Server Manager Agent",
+    title="Server Manager Reporter",
     version=config.version,
     lifespan=lifespan,
 )
@@ -47,7 +48,7 @@ app = FastAPI(
 async def health():
     return {
         "status": "ok",
-        "agent_uid": agent.uid,
+        "reporter_uid": reporter.uid,
         "version": config.version,
     }
 

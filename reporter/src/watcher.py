@@ -1,30 +1,35 @@
 import asyncio
 import logging
+import re
 from pathlib import Path
 
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
-from .agent import Agent
+from .reporter import Reporter
 
 logger = logging.getLogger(__name__)
+STATE_FILE = re.compile(r"^servers/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.json$")
 
 
 class WatchHandler(FileSystemEventHandler):
     def __init__(
         self,
         storage: Path,
-        agent: Agent,
+        reporter: Reporter,
         loop: asyncio.AbstractEventLoop,
     ):
         self.storage = storage
-        self.agent = agent
+        self.reporter = reporter
         self.loop = loop
         self._locks = {}
 
     def _is_state_file(self, path: str) -> bool:
-        file_path = Path(path)
-        return file_path.suffix == ".json" and not file_path.name.startswith(".")
+        try:
+            relative = self._relative(path)
+        except ValueError:
+            return False
+        return bool(STATE_FILE.fullmatch(relative))
 
     def _relative(self, path: str) -> str:
         return str(Path(path).relative_to(self.storage))
@@ -46,7 +51,7 @@ class WatchHandler(FileSystemEventHandler):
             relative = self._relative(event.src_path)
 
             asyncio.run_coroutine_threadsafe(
-                self.agent.send_delete(relative),
+                self.reporter.send_delete(relative),
                 self.loop,
             )
 
@@ -64,11 +69,15 @@ class WatchHandler(FileSystemEventHandler):
             self._send_update(lock, file_path, relative, modified_time),
             self.loop,
         )
+        logger.debug("Scheduled state upload: path=%s", relative)
 
     async def _send_update(self, lock, path: Path, relative: str, modified_time: float):
         async with lock:
             if path.exists():
-                await self.agent.send_file(path, relative, modified_time)
+                try:
+                    await self.reporter.send_file(path, relative, modified_time)
+                except Exception:
+                    logger.exception("State upload failed: path=%s", relative)
 
     def sync_existing_files(self):
         for path in self.storage.rglob("*.json"):
@@ -77,14 +86,15 @@ class WatchHandler(FileSystemEventHandler):
 
 def start_watcher(
     storage: Path,
-    agent: Agent,
+    reporter: Reporter,
     loop: asyncio.AbstractEventLoop,
 ) -> Observer:
-    handler = WatchHandler(storage, agent, loop)
+    handler = WatchHandler(storage, reporter, loop)
 
     observer = Observer()
     observer.schedule(handler, str(storage), recursive=True)
     observer.start()
     handler.sync_existing_files()
+    logger.info("Watching collector state files: storage=%s", storage)
 
     return observer
