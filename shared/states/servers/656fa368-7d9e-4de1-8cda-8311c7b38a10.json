@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "server_name": "Hellheim",
+  "game_name": "Valheim",
+  "parser": {
+    "name": "valheim",
+    "version": "1.0.0"
+  },
+  "container": {
+    "id": "10c531ace5e66d2b9bb909cf17981cb242cc9320e97baadccd88d79b76ea8bec",
+    "name": "friendly-neighborhood-valheim-server-hellheim-1",
+    "status": "running",
+    "started_at": "2026-09-19T19:14:09.356841849Z"
+  },
+  "health": {
+    "status": "ONLINE",
+    "message": "Server is Running and Connected to Master Server",
+    "updated_at": "2026-09-22T22:43:21.937448000Z",
+    "confidence": "high"
+  },
+  "latest_status": {
+    "status": "ONLINE",
+    "message": "Server is Running and Connected to Master Server",
+    "line": "2026-09-22T22:43:21.937448000Z 2026-09-22T22:43:21.937168Z  INFO odin::commands::logs: [valheim_server.log]: 09/22/2026 22:43:21: Game server connected",
+    "timestamp": "2026-09-22T22:43:21.937448000Z",
+    "source": "log_parser",
+    "parser_name": "valheim",
+    "parser_version": "1.0.0"
+  },
+  "history": [
+    {
+      "status": "UPDATING",
+      "message": "Registering Server Lobby with Valheim Master Server",
+      "line": "2026-09-19T20:03:33.525396054Z 2026-09-19T20:03:33.525166Z  INFO odin::commands::logs: [valheim_server.log]: 09/19/2026 20:03:33: Registering lobby",
+      "timestamp": "2026-09-19T20:03:33.525396054Z",
+      "source": "log_parser",
+      "parser_name": "valheim",
+      "parser_version": "1.0.0"
+    },
+    {
+      "status": "ONLINE",
+      "message": "Server is Running and Connected to Master Server",
+      "line": "2026-09-22T22:43:21.937448000Z 2026-09-22T22:43:21.937168Z  INFO odin::commands::logs: [valheim_server.log]: 09/22/2026 22:43:21: Game server connected",
+      "timestamp": "2026-09-22T22:43:21.937448000Z",
+      "source": "log_parser",
+      "parser_name": "valheim",
+      "parser_version": "1.0.0"
+    }
+  ],
+  "errors": [],
+  "collector": {
+    "collector_version": "0.1.0",
+    "updated_at": "2026-09-23T20:48:01.204138Z",
+    "last_reconciled_at": "2026-09-23T20:47:29.219684Z",
+    "last_log_at": "2026-09-22T22:43:21.937448000Z",
+    "history_dropped": 0,
+    "errors_dropped": 0
+  }
+}
