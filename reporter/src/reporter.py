@@ -35,7 +35,7 @@ class Reporter:
         }
 
         headers = {
-            "Authorization": f"Bearer {self.config.control_core_key}",
+            "reporter_key": f"{self.config.control_core_key}",
         }
 
         await self._request("POST", "/control-core/register", payload, timeout=10)
@@ -84,7 +84,7 @@ class Reporter:
 
     async def _request(self, method: str, endpoint: str, payload: dict, timeout: float = 30) -> None:
         headers = {
-            "Authorization": f"Bearer {self.config.control_core_key}",
+            "reporter_key": f"{self.config.control_core_key}",
         }
 
         delay = self.config.retry_initial_seconds
@@ -109,3 +109,21 @@ class Reporter:
                 logger.warning("Control Core request failed for %s: %s; retrying in %.1fs", endpoint, error, delay)
             await asyncio.sleep(delay)
             delay = min(delay * 2, self.config.retry_max_seconds)
+
+
+class ReporterV2:
+    def __init__(self, config: Config):
+        self.config = config
+        self.uid = self._load_uid()
+
+    def _load_uid(self) -> str:
+        path = Path(self.config.storage) / ".reporter_uid"
+
+        if path.exists():
+            return path.read_text().strip()
+
+        uid = str(uuid.uuid4())
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(uid)
+
+        return uid

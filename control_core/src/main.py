@@ -24,13 +24,13 @@ DATA_DIR = Path("/app/storage")
 SERVERS_DIR = Path("/app/servers")
 
 from common.exceptions import ServerNotFoundError
-
 from routes.servers.route import router as service_router
 from routes.requests.route import router as requests_router
 from routes.events.route import router as event_router
 from routes.polls.route import router as polls_router
 from routes.gallery.route import gallery_router, map_router
 from routes.admin.route import admin_router, login_router
+from routes.control_core.route import router as control_core_router
 from core.exception_handler import server_not_found
 from common.utils import CONTENT_DIR
 
@@ -42,6 +42,7 @@ app.include_router(gallery_router)
 app.include_router(map_router)
 app.include_router(login_router)
 app.include_router(admin_router)
+app.include_router(control_core_router)
 # app.add_exception_handler(ServerNotFoundError, server_not_found)
 
 
@@ -136,47 +137,47 @@ def carousel(page: str | None = None):
 
 
 
-from fastapi import APIRouter, Body, HTTPException, Request
+# from fastapi import APIRouter, Body, HTTPException, Request
 
-router = APIRouter(
-    prefix='/control-core',
-    tags=['control-core'],
-)
+# router = APIRouter(
+#     prefix='/control-core',
+#     tags=['control-core'],
+# )
 
-"""
-POST /control-core/register
-POST /control-core/files
-PATCH /control-core/files
-POST /control-core/files/deleted
-"""
-
-
-
-def log_reporter_payload(payload: Any, endpoint: str) -> None:
-    serialized = json.dumps(payload, default=str)
-    logger.info("Reporter payload received: endpoint=%s bytes=%d payload=%s", endpoint, len(serialized.encode("utf-8")), serialized)
+# """
+# POST /control-core/register
+# POST /control-core/files
+# PATCH /control-core/files
+# POST /control-core/files/deleted
+# """
 
 
-@router.post('/register', status_code=204)
-def register_reporter(payload: Any = Body(default=None)):
-    log_reporter_payload(payload, "/control-core/register")
+
+# def log_reporter_payload(payload: Any, endpoint: str) -> None:
+#     serialized = json.dumps(payload, default=str)
+#     logger.info("Reporter payload received: endpoint=%s bytes=%d payload=%s", endpoint, len(serialized.encode("utf-8")), serialized)
 
 
-@router.post('/files', status_code=204)
-def receive_reporter_file(payload: Any = Body(default=None)):
-    log_reporter_payload(payload, "/control-core/files")
+# @router.post('/register', status_code=204)
+# def register_reporter(payload: Any = Body(default=None)):
+#     log_reporter_payload(payload, "/control-core/register")
 
 
-@router.patch('/files', status_code=204)
-def patch_reporter_file(payload: Any = Body(default=None)):
-    log_reporter_payload(payload, "/control-core/files")
+# @router.post('/files', status_code=204)
+# def receive_reporter_file(payload: Any = Body(default=None)):
+#     log_reporter_payload(payload, "/control-core/files")
 
 
-app.include_router(router)
+# @router.patch('/files', status_code=204)
+# def patch_reporter_file(payload: Any = Body(default=None)):
+#     log_reporter_payload(payload, "/control-core/files")
 
-# @router.delete('/files', status_code=204)
-# def register_reporter():
-#     return {
-#         "success": True,
-#         "data": None
-#     }
+
+# app.include_router(router)
+
+# # @router.delete('/files', status_code=204)
+# # def register_reporter():
+# #     return {
+# #         "success": True,
+# #         "data": None
+# #     }

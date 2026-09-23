@@ -1,0 +1,77 @@
+services:
+  collector:
+    build: ./collector
+    container_name: Collector
+    environment:
+      SERVER_MONITOR_STORAGE: /app/storage
+      SERVER_MONITOR_RECONCILE_SECONDS: "60"
+      SERVER_MONITOR_LOG_TAIL: "10000"
+      SERVER_MONITOR_MAX_HISTORY: "500"
+      SERVER_MONITOR_MAX_ERRORS: "100"
+    volumes:
+      - ./shared/states:/app/storage
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  reporter:
+    build: ./reporter
+    container_name: Reporter
+    environment:
+      SERVER_MONITOR_STORAGE: /app/storage
+      CONTROL_CORE_URL: https://server-monitor-v2.nax.lol
+      CONTROL_CORE_KEY: example_key
+      SERVER_MONITOR_CALLBACK_URL: example_callback
+      REPORTER_RETRY_INITIAL_SECONDS: "1"
+      REPORTER_RETRY_MAX_SECONDS: "60"
+    volumes:
+      - ./shared/states:/app/storage
+
+  control-core:
+    build: ./control_core
+    container_name: ControlCore
+    # env_file:
+    #   - .env
+    volumes:
+      - ./shared/states:/app/storage:ro
+      - ./control_core/content:/app/content
+      # - ./tmp_images:/app/images
+      - /srv2t/server_monitor:/app/images
+    ports:
+      - "8210:8000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.control_core.rule=Host(`server-monitor-v2.nax.lol`)"
+      - "traefik.http.routers.control_core.entrypoints=websecure"
+      - "traefik.http.routers.control_core.tls.certresolver=myresolver"
+
+  # api:
+  #   build: ./api
+  #   container_name: GameServerMonitorAPI
+  #   depends_on:
+  #     - monitor
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     - ./shared/states:/app/storage:ro
+  #     - ./api/content:/app/content
+  #     # - ./tmp_images:/app/images
+  #     - /srv2t/server_monitor:/app/images
+  #   ports:
+  #     - "8208:8000"
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.server_monitor.rule=Host(`server-monitor.nax.lol`)"
+  #     - "traefik.http.routers.server_monitor.entrypoints=websecure"
+  #     - "traefik.http.routers.server_monitor.tls.certresolver=myresolver"
+  # ui:
+  #   build: ./ui
+  #   container_name: GameServerMonitorUI
+  #   depends_on:
+  #     - api
+  #   ports:
+  #     - "8209:80"
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.server_monitor_ui.rule=Host(`server-monitor-ui.nax.lol`)"
+  #     - "traefik.http.routers.server_monitor_ui.entrypoints=websecure"
+  #     - "traefik.http.routers.server_monitor_ui.tls.certresolver=myresolver"
+
