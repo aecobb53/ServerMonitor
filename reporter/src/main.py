@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from .reporter import Reporter
+from .reporter import ReporterV2
 from .config import load_config
 from .watcher import start_watcher
 
@@ -15,7 +15,7 @@ logging.basicConfig(
     level=config.log_level,
 )
 
-reporter = Reporter(config)
+reporter = ReporterV2(config)
 
 
 @asynccontextmanager
@@ -26,19 +26,19 @@ async def lifespan(app: FastAPI):
         reporter=reporter,
         loop=loop,
     )
-    registration = asyncio.create_task(reporter.register_forever())
-    logger.info("Reporter started: storage=%s", config.storage)
+    # registration = asyncio.create_task(reporter.register_forever())
+    logger.info("ReporterV2 started: storage=%s", config.storage)
 
     try:
         yield
     finally:
-        registration.cancel()
+        # registration.cancel()
         observer.stop()
         observer.join()
 
 
 app = FastAPI(
-    title="Server Manager Reporter",
+    title="Server Manager ReporterV2",
     version=config.version,
     lifespan=lifespan,
 )

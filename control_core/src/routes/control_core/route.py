@@ -46,11 +46,12 @@ def log_reporter_payload(payload: Any, endpoint: str) -> None:
 
 
 @router.post('/register', status_code=201)
+# @router.post('/register', status_code=401)
 def register_reporter(
+    response: Response,
     registration: RegisterRequest,
     server_password: str = Header(..., ),
     reporter_key: str = Header(..., ),
-    response: str = Response,
     ):
     print('')
     print('')
@@ -85,7 +86,10 @@ def register_reporter(
     }
 
 @router.post('/files', status_code=200)
-def receive_reporter_file(report: ServerUpdatePOST):
+def receive_reporter_file(
+    report: ServerUpdatePOST,
+    reporter_key: str = Header(..., ),
+    ):
     # Reporter sends an envelope; the server document lives in payload.content.
     # log_reporter_payload(payload.model_dump(), "/control-core/files")
     # ServerUpdate.model_validate_json(payload.content)
@@ -93,10 +97,15 @@ def receive_reporter_file(report: ServerUpdatePOST):
     print('')
     print('')
     print('POST FILE')
-    print(report)
+    print(f"REPORT: {report}")
+    print(f"KEY: {reporter_key}")
+    print(f"TEMP_TRACKED_REPORTERS: {TEMP_TRACKED_REPORTERS}")
     print('')
     print('')
     print('')
+    if reporter_key not in TEMP_TRACKED_REPORTERS:
+        logger.warning(f"Reporter {reporter_key} is not registered; rejecting file upload")
+        raise HTTPException(status_code=401, detail="Reporter not registered")
     return {
         "success": True,
         "data": "Received"

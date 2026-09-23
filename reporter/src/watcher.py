@@ -6,7 +6,7 @@ from pathlib import Path
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
-from .reporter import Reporter
+from .reporter import ReporterV2
 
 logger = logging.getLogger(__name__)
 STATE_FILE = re.compile(r"^servers/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.json$")
@@ -16,7 +16,7 @@ class WatchHandler(FileSystemEventHandler):
     def __init__(
         self,
         storage: Path,
-        reporter: Reporter,
+        reporter: ReporterV2,
         loop: asyncio.AbstractEventLoop,
     ):
         self.storage = Path(storage)
@@ -86,7 +86,7 @@ class WatchHandler(FileSystemEventHandler):
 
 def start_watcher(
     storage: Path,
-    reporter: Reporter,
+    reporter: ReporterV2,
     loop: asyncio.AbstractEventLoop,
 ) -> Observer:
     storage = Path(storage)
