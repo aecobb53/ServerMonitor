@@ -69,6 +69,7 @@ class StateStore:
                 "schema_version": 1,
                 "server_name": server_name,
                 "game_name": parser.game_name,
+                "record_datetime": datetime.now(),
                 "parser": {"name": parser.name, "version": parser.version},
                 "container": {"id": None, "name": None, "status": "unknown", "started_at": None},
                 "health": {"status": "UNKNOWN", "message": "No server status observed", "updated_at": now(), "confidence": "low"},

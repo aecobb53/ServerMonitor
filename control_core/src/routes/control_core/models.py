@@ -6,17 +6,6 @@ from common.models import VersionModel
 
 # Requests
 
-"""
-        payload = {
-            "reporter_uid": self.uid,
-            "version": self.config.version,
-            "callback_url": self.config.callback_url,
-        }
-
-        headers = {
-            "Authorization": f"Bearer {self.config.control_core_key}",
-        }
-"""
 class RegisterRequest(BaseModel):
     reporter_uid: str
     version: VersionModel | str
@@ -79,6 +68,7 @@ class ServerUpdatePOST(BaseModel):
     schema_version: float | int
     server_name: str
     game_name: str
+    record_datetime: datetime
 
     parser: ParserModel
     container: ContainerModel
@@ -93,6 +83,7 @@ class ServerUpdatePUT(BaseModel):
     schema_version: float | int
     server_name: str
     game_name: str
+    record_datetime: datetime
 
     parser: ParserModel | None = None
     container: ContainerModel | None = None

@@ -165,6 +165,7 @@ class TrackedContainer:
             })
         def update(state):
             state["game_name"] = self.parser.game_name
+            state["record_datetime"] = datetime.now()
             state["parser"] = {"name": self.parser.name, "version": self.parser.version}
             state["container"] = {
                 "id": self.container.id,

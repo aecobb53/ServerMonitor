@@ -24,11 +24,13 @@ from .models import (
     RegisterRequest,
     ReporterFilePayload,
 )
+from .handler import TrackedReporters
 
 router = APIRouter(
     prefix='/control-core',
     tags=['control-core'],
 )
+tracked_reporters = TrackedReporters()
 
 """
 POST /control-core/register
@@ -46,7 +48,6 @@ def log_reporter_payload(payload: Any, endpoint: str) -> None:
 
 
 @router.post('/register', status_code=201)
-# @router.post('/register', status_code=401)
 def register_reporter(
     response: Response,
     registration: RegisterRequest,
@@ -67,13 +68,22 @@ def register_reporter(
     # TODO Verify the header has the correct password (not the registration key)
     if server_password != TEMP_SERVER_PASSWORD:
         print(f"SERVER PASSWORD DOES NOT MATCH")
-        response.status_code = status.HTTP_404_NOT_FOUND
+        response.status_code = status.HTTP_401_UNAUTHORIZED
         return
 
     print('')
 
+    # TODO: Add logging that logs the connection details
+    # TODO: Add a timeout where after an amount of time, delete a tracked reporter and force clients to re-register
+
     # TODO actually track
-    TEMP_TRACKED_REPORTERS[reporter_key] = datetime.now()
+    TEMP_TRACKED_REPORTERS[reporter_key] = {
+        'update_datetime': datetime.now(),
+        'callback_url': registration.callback_url,
+    }
+    tracked_reporters.add_registered_reporter(
+        reporter_key=reporter_key,
+        registration=registration)
 
     print('')
     print('')
@@ -103,18 +113,43 @@ def receive_reporter_file(
     print('')
     print('')
     print('')
-    if reporter_key not in TEMP_TRACKED_REPORTERS:
+
+    # Need to make this for the new class as well
+    # if reporter_key not in TEMP_TRACKED_REPORTERS:
+    if reporter_key not in tracked_reporters:
         logger.warning(f"Reporter {reporter_key} is not registered; rejecting file upload")
         raise HTTPException(status_code=401, detail="Reporter not registered")
+
+    tracked_reporters.add_registered_reporter(
+        reporter_key=reporter_key,
+        report=report)
+
     return {
         "success": True,
         "data": "Received"
     }
 
-@router.patch('/files', status_code=204)
-def patch_reporter_file(report: ServerUpdatePUT):
+@router.patch('/files', status_code=200)
+def patch_reporter_file(
+    report: ServerUpdatePUT,
+    reporter_key: str = Header(..., ),
+    ):
     print(report)
+    # If the record is not tracked already, return a 404
 
+    # Need to make this for the new class as well
+    # if reporter_key not in TEMP_TRACKED_REPORTERS:
+    if reporter_key not in tracked_reporters:
+        logger.warning(f"Reporter {reporter_key} is not registered; rejecting file upload")
+        raise HTTPException(status_code=401, detail="Reporter not registered")
+
+    tracked_reporters.add_registered_reporter(
+        reporter_key=reporter_key,
+        report=report)
+    return {
+        "success": True,
+        "data": "Received"
+    }
 
 # app.include_router(router)
 
