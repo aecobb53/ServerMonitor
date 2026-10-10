@@ -1,28 +1,13 @@
-import os
-from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import HTMLResponse, ORJSONResponse
-from datetime import datetime, timezone
-import json
-from pathlib import Path
-
 import logging
 
-from common.exceptions import ServerNotFoundError
 logger = logging.getLogger(__name__)
 
-
-from common.models import ResponseObject
-
-from common.utils import DATA_DIR, SERVERS_DIR, parse_timestamp, find_servers, find_game_servers, find_specific_server, find_game_info
-from typing import Any
-
-from fastapi import APIRouter, Body, HTTPException, Request, Header, Response, status
+from fastapi import APIRouter, HTTPException, Header, Response, status
 
 from .models import (
     ServerUpdatePOST,
     ServerUpdatePUT,
     RegisterRequest,
-    ReporterFilePayload,
 )
 from .handler import TrackedReporters
 
@@ -39,12 +24,7 @@ PATCH /control-core/files
 POST /control-core/files/deleted
 """
 
-TEMP_TRACKED_REPORTERS = {}
 TEMP_SERVER_PASSWORD = 'Example'
-
-def log_reporter_payload(payload: Any, endpoint: str) -> None:
-    serialized = json.dumps(payload, default=str)
-    logger.info("Reporter payload received: endpoint=%s bytes=%d payload=%s", endpoint, len(serialized.encode("utf-8")), serialized)
 
 
 @router.post('/register', status_code=201)
@@ -61,10 +41,6 @@ def register_reporter(
         response.status_code = status.HTTP_401_UNAUTHORIZED
         return
 
-    TEMP_TRACKED_REPORTERS[reporter_key] = {
-        'update_datetime': datetime.now(),
-        'callback_url': registration.callback_url,
-    }
     if reporter_key in tracked_reporters:
         tracked_reporters.update_registered_reporter(
             reporter_key=reporter_key,
@@ -112,7 +88,7 @@ def patch_reporter_file(
         logger.warning(f"Reporter {reporter_key} is not registered; rejecting file upload")
         raise HTTPException(status_code=404, detail="Server not found")
 
-    if report.server_name not in tracked_reporters:
+    if not tracked_reporters.has_tracked_server(reporter_key, report.server_name):
         raise HTTPException(status_code=404, detail="Server not found")
 
     tracked_reporters.update_tracked_server(

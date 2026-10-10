@@ -8,13 +8,15 @@ from copy import deepcopy
 from pathlib import Path
 
 import uvicorn
+import httpx
 from fastapi import FastAPI, Request
 
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "reporter"), str(ROOT / "control_core" / "src")]
 
-from routes.control_core.route import TEMP_TRACKED_REPORTERS, router, tracked_reporters
+from routes.control_core.route import router, tracked_reporters
+from routes.control_core.models import ErrorEntryModel, HistoryEntryModel
 from src.config import Config
 from src.reporter import Reporter
 
@@ -48,7 +50,6 @@ def test_reporter_registers_posts_and_patches_collector_state(tmp_path):
     original_limits = tracked_reporters.max_history, tracked_reporters.max_errors
     tracked_reporters.max_history = 2
     tracked_reporters.max_errors = 1
-    TEMP_TRACKED_REPORTERS.clear()
     thread.start()
     deadline = time.monotonic() + 5
     while not server.started and time.monotonic() < deadline:
@@ -117,14 +118,33 @@ def test_reporter_registers_posts_and_patches_collector_state(tmp_path):
 
         stored = tracked_reporters.tracked_reporters[reporter.uid]["servers"]["Hellheim"]["details"]
         assert stored.health.message == "Integration test update"
-        assert stored.history == updated["history"][-2:]
-        assert stored.errors == updated["errors"]
+        assert [entry.model_dump(mode="json") for entry in stored.history] == [
+            HistoryEntryModel.model_validate(entry).model_dump(mode="json")
+            for entry in updated["history"][-2:]
+        ]
+        assert [entry.model_dump(mode="json") for entry in stored.errors] == [
+            ErrorEntryModel.model_validate(entry).model_dump(mode="json")
+            for entry in updated["errors"]
+        ]
+
+        other_headers = {"reporter-key": "other-reporter", "server-password": "Example"}
+        response = httpx.post(
+            f"http://127.0.0.1:{port}/control-core/register",
+            headers=other_headers,
+            json={"reporter_uid": "other-reporter", "version": "0.1.0", "callback_url": None},
+        )
+        assert response.status_code == 201
+        response = httpx.patch(
+            f"http://127.0.0.1:{port}/control-core/files",
+            headers={"reporter-key": "other-reporter"},
+            json=requests[3]["body"],
+        )
+        assert response.status_code == 404
     finally:
         server.should_exit = True
         thread.join(timeout=5)
         tracked_reporters.tracked_reporters.clear()
         tracked_reporters.max_history, tracked_reporters.max_errors = original_limits
-        TEMP_TRACKED_REPORTERS.clear()
 
 
 def test_reporter_handles_unavailable_control_core(tmp_path, caplog):

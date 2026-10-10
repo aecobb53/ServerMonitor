@@ -50,6 +50,10 @@ class TrackedReporters:
             'updated': now,
             'details': report,
         }
+        self.tracked_reporters[reporter_key]['updated_at'] = now
+
+    def has_tracked_server(self, reporter_key: str, server_name: str) -> bool:
+        return server_name in self.tracked_reporters.get(reporter_key, {}).get('servers', {})
 
     def update_registered_reporter(
         self,
@@ -79,7 +83,9 @@ class TrackedReporters:
             del state['errors'][:-self.max_errors]
         state.update(update)
         server['details'] = ServerUpdatePOST.model_validate(state)
-        server['updated'] = datetime.now(timezone.utc)
+        now = datetime.now(timezone.utc)
+        server['updated'] = now
+        self.tracked_reporters[reporter_key]['updated_at'] = now
 
     def remove_registered_reporter(self, reporter_key: str):
         del self.tracked_reporters[reporter_key]

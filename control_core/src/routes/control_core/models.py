@@ -44,15 +44,28 @@ class LatestStatusModel(BaseModel):
     line: str
     timestamp: datetime
     source: str
+    parser_name: str | None = None
     parser_version: VersionModel | str
 
 
-# class HistoryModel(BaseModel):
-#     pass
+class HistoryEntryModel(BaseModel):
+    status: str
+    message: str
+    line: str | None
+    timestamp: datetime
+    source: str
+    parser_name: str | None = None
+    parser_version: VersionModel | str | None = None
 
 
-# class ErrorsModel(BaseModel):
-#     pass
+class ErrorEntryModel(BaseModel):
+    type: str
+    message: str
+    line: str | None = None
+    timestamp: datetime
+    source: str
+    parser_name: str | None = None
+    parser_version: VersionModel | str | None = None
 
 
 class CollectorModel(BaseModel):
@@ -74,8 +87,8 @@ class ServerUpdatePOST(BaseModel):
     container: ContainerModel
     health: HealthModel
     latest_status: LatestStatusModel
-    history: list
-    errors: list
+    history: list[HistoryEntryModel]
+    errors: list[ErrorEntryModel]
     collector: CollectorModel
 
 
@@ -89,8 +102,8 @@ class ServerUpdatePUT(BaseModel):
     container: ContainerModel | None = None
     health: HealthModel | None = None
     latest_status: LatestStatusModel | None = None
-    history: list | None = None
-    errors: list | None = None
+    history: list[HistoryEntryModel] | None = None
+    errors: list[ErrorEntryModel] | None = None
     collector: CollectorModel | None = None
 
 # Responses
