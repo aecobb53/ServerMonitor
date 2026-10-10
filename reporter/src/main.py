@@ -27,7 +27,7 @@ async def lifespan(app: FastAPI):
         loop=loop,
     )
     # registration = asyncio.create_task(reporter.register_forever())
-    logger.info("Reporter started: storage=%s", config.storage)
+    logger.info(f"Reporter started: storage={config.storage}")
 
     try:
         yield

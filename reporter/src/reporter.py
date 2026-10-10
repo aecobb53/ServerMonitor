@@ -54,12 +54,12 @@ class Reporter:
                     )
                 if response.status_code < 500:
                     return response
-                logger.warning("Control Core returned %s for %s; retrying in %ss", response.status_code, endpoint, delay)
+                logger.warning(f"Control Core returned {response.status_code} for {endpoint}; retrying in {delay}s")
             except (httpx.RequestError, OSError) as error:
-                logger.warning("Control Core request failed for %s: %s; retrying in %ss", endpoint, error, delay)
+                logger.warning(f"Control Core request failed for {endpoint}: {error}; retrying in {delay}s")
             await asyncio.sleep(delay)
             delay = min(delay * 2, self.config.retry_max_seconds)
-        logger.error("Control Core request exhausted retries: endpoint=%s", endpoint)
+        logger.error(f"Control Core request exhausted retries: endpoint={endpoint}")
         return None
 
     async def register(self) -> None:
@@ -81,10 +81,10 @@ class Reporter:
             payload=payload,
             headers=headers)
         if resp and resp.status_code == 201:
-            logger.info("Reporter registered: uid=%s", self.uid)
+            logger.info(f"Reporter registered: uid={self.uid}")
         else:
             status_code = resp.status_code if resp else "unavailable"
-            logger.warning("Reporter registration failed: status=%s", status_code)
+            logger.warning(f"Reporter registration failed: status={status_code}")
         return resp
 
     async def send_file(
@@ -133,11 +133,11 @@ class Reporter:
 
         if resp is None or not 200 <= resp.status_code < 300:
             status_code = resp.status_code if resp else "unavailable"
-            logger.warning("State upload failed: path=%s status=%s", relative_path, status_code)
+            logger.warning(f"State upload failed: path={relative_path} status={status_code}")
             return
 
         self.previous_data_object[persisted_key] = data
-        logger.info("Uploaded state file: path=%s", relative_path)
+        logger.info(f"Uploaded state file: path={relative_path}")
 
     def construct_payload_diff(self, payload: dict, persisted_key: str) -> dict:
         previous_data = self.previous_data_object[persisted_key]

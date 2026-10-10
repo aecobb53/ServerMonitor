@@ -59,7 +59,7 @@ class WatchHandler(FileSystemEventHandler):
             self._send_update(lock, file_path, relative),
             self.loop,
         )
-        logger.debug("Scheduled state upload: path=%s", relative)
+        logger.debug(f"Scheduled state upload: path={relative}")
 
     async def _send_update(self, lock, path: Path, relative: str):
         async with lock:
@@ -67,7 +67,7 @@ class WatchHandler(FileSystemEventHandler):
                 try:
                     await self.reporter.send_file(path, relative)
                 except Exception:
-                    logger.exception("State upload failed: path=%s", relative)
+                    logger.exception(f"State upload failed: path={relative}")
 
     def sync_existing_files(self):
         for path in self.storage.rglob("*.json"):
@@ -86,6 +86,6 @@ def start_watcher(
     observer.schedule(handler, str(storage), recursive=True)
     observer.start()
     handler.sync_existing_files()
-    logger.info("Watching collector state files: storage=%s", storage)
+    logger.info(f"Watching collector state files: storage={storage}")
 
     return observer
