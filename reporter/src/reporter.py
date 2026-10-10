@@ -216,7 +216,7 @@ class ReporterV2:
                 method="POST",
                 endpoint="/control-core/files",
                 payload=data)
-            if resp and resp.status_code in {400, 401, 403, 404}:
+            if resp and resp.status_code == 404:
                 registration_response = await self.register()
                 if registration_response and registration_response.status_code == 201:
                     resp = await self.request(
@@ -229,7 +229,7 @@ class ReporterV2:
                 method="PATCH",
                 endpoint="/control-core/files",
                 payload=diff_data)
-            if resp and resp.status_code in {400, 401, 403, 404}:
+            if resp and resp.status_code == 404:
                 registration_response = await self.register()
                 if registration_response and registration_response.status_code == 201:
                     resp = await self.request(
@@ -265,7 +265,17 @@ class ReporterV2:
             key: payload[key]
             for key in ("schema_version", "server_name", "game_name", "record_datetime")
         }
-        for key in ("parser", "container", "health", "latest_status", "history", "errors", "collector"):
+        for key in ("parser", "container", "health", "latest_status", "collector"):
             if payload.get(key) != previous_data.get(key):
                 diff_payload[key] = deepcopy(payload.get(key))
+
+        for key in ("history", "errors"):
+            previous_entries = previous_data.get(key, [])
+            unsent_entries = []
+            for entry in reversed(payload.get(key, [])):
+                if entry in previous_entries:
+                    break
+                unsent_entries.append(entry)
+            if unsent_entries:
+                diff_payload[key] = deepcopy(list(reversed(unsent_entries)))
         return diff_payload

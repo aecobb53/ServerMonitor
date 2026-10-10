@@ -45,6 +45,9 @@ def test_reporter_registers_posts_and_patches_collector_state(tmp_path):
     server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=port, log_level="warning"))
     thread = threading.Thread(target=server.run, daemon=True)
     tracked_reporters.tracked_reporters.clear()
+    original_limits = tracked_reporters.max_history, tracked_reporters.max_errors
+    tracked_reporters.max_history = 2
+    tracked_reporters.max_errors = 1
     TEMP_TRACKED_REPORTERS.clear()
     thread.start()
     deadline = time.monotonic() + 5
@@ -73,6 +76,20 @@ def test_reporter_registers_posts_and_patches_collector_state(tmp_path):
 
         updated = deepcopy(fixture)
         updated["health"]["message"] = "Integration test update"
+        updated["history"].append({
+            **fixture["latest_status"],
+            "message": "Integration history update",
+            "timestamp": "2026-09-23T20:48:02.204138Z",
+        })
+        updated["errors"].append({
+            "type": "integration_test",
+            "message": "Integration error update",
+            "line": None,
+            "timestamp": "2026-09-23T20:48:02.204138Z",
+            "source": "collector",
+            "parser_name": "valheim",
+            "parser_version": "1.0.0",
+        })
         state_path.write_text(json.dumps(updated))
         asyncio.run(reporter.send_file(state_path, "servers/" + state_path.name, state_path.stat().st_mtime))
 
@@ -93,15 +110,19 @@ def test_reporter_registers_posts_and_patches_collector_state(tmp_path):
         assert all(request["headers"]["reporter-key"] == reporter.uid for request in requests)
         assert requests[1]["headers"]["server-password"] == "Example"
         assert set(requests[3]["body"]) == {
-            "schema_version", "server_name", "game_name", "record_datetime", "health",
+            "schema_version", "server_name", "game_name", "record_datetime", "health", "history", "errors",
         }
         assert requests[3]["body"]["health"] == updated["health"]
+        assert requests[3]["body"]["history"] == [updated["history"][-1]]
+        assert requests[3]["body"]["errors"] == updated["errors"]
 
         stored = tracked_reporters.tracked_reporters[reporter.uid]["servers"]["Hellheim"]["details"]
         assert stored.health.message == "Integration test update"
-        assert stored.history == fixture["history"]
+        assert stored.history == updated["history"][-2:]
+        assert stored.errors == updated["errors"]
     finally:
         server.should_exit = True
         thread.join(timeout=5)
         tracked_reporters.tracked_reporters.clear()
+        tracked_reporters.max_history, tracked_reporters.max_errors = original_limits
         TEMP_TRACKED_REPORTERS.clear()

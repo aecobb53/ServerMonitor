@@ -1,4 +1,5 @@
 import logging
+import os
 from datetime import datetime, timedelta, timezone
 
 from .models import RegisterRequest, ServerUpdatePOST, ServerUpdatePUT
@@ -15,6 +16,8 @@ Add the ability to get either the reporter object or a server object in one func
 class TrackedReporters:
     def __init__(self):
         self.tracked_reporters = {}
+        self.max_history = int(os.getenv("CONTROL_CORE_MAX_HISTORY", 500))
+        self.max_errors = int(os.getenv("CONTROL_CORE_MAX_ERRORS", 100))
 
     def __contains__(self, key: str):
         if key in self.tracked_reporters:
@@ -66,7 +69,15 @@ class TrackedReporters:
     ):
         server = self.tracked_reporters[reporter_key]['servers'][server_name]
         state = server['details'].model_dump(mode='python')
-        state.update(updated_report.model_dump(mode='python', exclude_unset=True))
+        update = updated_report.model_dump(mode='python', exclude_unset=True)
+        for key in ('history', 'errors'):
+            if key in update:
+                state[key].extend(update.pop(key))
+        if len(state['history']) > self.max_history:
+            del state['history'][:-self.max_history]
+        if len(state['errors']) > self.max_errors:
+            del state['errors'][:-self.max_errors]
+        state.update(update)
         server['details'] = ServerUpdatePOST.model_validate(state)
         server['updated'] = datetime.now(timezone.utc)
 
