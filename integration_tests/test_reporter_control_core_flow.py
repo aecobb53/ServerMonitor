@@ -126,3 +126,60 @@ def test_reporter_registers_posts_and_patches_collector_state(tmp_path):
         tracked_reporters.tracked_reporters.clear()
         tracked_reporters.max_history, tracked_reporters.max_errors = original_limits
         TEMP_TRACKED_REPORTERS.clear()
+
+
+def test_reporter_handles_unavailable_control_core(tmp_path, caplog):
+    fixture = json.loads((ROOT / "shared/fixtures/servers/generated_hellheim_state.json").read_text())
+    state_path = tmp_path / "servers" / "656fa368-7d9e-4de1-8cda-8311c7b38a10.json"
+    state_path.parent.mkdir()
+    state_path.write_text(json.dumps(fixture))
+    with socket.socket() as listener:
+        listener.bind(("127.0.0.1", 0))
+        port = listener.getsockname()[1]
+
+    reporter = ReporterV2(Config(
+        storage=str(tmp_path),
+        version="0.1.0",
+        control_core_url=f"http://127.0.0.1:{port}",
+        control_core_key="unused",
+        callback_url=None,
+        reconcile_seconds=60,
+        retry_initial_seconds=0,
+        retry_max_seconds=0,
+        log_level="WARNING",
+    ))
+
+    asyncio.run(reporter.send_file(state_path, "servers/" + state_path.name, state_path.stat().st_mtime))
+
+    assert state_path.name not in reporter.previous_data_object
+    assert "State upload failed" in caplog.text
+
+
+def test_reporter_history_diff_stops_at_last_sent_timestamp(tmp_path):
+    reporter = ReporterV2(Config(
+        storage=str(tmp_path),
+        version="0.1.0",
+        control_core_url="http://127.0.0.1:1",
+        control_core_key="unused",
+        callback_url=None,
+        reconcile_seconds=60,
+        retry_initial_seconds=0,
+        retry_max_seconds=0,
+        log_level="WARNING",
+    ))
+    previous = {
+        "schema_version": 1,
+        "server_name": "Hellheim",
+        "game_name": "Valheim",
+        "record_datetime": "2026-09-23T20:48:01Z",
+        "history": [{"timestamp": "2026-09-23T20:48:01Z", "message": "sent"}],
+        "errors": [],
+    }
+    reporter.previous_data_object["server.json"] = previous
+    current = deepcopy(previous)
+    current["history"][0]["message"] = "changed locally"
+    current["history"].append({"timestamp": "2026-09-23T20:48:02Z", "message": "new"})
+
+    diff = reporter.construct_payload_diff(current, "server.json")
+
+    assert diff["history"] == [current["history"][-1]]

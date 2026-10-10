@@ -271,9 +271,10 @@ class ReporterV2:
 
         for key in ("history", "errors"):
             previous_entries = previous_data.get(key, [])
+            last_sent_timestamp = previous_entries[-1].get("timestamp") if previous_entries else None
             unsent_entries = []
             for entry in reversed(payload.get(key, [])):
-                if entry in previous_entries:
+                if last_sent_timestamp and entry.get("timestamp") <= last_sent_timestamp:
                     break
                 unsent_entries.append(entry)
             if unsent_entries:
