@@ -1,50 +1,82 @@
-from datetime import datetime, timedelta
-from .models import RegisterRequest
+import logging
+from datetime import datetime, timedelta, timezone
 
+from .models import RegisterRequest, ServerUpdatePOST, ServerUpdatePUT
+
+REGISTERED_REPORTER_AGE_OFF_TIME_HOURS = 6
+REGISTERED_SERVER_AGE_OFF_TIME_HOURS = 6
+
+logger = logging.getLogger(__name__)
 
 class TrackedReporters:
     def __init__(self):
-        self.registered_reporters = {}  # {key: datetime} to know when to age off
-        self.tracked_servers = {}
+        self.tracked_reporters = {}
 
-    def __contains__(self, reporter_key: str):
-        return reporter_key in self.registered_reporters
+    def __contains__(self, key: str):
+        if key in self.tracked_reporters:
+            return True
+        return any(key in reporter['servers'] for reporter in self.tracked_reporters.values())
 
     def add_registered_reporter(
             self,
             reporter_key: str,
             registration: RegisterRequest):
-        self.registered_reporters[reporter_key] = {
-            'updated': datetime.now(),
+        now = datetime.now(timezone.utc)
+        self.tracked_reporters[reporter_key] = {
+            'registered_at': now,
+            'updated_at': now,
             'registration': registration,
+            'servers': {},
         }
-
-    def age_off_reporters(self):
-        for key, registration in self.registered_reporters.items():
-            if datetime.now() - registration['updated'] > timedelta(hours=6):
-                del self.registered_reporters[key]
-                # Break after deleting to avoid RuntimeError due to changing dict size during iteration
-                # Also this allows for staggering re-registration
-                del self.tracked_servers[key]
-                break
 
     def add_tracked_server(
         self,
         reporter_key: str,
-        report):
-        self.tracked_servers[reporter_key] = report
+        report: ServerUpdatePOST,
+    ):
+        server_name = report.server_name
+        if server_name in self:
+            raise ValueError(f"Server is already tracked: {server_name}")
+        now = datetime.now(timezone.utc)
+        self.tracked_reporters[reporter_key]['servers'][server_name] = {
+            'created_at': now,
+            'updated': now,
+            'details': report,
+        }
+
+    def update_registered_reporter(
+        self,
+        reporter_key: str,
+        updated_registration: RegisterRequest,
+    ):
+        if updated_registration != self.tracked_reporters[reporter_key]['registration']:
+            logger.info(f"Updating registration for reporter: {reporter_key}")
+            self.tracked_reporters[reporter_key]['registration'] = updated_registration
+        self.tracked_reporters[reporter_key]['updated_at'] = datetime.now(timezone.utc)
 
     def update_tracked_server(
         self,
         reporter_key: str,
-        updated_report):
-        for key, value in updated_report.items():
-            self.tracked_servers[reporter_key][key] = value
+        server_name: str,
+        updated_report: ServerUpdatePUT,
+    ):
+        self.tracked_reporters[reporter_key]['servers'][server_name]['details'] = updated_report
+        self.tracked_reporters[reporter_key]['servers'][server_name]['updated'] = datetime.now(timezone.utc)
 
-    def delete_tracked_server(self, reporter_key: str):
-        del self.tracked_servers[reporter_key]
+    def remove_registered_reporter(self, reporter_key: str):
+        del self.tracked_reporters[reporter_key]
 
+    def remove_server(self, reporter_key: str, server_name: str):
+        del self.tracked_reporters[reporter_key]['servers'][server_name]
 
-
-
-
+    def age_off_stale(self):
+        now = datetime.now(timezone.utc)
+        for reporter_key, reporter in list(self.tracked_reporters.items()):
+            if now - reporter['updated_at'] > timedelta(hours=REGISTERED_REPORTER_AGE_OFF_TIME_HOURS):
+                logger.info(f"Ageing off stale registered reporter: {reporter_key}")
+                del self.tracked_reporters[reporter_key]
+                continue
+            for server_name, server in list(reporter['servers'].items()):
+                if now - server['updated'] > timedelta(hours=REGISTERED_SERVER_AGE_OFF_TIME_HOURS):
+                    logger.info(f"Ageing off stale server: {server_name} from reporter: {reporter_key}")
+                    del reporter['servers'][server_name]

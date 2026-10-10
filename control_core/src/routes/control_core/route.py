@@ -54,16 +54,6 @@ def register_reporter(
     server_password: str = Header(..., ),
     reporter_key: str = Header(..., ),
     ):
-    print('')
-    print('')
-    print('')
-    print('')
-    print('')
-    print('')
-    print('REGISTRATION')
-    print(registration)
-    print(reporter_key)
-    print('')
 
     # TODO Verify the header has the correct password (not the registration key)
     if server_password != TEMP_SERVER_PASSWORD:
@@ -71,24 +61,20 @@ def register_reporter(
         response.status_code = status.HTTP_401_UNAUTHORIZED
         return
 
-    print('')
-
-    # TODO: Add logging that logs the connection details
-    # TODO: Add a timeout where after an amount of time, delete a tracked reporter and force clients to re-register
-
-    # TODO actually track
     TEMP_TRACKED_REPORTERS[reporter_key] = {
         'update_datetime': datetime.now(),
         'callback_url': registration.callback_url,
     }
-    tracked_reporters.add_registered_reporter(
-        reporter_key=reporter_key,
-        registration=registration)
-
-    print('')
-    print('')
-    print('')
-    print('')
+    if reporter_key in tracked_reporters:
+        tracked_reporters.update_registered_reporter(
+            reporter_key=reporter_key,
+            updated_registration=registration,
+        )
+    else:
+        tracked_reporters.add_registered_reporter(
+            reporter_key=reporter_key,
+            registration=registration,
+        )
 
     return {
         "success": True,
@@ -100,29 +86,17 @@ def receive_reporter_file(
     report: ServerUpdatePOST,
     reporter_key: str = Header(..., ),
     ):
-    # Reporter sends an envelope; the server document lives in payload.content.
-    # log_reporter_payload(payload.model_dump(), "/control-core/files")
-    # ServerUpdate.model_validate_json(payload.content)
-    # if not registered, should be rejected
-    print('')
-    print('')
-    print('POST FILE')
-    print(f"REPORT: {report}")
-    print(f"KEY: {reporter_key}")
-    print(f"TEMP_TRACKED_REPORTERS: {TEMP_TRACKED_REPORTERS}")
-    print('')
-    print('')
-    print('')
-
-    # Need to make this for the new class as well
-    # if reporter_key not in TEMP_TRACKED_REPORTERS:
     if reporter_key not in tracked_reporters:
         logger.warning(f"Reporter {reporter_key} is not registered; rejecting file upload")
-        raise HTTPException(status_code=401, detail="Reporter not registered")
+        raise HTTPException(status_code=404, detail="Server not found")
 
-    tracked_reporters.add_registered_reporter(
-        reporter_key=reporter_key,
-        report=report)
+    try:
+        tracked_reporters.add_tracked_server(
+            reporter_key=reporter_key,
+            report=report,
+        )
+    except ValueError as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
 
     return {
         "success": True,
@@ -134,18 +108,18 @@ def patch_reporter_file(
     report: ServerUpdatePUT,
     reporter_key: str = Header(..., ),
     ):
-    print(report)
-    # If the record is not tracked already, return a 404
-
-    # Need to make this for the new class as well
-    # if reporter_key not in TEMP_TRACKED_REPORTERS:
     if reporter_key not in tracked_reporters:
         logger.warning(f"Reporter {reporter_key} is not registered; rejecting file upload")
-        raise HTTPException(status_code=401, detail="Reporter not registered")
+        raise HTTPException(status_code=404, detail="Server not found")
 
-    tracked_reporters.add_registered_reporter(
+    if report.server_name not in tracked_reporters:
+        raise HTTPException(status_code=404, detail="Server not found")
+
+    tracked_reporters.update_tracked_server(
         reporter_key=reporter_key,
-        report=report)
+        server_name=report.server_name,
+        updated_report=report,
+    )
     return {
         "success": True,
         "data": "Received"

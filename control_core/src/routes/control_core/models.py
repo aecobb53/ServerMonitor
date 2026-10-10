@@ -58,8 +58,8 @@ class LatestStatusModel(BaseModel):
 class CollectorModel(BaseModel):
     collector_version: VersionModel | str
     updated_at: datetime
-    last_reconciled_at: datetime
-    last_log_at: datetime
+    last_reconciled_at: datetime | None
+    last_log_at: datetime | None
     history_dropped: int
     errors_dropped: int
 
