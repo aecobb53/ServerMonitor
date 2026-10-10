@@ -1,35 +1,22 @@
-import os
-from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import HTMLResponse, ORJSONResponse
-from datetime import datetime, timezone
-import json
-from pathlib import Path
-
 import logging
+import os
+import secrets
 
-from common.exceptions import ServerNotFoundError
 logger = logging.getLogger(__name__)
 
-
-from common.models import ResponseObject
-
-from common.utils import DATA_DIR, SERVERS_DIR, parse_timestamp, find_servers, find_game_servers, find_specific_server, find_game_info
-from typing import Any
-
-from fastapi import APIRouter, Body, HTTPException, Request, Header, Response, status
+from fastapi import APIRouter, HTTPException, Header
 
 from .models import (
     ServerUpdatePOST,
     ServerUpdatePUT,
     RegisterRequest,
-    ReporterFilePayload,
 )
+from .handler import tracked_reporters
 
 router = APIRouter(
     prefix='/control-core',
     tags=['control-core'],
 )
-
 """
 POST /control-core/register
 POST /control-core/files
@@ -37,48 +24,31 @@ PATCH /control-core/files
 POST /control-core/files/deleted
 """
 
-TEMP_TRACKED_REPORTERS = {}
-TEMP_SERVER_PASSWORD = 'Example'
-
-def log_reporter_payload(payload: Any, endpoint: str) -> None:
-    serialized = json.dumps(payload, default=str)
-    logger.info("Reporter payload received: endpoint=%s bytes=%d payload=%s", endpoint, len(serialized.encode("utf-8")), serialized)
+def _require_reporter_password(server_password: str | None) -> None:
+    expected_password = os.getenv("CONTROL_CORE_KEY")
+    if not expected_password or not server_password or not secrets.compare_digest(server_password, expected_password):
+        logger.warning("Rejecting reporter request with invalid credentials")
+        raise HTTPException(status_code=404, detail="Server not found")
 
 
 @router.post('/register', status_code=201)
-# @router.post('/register', status_code=401)
 def register_reporter(
-    response: Response,
     registration: RegisterRequest,
-    server_password: str = Header(..., ),
+    server_password: str | None = Header(default=None),
     reporter_key: str = Header(..., ),
     ):
-    print('')
-    print('')
-    print('')
-    print('')
-    print('')
-    print('')
-    print('REGISTRATION')
-    print(registration)
-    print(reporter_key)
-    print('')
+    _require_reporter_password(server_password)
 
-    # TODO Verify the header has the correct password (not the registration key)
-    if server_password != TEMP_SERVER_PASSWORD:
-        print(f"SERVER PASSWORD DOES NOT MATCH")
-        response.status_code = status.HTTP_404_NOT_FOUND
-        return
-
-    print('')
-
-    # TODO actually track
-    TEMP_TRACKED_REPORTERS[reporter_key] = datetime.now()
-
-    print('')
-    print('')
-    print('')
-    print('')
+    if reporter_key in tracked_reporters:
+        tracked_reporters.update_registered_reporter(
+            reporter_key=reporter_key,
+            updated_registration=registration,
+        )
+    else:
+        tracked_reporters.add_registered_reporter(
+            reporter_key=reporter_key,
+            registration=registration,
+        )
 
     return {
         "success": True,
@@ -89,32 +59,49 @@ def register_reporter(
 def receive_reporter_file(
     report: ServerUpdatePOST,
     reporter_key: str = Header(..., ),
+    server_password: str | None = Header(default=None),
     ):
-    # Reporter sends an envelope; the server document lives in payload.content.
-    # log_reporter_payload(payload.model_dump(), "/control-core/files")
-    # ServerUpdate.model_validate_json(payload.content)
-    # if not registered, should be rejected
-    print('')
-    print('')
-    print('POST FILE')
-    print(f"REPORT: {report}")
-    print(f"KEY: {reporter_key}")
-    print(f"TEMP_TRACKED_REPORTERS: {TEMP_TRACKED_REPORTERS}")
-    print('')
-    print('')
-    print('')
-    if reporter_key not in TEMP_TRACKED_REPORTERS:
+    _require_reporter_password(server_password)
+    if reporter_key not in tracked_reporters:
         logger.warning(f"Reporter {reporter_key} is not registered; rejecting file upload")
-        raise HTTPException(status_code=401, detail="Reporter not registered")
+        raise HTTPException(status_code=404, detail="Server not found")
+
+    try:
+        tracked_reporters.add_tracked_server(
+            reporter_key=reporter_key,
+            report=report,
+        )
+    except ValueError as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
+
     return {
         "success": True,
         "data": "Received"
     }
 
-@router.patch('/files', status_code=204)
-def patch_reporter_file(report: ServerUpdatePUT):
-    print(report)
+@router.patch('/files', status_code=200)
+def patch_reporter_file(
+    report: ServerUpdatePUT,
+    reporter_key: str = Header(..., ),
+    server_password: str | None = Header(default=None),
+    ):
+    _require_reporter_password(server_password)
+    if reporter_key not in tracked_reporters:
+        logger.warning(f"Reporter {reporter_key} is not registered; rejecting file upload")
+        raise HTTPException(status_code=404, detail="Server not found")
 
+    if not tracked_reporters.has_tracked_server(reporter_key, report.server_name):
+        raise HTTPException(status_code=404, detail="Server not found")
+
+    tracked_reporters.update_tracked_server(
+        reporter_key=reporter_key,
+        server_name=report.server_name,
+        updated_report=report,
+    )
+    return {
+        "success": True,
+        "data": "Received"
+    }
 
 # app.include_router(router)
 

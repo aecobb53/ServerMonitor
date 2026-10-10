@@ -7,7 +7,7 @@ The Reporter watches the shared Collector storage and sends complete JSON state 
 Required environment variables:
 
 - `CONTROL_CORE_URL`: Control Core base URL reachable from the Reporter container.
-- `CONTROL_CORE_KEY`: Bearer credential for Reporter requests.
+- `CONTROL_CORE_KEY`: Shared secret used to authenticate with Control Core.
 
 Optional environment variables:
 
@@ -18,28 +18,30 @@ Optional environment variables:
 - `REPORTER_RETRY_MAX_SECONDS`: Maximum request retry delay. Default: `60`.
 - `SERVER_MONITOR_LOG_LEVEL`: Python logging level. Default: `INFO`.
 
-The Reporter starts watching files immediately and retries Control Core registration independently with exponential backoff. This allows the Reporter and Control Core to start or restart in either order.
+The Reporter starts watching files immediately. On a `404` file response, it registers once with Control Core and retries that upload.
 
 ### File handling
 
 - Existing UUID-named files under `servers/` are uploaded when the Reporter starts.
-- Collector temporary files, `.reporter_uid`, and unrelated JSON files are ignored.
+- Collector temporary files, `.reporter_uid`, and unrelated JSON files are ignored during live filesystem events.
 - Collector atomic renames are handled as updates to the destination file.
 - Updates are serialized per relative path so rapid filesystem events do not upload concurrently.
 
 ### File API
 
-V1 sends every observed state-file update with `POST /control-core/files` and includes the complete UTF-8 file content. V1 does not use `PATCH` yet. After a Reporter restart, existing files are intentionally sent as full POST requests so the remote store can be rebuilt independently.
+The first successful upload for a state file uses `POST /control-core/files` with the complete state document. Later updates use `PATCH /control-core/files` with identity fields, changed scalar sections, and only history/error entries newer than the last successful upload. After a Reporter restart, existing files are intentionally sent as full POST requests.
 
-The required file endpoint is:
+Registration uses `POST /control-core/register`:
 
 ```json
 {
   "reporter_uid": "...",
-  "path": "servers/example.json",
-  "modified_time": 0,
-  "content": "{ ... }"
+  "version": "0.1.0",
+  "callback_url": null
 }
 ```
 
-Deletion notifications use `POST /control-core/files/deleted`.
+## Future Additions
+
+- Add server deletion notifications after the Control Core deletion endpoint exists.
+- Revisit delivery retries and registration recovery after the initial deployment behavior is established.

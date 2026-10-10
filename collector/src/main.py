@@ -1,4 +1,5 @@
 import docker
+import logging
 import threading
 from dataclasses import dataclass, field
 from enum import Enum
@@ -10,18 +11,18 @@ from datetime import datetime, timezone
 
 
 CONFIG = load_config()
+logging.basicConfig(level=CONFIG.log_level)
+logger = logging.getLogger(__name__)
 LABEL = "server_monitor.enabled=true"
 PARSER_LABEL = "server_monitor.parser"
 SERVER_NAME_LABEL = "server_monitor.server_name"
 HEARTBEAT_SECONDS = CONFIG.reconcile_seconds
-SHARED_STORAGE = CONFIG.storage
 STATE_STORE = StateStore(CONFIG.storage, CONFIG.version, CONFIG.max_history, CONFIG.max_errors)
 
 
 class ContainerStatus(Enum):
     RUNNING = "running"
     STOPPED = "stopped"
-    UNKNOWN = "unknown"
 
 @dataclass
 class TrackedContainer:
@@ -49,17 +50,14 @@ class TrackedContainer:
         return ServerStatus.UNKNOWN
 
     def start(self):
-        self.container_status = ContainerStatus.RUNNING
-        self.closed = False
-        if self.thread is None or not self.thread.is_alive():
-            self.thread = threading.Thread(
-                target=self._watch_logs,
-                # args=(self.container,),
-                daemon=True,
-            )
-            self.thread.start()
-        else:
-            print(f"Thread for container {self.container.id} is already running.")
+        with self.lifecycle_lock:
+            self.container_status = ContainerStatus.RUNNING
+            self.closed = False
+            if self.thread is None or not self.thread.is_alive():
+                self.thread = threading.Thread(target=self._watch_logs, daemon=True)
+                self.thread.start()
+            else:
+                logger.warning("Log watcher already running: container=%s", self.container.id)
         self._save_current_state()
 
     def stop(self):
@@ -165,6 +163,7 @@ class TrackedContainer:
             })
         def update(state):
             state["game_name"] = self.parser.game_name
+            state["record_datetime"] = state_timestamp
             state["parser"] = {"name": self.parser.name, "version": self.parser.version}
             state["container"] = {
                 "id": self.container.id,
@@ -190,52 +189,55 @@ class TrackedContainer:
 def initialize():
     client = docker.from_env()
     tracked = {}
+    tracked_lock = threading.RLock()
 
     for container in client.containers.list(filters={"label": LABEL}):
-        add_container(container, tracked)
+        add_container(container, tracked, tracked_lock)
 
-    return client, tracked
+    return client, tracked, tracked_lock
 
 
-def add_container(container, tracked):
+def add_container(container, tracked, tracked_lock):
     labels = container.labels
     server_name = labels.get(SERVER_NAME_LABEL, "").strip()
     parser_name = labels.get(PARSER_LABEL, "").strip()
     if labels.get("server_monitor.enabled", "").lower() != "true" or not server_name or not parser_name:
-        print(f"Skipping container {container.id}: required server_monitor labels are missing")
+        logger.warning("Skipping container %s: required server_monitor labels are missing", container.id)
         return None
     try:
         parser = create_parser(parser_name)
     except ValueError as error:
-        print(f"Skipping container {container.id}: {error}")
+        logger.warning("Skipping container %s: %s", container.id, error)
         return None
-    existing = next((item for item in tracked.values() if item.server_name == server_name), None)
-    if existing and existing.container.id != container.id:
-        STATE_STORE.ensure(server_name, parser)
-        STATE_STORE.record_error(server_name, {
-            "type": "duplicate_server_name",
-            "message": f"Container {container.id} conflicts with {existing.container.id}",
-            "line": None,
-            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-            "source": "collector",
-            "parser_name": parser.name,
-            "parser_version": parser.version,
-        })
-        return None
-    if container.id in tracked:
-        tracked[container.id].start()
-        return tracked[container.id]
-    tracked[container.id] = TrackedContainer(
-        container=container,
-        parser=parser,
-        state_store=STATE_STORE,
-        container_status=ContainerStatus.RUNNING,
-        server_name=server_name,
-    )
-    tracked[container.id].start()
-    return tracked[container.id]
+    with tracked_lock:
+        existing = next((item for item in tracked.values() if item.server_name == server_name), None)
+        if existing and existing.container.id != container.id:
+            STATE_STORE.ensure(server_name, parser)
+            STATE_STORE.record_error(server_name, {
+                "type": "duplicate_server_name",
+                "message": f"Container {container.id} conflicts with {existing.container.id}",
+                "line": None,
+                "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+                "source": "collector",
+                "parser_name": parser.name,
+                "parser_version": parser.version,
+            })
+            return None
+        tracked_container = tracked.get(container.id)
+        if tracked_container is None:
+            tracked_container = TrackedContainer(
+                container=container,
+                parser=parser,
+                state_store=STATE_STORE,
+                container_status=ContainerStatus.RUNNING,
+                server_name=server_name,
+            )
+            tracked[container.id] = tracked_container
+    tracked_container.start()
+    return tracked_container
 
-def watch_containers(client, tracked):
+
+def watch_containers(client, tracked, tracked_lock):
     for event in client.events(
         decode=True,
         filters={
@@ -247,20 +249,22 @@ def watch_containers(client, tracked):
         action = event["Action"]
 
         if action in ['start', 'create']:
-            if cid not in tracked:
+            with tracked_lock:
+                tracked_container = tracked.get(cid)
+            if tracked_container is None:
                 container = client.containers.get(cid)
-                add_container(container, tracked)
+                add_container(container, tracked, tracked_lock)
             else:
-                tracked[cid].start()
+                tracked_container.start()
 
         if action in ['die', 'stop', 'destroy', 'kill']:
-            if cid in tracked:
-                tracked_container = tracked[cid]
+            with tracked_lock:
+                tracked_container = tracked.pop(cid, None)
+            if tracked_container is not None:
                 tracked_container._close(f"docker_event:{action}")
-                del tracked[cid]
 
 
-def reconcile_once(client, tracked):
+def reconcile_once(client, tracked, tracked_lock):
     containers = client.containers.list(filters={"label": LABEL})
     active_names = set()
     active_ids = set()
@@ -271,12 +275,15 @@ def reconcile_once(client, tracked):
             name = labels.get(SERVER_NAME_LABEL, "").strip()
             if name:
                 active_names.add(name)
-        add_container(container, tracked)
+        add_container(container, tracked, tracked_lock)
 
-    for cid, tracked_container in list(tracked.items()):
+    with tracked_lock:
+        tracked_snapshot = list(tracked.items())
+    for cid, tracked_container in tracked_snapshot:
         if cid not in active_ids:
             tracked_container._close("reconciliation")
-            del tracked[cid]
+            with tracked_lock:
+                tracked.pop(cid, None)
         else:
             STATE_STORE.update(
                 tracked_container.server_name,
@@ -287,27 +294,24 @@ def reconcile_once(client, tracked):
     STATE_STORE.mark_stopped_except(active_names)
 
 
-def reconcile_containers(client, tracked):
+def reconcile_containers(client, tracked, tracked_lock):
     while True:
-        reconcile_once(client, tracked)
+        reconcile_once(client, tracked, tracked_lock)
         threading.Event().wait(HEARTBEAT_SECONDS)
 
 
-def heartbeat_tracked_states(tracked):
+def heartbeat_tracked_states(tracked, tracked_lock):
     while True:
-        if HEARTBEAT_SECONDS <= 0:
-            return
-
         threading.Event().wait(HEARTBEAT_SECONDS)
 
-        # Iterate over a snapshot in case event handlers modify tracked while we refresh.
-        tracked_snapshot = list(tracked.values())
+        with tracked_lock:
+            tracked_snapshot = list(tracked.values())
         for tracked_container in tracked_snapshot:
             if tracked_container.container_status == ContainerStatus.RUNNING:
                 tracked_container._save_current_state()
 
 if __name__ == "__main__":
-    client, tracked = initialize()
-    threading.Thread(target=heartbeat_tracked_states, args=(tracked,), daemon=True).start()
-    threading.Thread(target=reconcile_containers, args=(client, tracked), daemon=True).start()
-    watch_containers(client, tracked)
+    client, tracked, tracked_lock = initialize()
+    threading.Thread(target=heartbeat_tracked_states, args=(tracked, tracked_lock), daemon=True).start()
+    threading.Thread(target=reconcile_containers, args=(client, tracked, tracked_lock), daemon=True).start()
+    watch_containers(client, tracked, tracked_lock)

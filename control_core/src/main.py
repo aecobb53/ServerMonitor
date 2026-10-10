@@ -1,5 +1,6 @@
 from pathlib import Path
 import json
+import os
 from datetime import datetime, timezone
 import random
 from typing import Annotated, Any
@@ -17,6 +18,9 @@ import logging
 from core.set_logger import set_logger
 set_logger()
 logger = logging.getLogger(__name__)
+
+if not os.getenv("CONTROL_CORE_KEY"):
+    raise RuntimeError("CONTROL_CORE_KEY is required")
 
 app = FastAPI()
 
