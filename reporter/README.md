@@ -7,7 +7,7 @@ The Reporter watches the shared Collector storage and sends complete JSON state 
 Required environment variables:
 
 - `CONTROL_CORE_URL`: Control Core base URL reachable from the Reporter container.
-- `CONTROL_CORE_KEY`: Reserved for Control Core authentication.
+- `CONTROL_CORE_KEY`: Shared secret used to authenticate with Control Core.
 
 Optional environment variables:
 
@@ -43,6 +43,5 @@ Registration uses `POST /control-core/register`:
 
 ## Future Additions
 
-- Use `CONTROL_CORE_KEY` when Control Core authentication is implemented.
 - Add server deletion notifications after the Control Core deletion endpoint exists.
 - Revisit delivery retries and registration recovery after the initial deployment behavior is established.

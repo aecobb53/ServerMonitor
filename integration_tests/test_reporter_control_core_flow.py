@@ -1,5 +1,6 @@
 import asyncio
 import json
+import os
 import socket
 import sys
 import threading
@@ -14,6 +15,7 @@ from fastapi import FastAPI, Request
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "reporter"), str(ROOT / "control_core" / "src")]
+CONTROL_CORE_KEY = os.environ.setdefault("CONTROL_CORE_KEY", "integration-test-key")
 
 from routes.control_core.route import router, tracked_reporters
 from routes.control_core.models import ErrorEntryModel, HistoryEntryModel
@@ -57,6 +59,15 @@ def test_reporter_registers_posts_and_patches_collector_state(tmp_path):
     assert server.started
 
     try:
+        response = httpx.post(
+            f"http://127.0.0.1:{port}/control-core/register",
+            headers={"reporter-key": "invalid-reporter", "server-password": "wrong-key"},
+            json={"reporter_uid": "invalid-reporter", "version": "0.1.0", "callback_url": None},
+        )
+        assert response.status_code == 404
+        assert "invalid-reporter" not in tracked_reporters.tracked_reporters
+        requests.clear()
+
         fixture = json.loads((ROOT / "shared/fixtures/servers/generated_hellheim_state.json").read_text())
         state_path = tmp_path / "servers" / "656fa368-7d9e-4de1-8cda-8311c7b38a10.json"
         state_path.parent.mkdir()
@@ -65,7 +76,7 @@ def test_reporter_registers_posts_and_patches_collector_state(tmp_path):
             storage=str(tmp_path),
             version="0.1.0",
             control_core_url=f"http://127.0.0.1:{port}",
-            control_core_key="unused",
+            control_core_key=CONTROL_CORE_KEY,
             callback_url=None,
             retry_initial_seconds=0,
             retry_max_seconds=0,
@@ -108,7 +119,7 @@ def test_reporter_registers_posts_and_patches_collector_state(tmp_path):
         }
         assert requests[2]["body"] == fixture
         assert all(request["headers"]["reporter-key"] == reporter.uid for request in requests)
-        assert requests[1]["headers"]["server-password"] == "Example"
+        assert all(request["headers"]["server-password"] == CONTROL_CORE_KEY for request in requests)
         assert set(requests[3]["body"]) == {
             "schema_version", "server_name", "game_name", "record_datetime", "health", "history", "errors",
         }
@@ -127,7 +138,7 @@ def test_reporter_registers_posts_and_patches_collector_state(tmp_path):
             for entry in updated["errors"]
         ]
 
-        other_headers = {"reporter-key": "other-reporter", "server-password": "Example"}
+        other_headers = {"reporter-key": "other-reporter", "server-password": CONTROL_CORE_KEY}
         response = httpx.post(
             f"http://127.0.0.1:{port}/control-core/register",
             headers=other_headers,
@@ -136,7 +147,7 @@ def test_reporter_registers_posts_and_patches_collector_state(tmp_path):
         assert response.status_code == 201
         response = httpx.patch(
             f"http://127.0.0.1:{port}/control-core/files",
-            headers={"reporter-key": "other-reporter"},
+            headers=other_headers,
             json=requests[3]["body"],
         )
         assert response.status_code == 404
@@ -160,7 +171,7 @@ def test_reporter_handles_unavailable_control_core(tmp_path, caplog):
         storage=str(tmp_path),
         version="0.1.0",
         control_core_url=f"http://127.0.0.1:{port}",
-        control_core_key="unused",
+        control_core_key=CONTROL_CORE_KEY,
         callback_url=None,
         retry_initial_seconds=0,
         retry_max_seconds=0,
@@ -178,7 +189,7 @@ def test_reporter_history_diff_stops_at_last_sent_timestamp(tmp_path):
         storage=str(tmp_path),
         version="0.1.0",
         control_core_url="http://127.0.0.1:1",
-        control_core_key="unused",
+        control_core_key=CONTROL_CORE_KEY,
         callback_url=None,
         retry_initial_seconds=0,
         retry_max_seconds=0,

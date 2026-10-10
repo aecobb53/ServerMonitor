@@ -1,8 +1,10 @@
 import logging
+import os
+import secrets
 
 logger = logging.getLogger(__name__)
 
-from fastapi import APIRouter, HTTPException, Header, Response, status
+from fastapi import APIRouter, HTTPException, Header
 
 from .models import (
     ServerUpdatePOST,
@@ -24,22 +26,20 @@ PATCH /control-core/files
 POST /control-core/files/deleted
 """
 
-TEMP_SERVER_PASSWORD = 'Example'
+def _require_reporter_password(server_password: str | None) -> None:
+    expected_password = os.getenv("CONTROL_CORE_KEY")
+    if not expected_password or not server_password or not secrets.compare_digest(server_password, expected_password):
+        logger.warning("Rejecting reporter request with invalid credentials")
+        raise HTTPException(status_code=404, detail="Server not found")
 
 
 @router.post('/register', status_code=201)
 def register_reporter(
-    response: Response,
     registration: RegisterRequest,
-    server_password: str = Header(..., ),
+    server_password: str | None = Header(default=None),
     reporter_key: str = Header(..., ),
     ):
-
-    # TODO Verify the header has the correct password (not the registration key)
-    if server_password != TEMP_SERVER_PASSWORD:
-        print(f"SERVER PASSWORD DOES NOT MATCH")
-        response.status_code = status.HTTP_401_UNAUTHORIZED
-        return
+    _require_reporter_password(server_password)
 
     if reporter_key in tracked_reporters:
         tracked_reporters.update_registered_reporter(
@@ -61,7 +61,9 @@ def register_reporter(
 def receive_reporter_file(
     report: ServerUpdatePOST,
     reporter_key: str = Header(..., ),
+    server_password: str | None = Header(default=None),
     ):
+    _require_reporter_password(server_password)
     if reporter_key not in tracked_reporters:
         logger.warning(f"Reporter {reporter_key} is not registered; rejecting file upload")
         raise HTTPException(status_code=404, detail="Server not found")
@@ -83,7 +85,9 @@ def receive_reporter_file(
 def patch_reporter_file(
     report: ServerUpdatePUT,
     reporter_key: str = Header(..., ),
+    server_password: str | None = Header(default=None),
     ):
+    _require_reporter_password(server_password)
     if reporter_key not in tracked_reporters:
         logger.warning(f"Reporter {reporter_key} is not registered; rejecting file upload")
         raise HTTPException(status_code=404, detail="Server not found")

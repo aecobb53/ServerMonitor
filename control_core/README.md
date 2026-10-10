@@ -10,6 +10,8 @@ Control Core receives Collector state from Reporter, keeps the current state for
 
 Reporter registration and server ownership failures intentionally return `404` so callers do not learn whether a reporter or server exists.
 
+`CONTROL_CORE_KEY` is required. Reporter must send the same value in the `server-password` header for registration and file requests.
+
 History and error retention are configurable:
 
 | Variable | Default |
@@ -19,7 +21,6 @@ History and error retention are configurable:
 
 ## Deferred Work
 
-- Replace the development `Example` reporter handshake with configured authentication for the 1.0 release.
 - Add Reporter/Control Core server-deletion handling.
 - Schedule `TrackedReporters.age_off_stale()` to remove inactive reporters and servers.
 - Migrate UI-facing server-status routes from the legacy file-based reader to the reporter-owned in-memory state.

@@ -40,6 +40,7 @@ class Reporter:
         ) -> httpx.Response | None:
         request_headers = dict(headers or {})
         request_headers["reporter-key"] = self.uid
+        request_headers["server-password"] = self.config.control_core_key
 
         delay = self.config.retry_initial_seconds
         for _ in range(retries):
@@ -69,17 +70,11 @@ class Reporter:
             "callback_url": self.config.callback_url,
         }
 
-        headers = {
-            # "server-password": f"{self.config.control_core_key}",
-            "server-password": f"Example",
-            "reporter-key": self.uid,
-        }
-
         resp = await self.request(
             method="POST",
             endpoint="/control-core/register",
             payload=payload,
-            headers=headers)
+        )
         if resp and resp.status_code == 201:
             logger.info(f"Reporter registered: uid={self.uid}")
         else:
