@@ -16,7 +16,7 @@ sys.path[:0] = [str(ROOT / "reporter"), str(ROOT / "control_core" / "src")]
 
 from routes.control_core.route import TEMP_TRACKED_REPORTERS, router, tracked_reporters
 from src.config import Config
-from src.reporter import ReporterV2
+from src.reporter import Reporter
 
 
 def test_reporter_registers_posts_and_patches_collector_state(tmp_path):
@@ -60,19 +60,18 @@ def test_reporter_registers_posts_and_patches_collector_state(tmp_path):
         state_path = tmp_path / "servers" / "656fa368-7d9e-4de1-8cda-8311c7b38a10.json"
         state_path.parent.mkdir()
         state_path.write_text(json.dumps(fixture))
-        reporter = ReporterV2(Config(
+        reporter = Reporter(Config(
             storage=str(tmp_path),
             version="0.1.0",
             control_core_url=f"http://127.0.0.1:{port}",
             control_core_key="unused",
             callback_url=None,
-            reconcile_seconds=60,
             retry_initial_seconds=0,
             retry_max_seconds=0,
             log_level="WARNING",
         ))
 
-        asyncio.run(reporter.send_file(state_path, "servers/" + state_path.name, state_path.stat().st_mtime))
+        asyncio.run(reporter.send_file(state_path, "servers/" + state_path.name))
 
         updated = deepcopy(fixture)
         updated["health"]["message"] = "Integration test update"
@@ -91,7 +90,7 @@ def test_reporter_registers_posts_and_patches_collector_state(tmp_path):
             "parser_version": "1.0.0",
         })
         state_path.write_text(json.dumps(updated))
-        asyncio.run(reporter.send_file(state_path, "servers/" + state_path.name, state_path.stat().st_mtime))
+        asyncio.run(reporter.send_file(state_path, "servers/" + state_path.name))
 
         assert [(request["method"], request["path"]) for request in requests] == [
             ("POST", "/control-core/files"),
@@ -137,32 +136,30 @@ def test_reporter_handles_unavailable_control_core(tmp_path, caplog):
         listener.bind(("127.0.0.1", 0))
         port = listener.getsockname()[1]
 
-    reporter = ReporterV2(Config(
+    reporter = Reporter(Config(
         storage=str(tmp_path),
         version="0.1.0",
         control_core_url=f"http://127.0.0.1:{port}",
         control_core_key="unused",
         callback_url=None,
-        reconcile_seconds=60,
         retry_initial_seconds=0,
         retry_max_seconds=0,
         log_level="WARNING",
     ))
 
-    asyncio.run(reporter.send_file(state_path, "servers/" + state_path.name, state_path.stat().st_mtime))
+    asyncio.run(reporter.send_file(state_path, "servers/" + state_path.name))
 
     assert state_path.name not in reporter.previous_data_object
     assert "State upload failed" in caplog.text
 
 
 def test_reporter_history_diff_stops_at_last_sent_timestamp(tmp_path):
-    reporter = ReporterV2(Config(
+    reporter = Reporter(Config(
         storage=str(tmp_path),
         version="0.1.0",
         control_core_url="http://127.0.0.1:1",
         control_core_key="unused",
         callback_url=None,
-        reconcile_seconds=60,
         retry_initial_seconds=0,
         retry_max_seconds=0,
         log_level="WARNING",
