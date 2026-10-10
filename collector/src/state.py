@@ -73,7 +73,15 @@ class StateStore:
                 "parser": {"name": parser.name, "version": parser.version},
                 "container": {"id": None, "name": None, "status": "unknown", "started_at": None},
                 "health": {"status": "UNKNOWN", "message": "No server status observed", "updated_at": now(), "confidence": "low"},
-                "latest_status": None,
+                "latest_status": {
+                    "status": "UNKNOWN",
+                    "message": "No server status observed",
+                    "line": "",
+                    "timestamp": now(),
+                    "source": "collector",
+                    "parser_name": parser.name,
+                    "parser_version": parser.version,
+                },
                 "history": [],
                 "errors": [],
                 "collector": {

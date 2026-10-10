@@ -25,10 +25,10 @@ class ParserModel(BaseModel):
 
 
 class ContainerModel(BaseModel):
-    id: str
-    name: str
+    id: str | None
+    name: str | None
     status: str
-    started_at: datetime
+    started_at: datetime | None
 
 
 class HealthModel(BaseModel):

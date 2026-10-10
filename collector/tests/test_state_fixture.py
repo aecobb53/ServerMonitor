@@ -27,6 +27,7 @@ def test_ensure_creates_json_serializable_state(tmp_path):
     state = store.ensure("Hellheim", parser)
 
     assert state["record_datetime"].endswith("Z")
+    assert state["latest_status"]["status"] == "UNKNOWN"
     assert json.loads(Path(store._files["Hellheim"]).read_text())["server_name"] == "Hellheim"
 
 
