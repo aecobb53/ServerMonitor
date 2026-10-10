@@ -2,8 +2,6 @@ import asyncio
 import logging
 import uuid
 import json
-
-from datetime import datetime
 from pathlib import Path
 from copy import deepcopy
 
@@ -262,42 +260,12 @@ class ReporterV2:
     #     logger.info("Deleted remote state file: path=%s", relative_path)
 
     def construct_payload_diff(self, payload: dict, persisted_key: str) -> dict:
-        diff_payload = deepcopy(payload)
-        previous_data_object = self.previous_data_object.get(persisted_key)
-        if payload.get('parser') == previous_data_object.get('parser'):
-            del diff_payload['parser']
-        if payload.get('container') == previous_data_object.get('container'):
-            del diff_payload['container']
-        if payload.get('health') == previous_data_object.get('health'):
-            del diff_payload['health']
-        if payload.get('latest_status') == previous_data_object.get('latest_status'):
-            del diff_payload['latest_status']
-        if payload.get('collector') == previous_data_object.get('collector'):
-            del diff_payload['collector']
-
-        # Build diff history
-        hist_list = []
-        for history in reversed(payload.get('history', [])):
-            if previous_data_object.get('history') and len(previous_data_object.get('history', [])) > 0:
-                t1 = datetime.strptime(history['timestamp'], "%Y-%m-%dT%H:%M:%S.%fZ")
-                t2 = datetime.strptime(previous_data_object[-1]['timestamp'], "%Y-%m-%dT%H:%M:%S.%fZ")
-                if t1 < t2:
-                    break
-                hist_list.insert(0, history)
-
-        # Build diff errors
-        err_list = []
-        for error in reversed(payload.get('errors', [])):
-            if previous_data_object.get('errors') and len(previous_data_object.get('errors', [])) > 0:
-                t1 = datetime.strptime(error['timestamp'], "%Y-%m-%dT%H:%M:%S.%fZ")
-                t2 = datetime.strptime(previous_data_object[-1]['timestamp'], "%Y-%m-%dT%H:%M:%S.%fZ")
-                if t1 < t2:
-                    break
-                err_list.insert(0, error)
-
-        diff_payload['history'] = hist_list
-        diff_payload['errors'] = err_list
-        
-        self.previous_data_object[persisted_key] = payload
-
+        previous_data = self.previous_data_object[persisted_key]
+        diff_payload = {
+            key: payload[key]
+            for key in ("schema_version", "server_name", "game_name", "record_datetime")
+        }
+        for key in ("parser", "container", "health", "latest_status", "history", "errors", "collector"):
+            if payload.get(key) != previous_data.get(key):
+                diff_payload[key] = deepcopy(payload.get(key))
         return diff_payload

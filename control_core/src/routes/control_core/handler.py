@@ -8,6 +8,10 @@ REGISTERED_SERVER_AGE_OFF_TIME_HOURS = 6
 
 logger = logging.getLogger(__name__)
 
+"""
+Add the ability to get either the reporter object or a server object in one function instead of iterating through.
+"""
+
 class TrackedReporters:
     def __init__(self):
         self.tracked_reporters = {}
@@ -60,8 +64,11 @@ class TrackedReporters:
         server_name: str,
         updated_report: ServerUpdatePUT,
     ):
-        self.tracked_reporters[reporter_key]['servers'][server_name]['details'] = updated_report
-        self.tracked_reporters[reporter_key]['servers'][server_name]['updated'] = datetime.now(timezone.utc)
+        server = self.tracked_reporters[reporter_key]['servers'][server_name]
+        state = server['details'].model_dump(mode='python')
+        state.update(updated_report.model_dump(mode='python', exclude_unset=True))
+        server['details'] = ServerUpdatePOST.model_validate(state)
+        server['updated'] = datetime.now(timezone.utc)
 
     def remove_registered_reporter(self, reporter_key: str):
         del self.tracked_reporters[reporter_key]
