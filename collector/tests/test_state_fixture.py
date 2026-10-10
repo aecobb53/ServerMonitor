@@ -4,8 +4,6 @@ and writes a deterministic fixture other test suites (reporter/control_core inte
 import json
 from pathlib import Path
 
-import pytest
-
 from parsers.common import ServerStatus
 from parsers.registry import create_parser
 from state import StateStore
@@ -22,16 +20,14 @@ LOG_LINES = [
 FIXED_NOW = "2026-09-23T20:48:01.204138Z"
 
 
-def test_ensure_crashes_on_brand_new_server(tmp_path):
-    """Regression pin for a real bug: ensure() puts a raw datetime into the state dict,
-    which json.dump cannot serialize. TODO(collector): fix state.py ensure() to use an
-    ISO string for record_datetime like every other timestamp in the file.
-    """
+def test_ensure_creates_json_serializable_state(tmp_path):
     store = StateStore(str(tmp_path), collector_version="0.1.0", max_history=500, max_errors=100)
     parser = create_parser("valheim")
 
-    with pytest.raises(TypeError):
-        store.ensure("Hellheim", parser)
+    state = store.ensure("Hellheim", parser)
+
+    assert state["record_datetime"].endswith("Z")
+    assert json.loads(Path(store._files["Hellheim"]).read_text())["server_name"] == "Hellheim"
 
 
 def test_generates_hellheim_state_fixture(tmp_path, monkeypatch):
@@ -43,32 +39,8 @@ def test_generates_hellheim_state_fixture(tmp_path, monkeypatch):
     parser = create_parser("valheim")
 
     server_name = "Hellheim"
-    path = Path(store.directory) / "generated.json"
-    store._files[server_name] = str(path)
-
-    # Seed the file the way ensure() *should* (ISO string, not a raw datetime), since
-    # ensure() itself is currently broken for new servers (see test above).
-    initial_state = {
-        "schema_version": 1,
-        "server_name": server_name,
-        "game_name": parser.game_name,
-        "record_datetime": FIXED_NOW,
-        "parser": {"name": parser.name, "version": parser.version},
-        "container": {"id": None, "name": None, "status": "unknown", "started_at": None},
-        "health": {"status": "UNKNOWN", "message": "No server status observed", "updated_at": FIXED_NOW, "confidence": "low"},
-        "latest_status": None,
-        "history": [],
-        "errors": [],
-        "collector": {
-            "collector_version": "0.1.0",
-            "updated_at": FIXED_NOW,
-            "last_reconciled_at": FIXED_NOW,
-            "last_log_at": None,
-            "history_dropped": 0,
-            "errors_dropped": 0,
-        },
-    }
-    store._write(str(path), initial_state)
+    store.ensure(server_name, parser)
+    path = Path(store._files[server_name])
 
     events = [parser.parse(line) for line in LOG_LINES]
     assert all(events), "expected every sample log line to produce a status event"
