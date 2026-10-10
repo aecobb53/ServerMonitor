@@ -147,24 +147,11 @@ class ReporterV2:
             method: str,
             endpoint: str,
             payload: dict,
-            headers: dict = {},
+            headers: dict | None = None,
             retries: int = 3,
-        ):
-
-        headers["reporter-key"] = self.uid
-
-        print('')
-        print('')
-        print('')
-        print(f'METHOD: {method}')
-        print(f'ENDPOINT: {endpoint}')
-        print(f'PAYLOAD: {payload}')
-        print(f'HEADERS: {headers}')
-        print('')
-        print('')
-        print('')
-        print('')
-
+        ) -> httpx.Response | None:
+        request_headers = dict(headers or {})
+        request_headers["reporter-key"] = self.uid
 
         delay = self.config.retry_initial_seconds
         for _ in range(retries):
@@ -174,20 +161,18 @@ class ReporterV2:
                         method,
                         f"{self.config.control_core_url}{endpoint}",
                         json=payload,
-                        headers=headers,
+                        headers=request_headers,
                         timeout=30,
                     )
                 if response.status_code < 500:
-                    response.raise_for_status()
                     return response
-                logger.warning(f"Control Core returned {response.status_code} for {endpoint}; retrying in {delay}s")
-            except httpx.HTTPStatusError:
-                logger.exception(f"Control Core rejected request: endpoint={endpoint}")
-                raise
+                logger.warning("Control Core returned %s for %s; retrying in %ss", response.status_code, endpoint, delay)
             except (httpx.RequestError, OSError) as error:
-                logger.warning(f"Control Core request failed for {endpoint}: {error}; retrying in {delay}s")
+                logger.warning("Control Core request failed for %s: %s; retrying in %ss", endpoint, error, delay)
             await asyncio.sleep(delay)
             delay = min(delay * 2, self.config.retry_max_seconds)
+        logger.error("Control Core request exhausted retries: endpoint=%s", endpoint)
+        return None
 
     async def register(self) -> None:
         payload = {
@@ -207,7 +192,11 @@ class ReporterV2:
             endpoint="/control-core/register",
             payload=payload,
             headers=headers)
-        logger.info("Reporter registered: uid=%s", self.uid)
+        if resp and resp.status_code == 201:
+            logger.info("Reporter registered: uid=%s", self.uid)
+        else:
+            status_code = resp.status_code if resp else "unavailable"
+            logger.warning("Reporter registration failed: status=%s", status_code)
         return resp
 
     async def send_file(
@@ -217,55 +206,48 @@ class ReporterV2:
         modified_time: float,
     ) -> None:
         """
-        If we arent tracking the file (the previous_data_object does not know about it)
-        assume it is not traced in remote so send a POST. This also ensures we try to keep
-        things up to date in long running odd situations
-
-        If the file has been sent before try to send a PATCH. If we receive a 400 or a 401
-        we assume it needs to re register and attempts to do so. If a 404 is sent, the server
-        needs a re-POST.
-
-        A POST is then sent .       
+        New files are POSTed. A rejected request triggers registration and one retry.
+        A PATCH that remains missing after registration is retried as a full POST.
         """
 
         data = json.loads(path.read_text(encoding="utf-8"))
         persisted_key=path.name
 
         if not self.previous_data_object.get(persisted_key):
-            # It has not been sent before, perform a POST
             resp = await self.request(
                 method="POST",
                 endpoint="/control-core/files",
                 payload=data)
+            if resp and resp.status_code in {400, 401, 403, 404}:
+                registration_response = await self.register()
+                if registration_response and registration_response.status_code == 201:
+                    resp = await self.request(
+                        method="POST",
+                        endpoint="/control-core/files",
+                        payload=data)
         else:
-            # It has been sent before, try to update instead of fully posting
             diff_data = self.construct_payload_diff(payload=data, persisted_key=persisted_key)
-
             resp = await self.request(
                 method="PATCH",
                 endpoint="/control-core/files",
                 payload=diff_data)
-            send_post = False
-
-            if resp.status_code in [400, 401]:
-                # The server rejected so we will attempt to re-register
-                logger.info(f"Control Core returned {resp.status_code}. Trying to re-register.")
+            if resp and resp.status_code in {400, 401, 403, 404}:
                 registration_response = await self.register()
-                logger.info(f"Re-registering reporter: {registration_response.status_code}")
-                if registration_response.status_code != 201:
-                    logger.error(f"Failed to re-register reporter: {registration_response.status_code}")
-                    return
-                send_post = True
-            elif resp.status_code in [404]:
-                # The server does not need a re-register but does need a POST instead
-                send_post = True
-
-            if send_post:
-                # A POST is needed
+                if registration_response and registration_response.status_code == 201:
+                    resp = await self.request(
+                        method="PATCH",
+                        endpoint="/control-core/files",
+                        payload=diff_data)
+            if resp and resp.status_code == 404:
                 resp = await self.request(
                     method="POST",
                     endpoint="/control-core/files",
                     payload=data)
+
+        if resp is None or not 200 <= resp.status_code < 300:
+            status_code = resp.status_code if resp else "unavailable"
+            logger.warning("State upload failed: path=%s status=%s", relative_path, status_code)
+            return
 
         self.previous_data_object[persisted_key] = data
         logger.info("Uploaded state file: path=%s", relative_path)

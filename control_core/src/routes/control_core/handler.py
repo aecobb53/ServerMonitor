@@ -7,8 +7,8 @@ class TrackedReporters:
         self.registered_reporters = {}  # {key: datetime} to know when to age off
         self.tracked_servers = {}
 
-    def __contains__(self, registration):
-        return registration in (r['registration'] for r in self.registered_reporters.values())
+    def __contains__(self, reporter_key: str):
+        return reporter_key in self.registered_reporters
 
     def add_registered_reporter(
             self,
