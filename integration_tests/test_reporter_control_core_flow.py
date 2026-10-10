@@ -19,6 +19,7 @@ CONTROL_CORE_KEY = os.environ.setdefault("CONTROL_CORE_KEY", "integration-test-k
 
 from routes.control_core.route import router, tracked_reporters
 from routes.control_core.models import ErrorEntryModel, HistoryEntryModel
+from routes.servers.route import router as server_router
 from src.config import Config
 from src.reporter import Reporter
 
@@ -42,6 +43,7 @@ def test_reporter_registers_posts_and_patches_collector_state(tmp_path):
         return response
 
     app.include_router(router)
+    app.include_router(server_router)
     with socket.socket() as listener:
         listener.bind(("127.0.0.1", 0))
         port = listener.getsockname()[1]
@@ -137,6 +139,13 @@ def test_reporter_registers_posts_and_patches_collector_state(tmp_path):
             ErrorEntryModel.model_validate(entry).model_dump(mode="json")
             for entry in updated["errors"]
         ]
+
+        response = httpx.get(f"http://127.0.0.1:{port}/api/server-status")
+        assert response.status_code == 200
+        server_status = response.json()["data"]["games"]
+        assert server_status[0]["name"] == "Valheim"
+        assert server_status[0]["servers"][0]["name"] == "Hellheim"
+        assert server_status[0]["servers"][0]["last_message"] == updated["latest_status"]["message"]
 
         other_headers = {"reporter-key": "other-reporter", "server-password": CONTROL_CORE_KEY}
         response = httpx.post(

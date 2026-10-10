@@ -1,11 +1,8 @@
-import os
-from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import HTMLResponse, ORJSONResponse
 from datetime import datetime, timezone
-import json
-from pathlib import Path
 
 import logging
+
+from fastapi import APIRouter
 
 from common.exceptions import ServerNotFoundError
 logger = logging.getLogger(__name__)
@@ -13,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 from common.models import ResponseObject
 
-from common.utils import DATA_DIR, SERVERS_DIR, parse_timestamp, find_servers, find_game_servers, find_specific_server, find_game_info
+from common.utils import find_game_servers, find_specific_server, find_game_info
 
 from .models import (
     ContainerStatusEnum,
@@ -32,10 +29,6 @@ router = APIRouter(
 
 @router.get('/server-status', status_code=200)
 def server_status() -> ResponseObject:
-
-
-    # TODO this needs to look in the servers dir for servers that do not have active
-    # TODO map the outputs to the base model objects not just a dict
     games = []
 
     for game, game_servers in find_game_servers().items():
@@ -45,20 +38,20 @@ def server_status() -> ResponseObject:
             "servers": [],
         }
         for server in game_servers:
-            if not len(server['server_status_list']):
+            if not server.history:
                 continue
-            if server['server_name'] == "Unknown Server Name":
+            if server.server_name == "Unknown Server Name":
                 continue
-            current_status = server['latest_status']
+            current_status = server.latest_status
             game_payload['servers'].append({
-                "id": server['container_id'],
-                "name": server['server_name'],
-                "game": server.get('game_name', 'unknown'),
-                "container_status": server['container_status'].upper(),
-                "server_status": current_status['status'],
-                "healthy": True,
-                "last_message": current_status['message'],
-                "updated": datetime.strptime(current_status['timestamp'], "%Y-%m-%dT%H:%M:%S.%fZ"),
+                "id": server.container.id,
+                "name": server.server_name,
+                "game": server.game_name,
+                "container_status": server.container.status.upper(),
+                "server_status": current_status.status,
+                "healthy": server.health.status == "ONLINE",
+                "last_message": current_status.message,
+                "updated": current_status.timestamp,
             })
         games.append(game_payload)
 
@@ -75,20 +68,13 @@ def server_status() -> ResponseObject:
 
 @router.get('/server-info/{server_name}', status_code=200)
 def server_info(server_name: str) -> ResponseObject:
-    for server in os.listdir(SERVERS_DIR):
-        with open(SERVERS_DIR / server) as sf:
-            server_info = json.load(sf)
-            if server_info['server_name'] == server_name:
-                break
-    else:
-        raise ServerNotFoundError(f"The server named {server_name} was not found")
     server_info = find_game_info(server_name=server_name)
     server = find_specific_server(server_name=server_name)
     if server:
-        container_status = server['container_status']
-        display_status = server['latest_status']['status']
-        latest_timestamp = server['latest_status']['timestamp']
-        server_status_list = server['server_status_list']
+        container_status = server.container.status
+        display_status = server.latest_status.status
+        latest_timestamp = server.latest_status.timestamp
+        server_status_list = server.history
         quick_info = {}
         """
         quick_info = {

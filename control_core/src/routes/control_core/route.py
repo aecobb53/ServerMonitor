@@ -11,14 +11,12 @@ from .models import (
     ServerUpdatePUT,
     RegisterRequest,
 )
-from .handler import TrackedReporters
+from .handler import tracked_reporters
 
 router = APIRouter(
     prefix='/control-core',
     tags=['control-core'],
 )
-tracked_reporters = TrackedReporters()
-
 """
 POST /control-core/register
 POST /control-core/files

@@ -55,6 +55,21 @@ class TrackedReporters:
     def has_tracked_server(self, reporter_key: str, server_name: str) -> bool:
         return server_name in self.tracked_reporters.get(reporter_key, {}).get('servers', {})
 
+    def find_server(self, server_name: str) -> ServerUpdatePOST | None:
+        for reporter in self.tracked_reporters.values():
+            server = reporter['servers'].get(server_name)
+            if server:
+                return server['details']
+        return None
+
+    def servers_by_game(self) -> dict[str, list[ServerUpdatePOST]]:
+        games: dict[str, list[ServerUpdatePOST]] = {}
+        for reporter in self.tracked_reporters.values():
+            for server in reporter['servers'].values():
+                details = server['details']
+                games.setdefault(details.game_name, []).append(details)
+        return games
+
     def update_registered_reporter(
         self,
         reporter_key: str,
@@ -104,3 +119,8 @@ class TrackedReporters:
                 if now - server['updated'] > timedelta(hours=REGISTERED_SERVER_AGE_OFF_TIME_HOURS):
                     logger.info(f"Ageing off stale server: {server_name} from reporter: {reporter_key}")
                     del reporter['servers'][server_name]
+
+
+tracked_reporters = TrackedReporters()
+
+

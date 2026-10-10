@@ -23,5 +23,5 @@ History and error retention are configurable:
 
 - Add Reporter/Control Core server-deletion handling.
 - Schedule `TrackedReporters.age_off_stale()` to remove inactive reporters and servers.
-- Migrate UI-facing server-status routes from the legacy file-based reader to the reporter-owned in-memory state.
+- Define the ownership and deployment model for game-profile content. Live Collector state now comes from `TrackedReporters`, while display metadata, descriptions, news, and rules still come from JSON files under `src/content/servers/`. The UI detail endpoints require both records for a server.
 - Consolidate broader logging, configuration, and legacy route cleanup after the current flow is complete.

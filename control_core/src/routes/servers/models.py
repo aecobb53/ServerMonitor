@@ -41,6 +41,7 @@ class ServerStatusServer(BaseModel):
 
 
 class ServerStatusGame(BaseModel):
+    name: str
     image: str
     servers: list[ServerStatusServer]
 
