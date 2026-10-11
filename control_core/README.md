@@ -19,6 +19,8 @@ History and error retention are configurable:
 | `CONTROL_CORE_MAX_HISTORY` | `500` |
 | `CONTROL_CORE_MAX_ERRORS` | `100` |
 
+`LOG_LEVEL` sets the logging level (any Python logging level). Default: `INFO`.
+
 ## Deferred Work
 
 - Add Reporter/Control Core server-deletion handling.

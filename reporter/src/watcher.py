@@ -28,8 +28,12 @@ class WatchHandler(FileSystemEventHandler):
         try:
             relative = self._relative(path)
         except ValueError:
+            logger.debug(f"Ignoring file outside storage: path={path}")
             return False
-        return bool(STATE_FILE.fullmatch(relative))
+        matched = bool(STATE_FILE.fullmatch(relative))
+        if not matched:
+            logger.debug(f"Ignoring non-state file: path={relative}")
+        return matched
 
     def _relative(self, path: str) -> str:
         return str(Path(path).relative_to(self.storage))
@@ -70,6 +74,7 @@ class WatchHandler(FileSystemEventHandler):
                     logger.exception(f"State upload failed: path={relative}")
 
     def sync_existing_files(self):
+        logger.debug(f"Scanning existing files: storage={self.storage}")
         for path in self.storage.rglob("*.json"):
             self._schedule_update(str(path))
 

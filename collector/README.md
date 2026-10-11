@@ -17,7 +17,7 @@ services:
 			SERVER_MONITOR_LOG_TAIL: "10000"
 			SERVER_MONITOR_MAX_HISTORY: "500"
 			SERVER_MONITOR_MAX_ERRORS: "100"
-			SERVER_MONITOR_LOG_LEVEL: INFO
+			LOG_LEVEL: WARNING
 		volumes:
 			- ./server-monitor-state:/app/storage
 			- /var/run/docker.sock:/var/run/docker.sock:ro
@@ -55,7 +55,7 @@ Collector ignores containers with missing or invalid labels. Do not assign the s
 | `SERVER_MONITOR_LOG_TAIL` | `10000` | Number of existing log lines examined when tracking starts. |
 | `SERVER_MONITOR_MAX_HISTORY` | `500` | Maximum retained status-history entries per server. |
 | `SERVER_MONITOR_MAX_ERRORS` | `100` | Maximum retained errors per server. |
-| `SERVER_MONITOR_LOG_LEVEL` | `INFO` | Collector logging level. |
+| `LOG_LEVEL` | `WARNING` | Any Python logging level. `INFO` logs major events (new state files, status changes, containers closing). `DEBUG` also logs heartbeats, visible containers, existing state files and file writes. |
 
 ## Output
 

@@ -43,8 +43,9 @@ class Reporter:
         request_headers["server-password"] = self.config.control_core_key
 
         delay = self.config.retry_initial_seconds
-        for _ in range(retries):
+        for attempt in range(1, retries + 1):
             try:
+                logger.debug(f"Control Core request: {method} {endpoint} attempt={attempt}/{retries}")
                 async with httpx.AsyncClient() as client:
                     response = await client.request(
                         method,
@@ -53,14 +54,15 @@ class Reporter:
                         headers=request_headers,
                         timeout=30,
                     )
+                logger.debug(f"Control Core response: {method} {endpoint} status={response.status_code}")
                 if response.status_code < 500:
                     return response
-                logger.warning(f"Control Core returned {response.status_code} for {endpoint}; retrying in {delay}s")
+                logger.info(f"Control Core returned {response.status_code} for {endpoint}; retrying in {delay}s")
             except (httpx.RequestError, OSError) as error:
-                logger.warning(f"Control Core request failed for {endpoint}: {error}; retrying in {delay}s")
+                logger.info(f"Control Core request failed for {endpoint}: {error!r}; retrying in {delay}s")
             await asyncio.sleep(delay)
             delay = min(delay * 2, self.config.retry_max_seconds)
-        logger.error(f"Control Core request exhausted retries: endpoint={endpoint}")
+        logger.error(f"Control Core request exhausted retries: {method} {endpoint}")
         return None
 
     async def register(self) -> None:
@@ -94,6 +96,7 @@ class Reporter:
 
         data = json.loads(path.read_text(encoding="utf-8"))
         persisted_key=path.name
+        logger.debug(f"Sending state file: path={relative_path} known={persisted_key in self.previous_data_object}")
 
         if not self.previous_data_object.get(persisted_key):
             resp = await self.request(
@@ -101,6 +104,7 @@ class Reporter:
                 endpoint="/control-core/files",
                 payload=data)
             if resp and resp.status_code == 404:
+                logger.info(f"Control Core does not know this reporter; registering: path={relative_path}")
                 registration_response = await self.register()
                 if registration_response and registration_response.status_code == 201:
                     resp = await self.request(
@@ -131,8 +135,10 @@ class Reporter:
             logger.warning(f"State upload failed: path={relative_path} status={status_code}")
             return
 
+        first_upload = not self.previous_data_object.get(persisted_key)
         self.previous_data_object[persisted_key] = data
-        logger.info(f"Uploaded state file: path={relative_path}")
+        level = logging.INFO if first_upload else logging.DEBUG
+        logger.log(level, f"Uploaded state file: path={relative_path} first_upload={first_upload}")
 
     def construct_payload_diff(self, payload: dict, persisted_key: str) -> dict:
         previous_data = self.previous_data_object[persisted_key]

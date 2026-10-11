@@ -1,13 +1,7 @@
+import logging
 import os
 from dataclasses import dataclass
-from importlib.metadata import PackageNotFoundError, version
-
-
-def _project_version() -> str:
-    try:
-        return version("server-manager-reporter")
-    except PackageNotFoundError:
-        return "0.1.0"
+from importlib.metadata import version
 
 
 @dataclass(frozen=True)
@@ -34,11 +28,11 @@ def load_config() -> Config:
 
     return Config(
         storage=os.getenv("SERVER_MONITOR_STORAGE", "/app/storage"),
-        version=os.getenv("SERVER_MONITOR_VERSION", _project_version()),
+        version=os.getenv("SERVER_MONITOR_VERSION", version("server-manager-reporter")),
         control_core_url=control_core_url.rstrip("/"),
         control_core_key=control_core_key,
         callback_url=os.getenv("SERVER_MONITOR_CALLBACK_URL"),
         retry_initial_seconds=float(os.getenv("REPORTER_RETRY_INITIAL_SECONDS", "1")),
         retry_max_seconds=float(os.getenv("REPORTER_RETRY_MAX_SECONDS", "60")),
-        log_level=os.getenv("SERVER_MONITOR_LOG_LEVEL", "INFO").upper(),
+        log_level=os.getenv("LOG_LEVEL", "INFO").strip().upper(),
     )

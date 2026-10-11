@@ -23,6 +23,7 @@ if not os.getenv("CONTROL_CORE_KEY"):
     raise RuntimeError("CONTROL_CORE_KEY is required")
 
 app = FastAPI()
+logger.info(f"Control Core starting: log_level={logging.getLevelName(logging.getLogger().level)}")
 
 DATA_DIR = Path("/app/storage")
 SERVERS_DIR = Path("/app/servers")
@@ -87,7 +88,7 @@ def whats_new():
 @app.get('/api/carousel', status_code=200)
 @app.get('/api/carousel/{page}', status_code=200)
 def carousel(page: str | None = None):
-    print(f"PAGE: {page}")
+    logger.debug(f"Carousel requested: page={page}")
     # response = [
     #     {
     #         "id": "home-1",
@@ -137,7 +138,6 @@ def carousel(page: str | None = None):
         "success": True,
         "data": response
     }
-
 
 
 

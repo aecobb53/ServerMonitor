@@ -51,7 +51,7 @@ def gallery(query: Annotated[GalleryQueryParams, Depends()]) -> ResponseObject:
     response = []
     for fl in (IMAGES_DIR / "manifest_files").glob("*gal-*.json"):
         with open(fl, "r") as f:
-            print(f"READING FILE: {fl}")
+            logger.debug(f"Reading gallery manifest: {fl}")
             data = json.load(f)
             response.append(data)
     return {
@@ -76,7 +76,7 @@ async def upload_gallery_images(
 ) -> ResponseObject:
     upload_files = files or []
 
-    print(f"File upload request received with {len(upload_files)} files.")
+    logger.debug(f"File upload request received with {len(upload_files)} files.")
 
     gallery_path = IMAGES_DIR / "gallery"
     manifest_path = IMAGES_DIR / "manifest_files"

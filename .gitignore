@@ -1,6 +1,8 @@
 # Project
 .reporter_uid
 shared/*
+control_core/content/*
+control_core/static/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

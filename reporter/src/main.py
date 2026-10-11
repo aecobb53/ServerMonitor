@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 logging.basicConfig(
     level=config.log_level,
+    format="%(asctime)s %(levelname)s %(name)s - %(message)s",
 )
 
 reporter = Reporter(config)
@@ -27,7 +28,11 @@ async def lifespan(app: FastAPI):
         loop=loop,
     )
     # registration = asyncio.create_task(reporter.register_forever())
-    logger.info(f"Reporter started: storage={config.storage}")
+    logger.info(f"Reporter started: version={config.version} uid={reporter.uid} storage={config.storage}")
+    logger.debug(
+        f"Reporter config: control_core_url={config.control_core_url} callback_url={config.callback_url} "
+        f"retry_initial={config.retry_initial_seconds} retry_max={config.retry_max_seconds}"
+    )
 
     try:
         yield
@@ -55,5 +60,6 @@ async def health():
 
 @app.post("/callback")
 async def callback(payload: dict):
+    logger.debug(f"Callback received: keys={list(payload)}")
     # V1: Nothing meaningful to do yet.
     return {"status": "ok"}

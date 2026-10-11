@@ -11,7 +11,10 @@ from datetime import datetime, timezone
 
 
 CONFIG = load_config()
-logging.basicConfig(level=CONFIG.log_level)
+logging.basicConfig(
+    level=CONFIG.log_level,
+    format="%(asctime)s %(levelname)s %(name)s - %(message)s",
+)
 logger = logging.getLogger(__name__)
 LABEL = "server_monitor.enabled=true"
 PARSER_LABEL = "server_monitor.parser"
@@ -54,6 +57,7 @@ class TrackedContainer:
             self.container_status = ContainerStatus.RUNNING
             self.closed = False
             if self.thread is None or not self.thread.is_alive():
+                logger.debug("Starting log watcher: server=%s container=%s", self.server_name, self.container.id)
                 self.thread = threading.Thread(target=self._watch_logs, daemon=True)
                 self.thread.start()
             else:
@@ -69,6 +73,7 @@ class TrackedContainer:
                 return False
             self.closed = True
             self.container_status = ContainerStatus.STOPPED
+            logger.info("Container closed: server=%s reason=%s", self.server_name, reason)
             self.server_status_list.append({
                 "status": ServerStatus.OFFLINE.value,
                 "message": "Server has been shut down",
@@ -86,6 +91,10 @@ class TrackedContainer:
             tail = self.container.logs(stream=False, tail=CONFIG.log_tail, timestamps=True)
             lines = tail.decode(errors="replace").splitlines() if isinstance(tail, bytes) else tail
             analysis = self.parser.analyze(lines)
+            logger.debug(
+                "Analyzed log tail: server=%s lines=%d status=%s",
+                self.server_name, len(lines), analysis.status.value,
+            )
             if analysis.event:
                 self._record_event(analysis.event)
             else:
@@ -105,6 +114,7 @@ class TrackedContainer:
                     break
                 threading.Event().wait(1)
         except Exception as error:
+            logger.exception("Log watcher failed: server=%s", self.server_name)
             self._record_error("watcher_error", str(error))
             if not self._container_running():
                 self._close("watcher_error")
@@ -118,6 +128,7 @@ class TrackedContainer:
         try:
             event = self.parser.parse(text)
         except Exception as error:
+            logger.debug("Parser error: server=%s error=%s line=%r", self.server_name, error, text)
             self._record_error("parser_error", str(error), text)
             return
         if event:
@@ -125,7 +136,9 @@ class TrackedContainer:
 
     def _record_event(self, event):
         if event.status is self.server_status:
+            logger.debug("Ignoring unchanged status: server=%s status=%s", self.server_name, event.status.value)
             return
+        logger.info("Server status changed: server=%s %s -> %s", self.server_name, self.server_status.value, event.status.value)
         self.server_status_list.append(event.to_dict())
         self._save_current_state()
 
@@ -186,12 +199,25 @@ class TrackedContainer:
         STATE_STORE.update(self.server_name, update)
 
 
+def log_visible_containers(client):
+    if not logger.isEnabledFor(logging.DEBUG):
+        return
+    for container in client.containers.list(all=True):
+        logger.debug(
+            "Visible container: name=%s id=%s status=%s labels=%s",
+            container.name, container.id, container.status, container.labels,
+        )
+
+
 def initialize():
     client = docker.from_env()
     tracked = {}
     tracked_lock = threading.RLock()
+    log_visible_containers(client)
 
-    for container in client.containers.list(filters={"label": LABEL}):
+    containers = client.containers.list(filters={"label": LABEL})
+    logger.debug("Containers matching label %s: %d", LABEL, len(containers))
+    for container in containers:
         add_container(container, tracked, tracked_lock)
 
     return client, tracked, tracked_lock
@@ -222,9 +248,14 @@ def add_container(container, tracked, tracked_lock):
                 "parser_name": parser.name,
                 "parser_version": parser.version,
             })
+            logger.warning(
+                "Duplicate server name: server=%s container=%s conflicts with %s",
+                server_name, container.id, existing.container.id,
+            )
             return None
         tracked_container = tracked.get(container.id)
         if tracked_container is None:
+            logger.info("Tracking container: server=%s container=%s parser=%s", server_name, container.id, parser_name)
             tracked_container = TrackedContainer(
                 container=container,
                 parser=parser,
@@ -247,6 +278,7 @@ def watch_containers(client, tracked, tracked_lock):
     ):
         cid = event['Actor']["ID"]
         action = event["Action"]
+        logger.debug("Docker event: action=%s container=%s", action, cid)
 
         if action in ['start', 'create']:
             with tracked_lock:
@@ -265,7 +297,9 @@ def watch_containers(client, tracked, tracked_lock):
 
 
 def reconcile_once(client, tracked, tracked_lock):
+    log_visible_containers(client)
     containers = client.containers.list(filters={"label": LABEL})
+    logger.debug("Reconciling: labeled_containers=%d tracked=%d", len(containers), len(tracked))
     active_names = set()
     active_ids = set()
     for container in containers:
@@ -296,7 +330,10 @@ def reconcile_once(client, tracked, tracked_lock):
 
 def reconcile_containers(client, tracked, tracked_lock):
     while True:
-        reconcile_once(client, tracked, tracked_lock)
+        try:
+            reconcile_once(client, tracked, tracked_lock)
+        except Exception:
+            logger.exception("Reconciliation failed; will retry")
         threading.Event().wait(HEARTBEAT_SECONDS)
 
 
@@ -306,11 +343,17 @@ def heartbeat_tracked_states(tracked, tracked_lock):
 
         with tracked_lock:
             tracked_snapshot = list(tracked.values())
+        logger.debug("Heartbeat: tracked=%d", len(tracked_snapshot))
         for tracked_container in tracked_snapshot:
             if tracked_container.container_status == ContainerStatus.RUNNING:
-                tracked_container._save_current_state()
+                try:
+                    tracked_container._save_current_state()
+                except Exception:
+                    logger.exception("Heartbeat save failed: server=%s", tracked_container.server_name)
 
 if __name__ == "__main__":
+    logger.info("Collector started: version=%s storage=%s", CONFIG.version, CONFIG.storage)
+    logger.debug("Collector config: %s", CONFIG)
     client, tracked, tracked_lock = initialize()
     threading.Thread(target=heartbeat_tracked_states, args=(tracked, tracked_lock), daemon=True).start()
     threading.Thread(target=reconcile_containers, args=(client, tracked, tracked_lock), daemon=True).start()

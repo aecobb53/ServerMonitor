@@ -16,7 +16,7 @@ Optional environment variables:
 - `SERVER_MONITOR_CALLBACK_URL`: Future callback address.
 - `REPORTER_RETRY_INITIAL_SECONDS`: Initial request retry delay. Default: `1`.
 - `REPORTER_RETRY_MAX_SECONDS`: Maximum request retry delay. Default: `60`.
-- `SERVER_MONITOR_LOG_LEVEL`: Python logging level. Default: `INFO`.
+- `LOG_LEVEL`: Any Python logging level. Default: `INFO`. `DEBUG` logs every request and file event.
 
 The Reporter starts watching files immediately. On a `404` file response, it registers once with Control Core and retries that upload.
 

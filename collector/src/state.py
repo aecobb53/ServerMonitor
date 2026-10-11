@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import re
 import threading
@@ -8,6 +9,7 @@ from typing import Callable
 
 
 STATE_FILE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.json$")
+logger = logging.getLogger(__name__)
 
 
 def now() -> str:
@@ -28,6 +30,7 @@ class StateStore:
     def _load_files(self):
         for filename in os.listdir(self.directory):
             if not STATE_FILE.fullmatch(filename):
+                logger.debug("Ignoring non-state file: %s", filename)
                 continue
             path = os.path.join(self.directory, filename)
             try:
@@ -37,7 +40,9 @@ class StateStore:
                 if isinstance(name, str) and name:
                     self._files[name] = path
                     self._locks[name] = threading.RLock()
+                    logger.debug("Found existing state file: server=%s path=%s", name, path)
             except (OSError, TypeError, ValueError, KeyError):
+                logger.warning("Invalid state file moved aside: %s", path)
                 os.replace(path, f"{path}.invalid")
 
     def _lock(self, server_name: str) -> threading.RLock:
@@ -95,6 +100,7 @@ class StateStore:
             }
             path = os.path.join(self.directory, f"{uuid.uuid4()}.json")
             self._files[server_name] = path
+            logger.info("Created state file: server=%s path=%s", server_name, path)
             self._write(path, state)
             return state
 
@@ -131,6 +137,7 @@ class StateStore:
                 if container.get("status") == "stopped":
                     continue
                 container["status"] = "stopped"
+                logger.info("Marking server stopped: server=%s", server_name)
                 state.setdefault("history", []).append({
                     "status": "OFFLINE",
                     "message": "Container is no longer running",
@@ -149,6 +156,7 @@ class StateStore:
                 self._write(path, state)
 
     def _write(self, path: str, state: dict):
+        logger.debug("Writing state file: path=%s", path)
         temporary = f"{path}.{uuid.uuid4().hex}.tmp"
         try:
             with open(temporary, "w") as file:

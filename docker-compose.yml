@@ -3,12 +3,16 @@ services:
     build: ./collector
     image: ghcr.io/${GHCR_USERNAME}/collector:latest
     container_name: Collector
+    env_file:
+      - .env
     environment:
-      SERVER_MONITOR_STORAGE: /app/storage
-      SERVER_MONITOR_RECONCILE_SECONDS: "60"
-      SERVER_MONITOR_LOG_TAIL: "10000"
-      SERVER_MONITOR_MAX_HISTORY: "500"
-      SERVER_MONITOR_MAX_ERRORS: "100"
+      LOG_LEVEL: DEBUG
+      SERVER_MONITOR_RECONCILE_SECONDS: 15
+      # SERVER_MONITOR_STORAGE: /app/storage
+      # SERVER_MONITOR_RECONCILE_SECONDS: "60"
+      # SERVER_MONITOR_LOG_TAIL: "10000"
+      # SERVER_MONITOR_MAX_HISTORY: "500"
+      # SERVER_MONITOR_MAX_ERRORS: "100"
     volumes:
       - ./shared/states:/app/storage
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -17,13 +21,14 @@ services:
     build: ./reporter
     image: ghcr.io/${GHCR_USERNAME}/reporter:latest
     container_name: Reporter
+    env_file:
+      - .env
     environment:
-      SERVER_MONITOR_STORAGE: /app/storage
-      CONTROL_CORE_URL: https://control-core.nax.lol
-      CONTROL_CORE_KEY: "${CONTROL_CORE_KEY:?CONTROL_CORE_KEY is required}"
-      SERVER_MONITOR_CALLBACK_URL: example_callback
-      REPORTER_RETRY_INITIAL_SECONDS: "1"
-      REPORTER_RETRY_MAX_SECONDS: "60"
+      LOG_LEVEL: DEBUG
+      # SERVER_MONITOR_STORAGE: /app/storage
+      # SERVER_MONITOR_CALLBACK_URL: example_callback
+      # REPORTER_RETRY_INITIAL_SECONDS: "1"
+      # REPORTER_RETRY_MAX_SECONDS: "60"
     volumes:
       - ./shared/states:/app/storage
 
@@ -31,8 +36,11 @@ services:
     build: ./control_core
     image: ghcr.io/${GHCR_USERNAME}/control-core:latest
     container_name: ControlCore
+    env_file:
+      - .env
     environment:
-      CONTROL_CORE_KEY: "${CONTROL_CORE_KEY:?CONTROL_CORE_KEY is required}"
+      LOG_LEVEL: DEBUG
+      # CONTROL_CORE_KEY: "${CONTROL_CORE_KEY:?CONTROL_CORE_KEY is required}"
     volumes:
       - ./shared/states:/app/storage:ro
       - ./control_core/content:/app/content

@@ -35,6 +35,7 @@ class TrackedReporters:
             'registration': registration,
             'servers': {},
         }
+        logger.info(f"Registered reporter: {reporter_key} version={registration.version}")
 
     def add_tracked_server(
         self,
@@ -50,6 +51,7 @@ class TrackedReporters:
             'updated': now,
             'details': report,
         }
+        logger.info(f"Tracking new server: {server_name} reporter={reporter_key}")
         self.tracked_reporters[reporter_key]['updated_at'] = now
 
     def has_tracked_server(self, reporter_key: str, server_name: str) -> bool:
@@ -98,6 +100,7 @@ class TrackedReporters:
             del state['errors'][:-self.max_errors]
         state.update(update)
         server['details'] = ServerUpdatePOST.model_validate(state)
+        logger.debug(f"Updated server: {server_name} reporter={reporter_key} fields={sorted(update)}")
         now = datetime.now(timezone.utc)
         server['updated'] = now
         self.tracked_reporters[reporter_key]['updated_at'] = now

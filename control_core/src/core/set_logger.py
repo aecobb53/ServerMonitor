@@ -1,4 +1,5 @@
 import logging
+import os
 
 
 def set_logger() -> None:
@@ -7,5 +8,5 @@ def set_logger() -> None:
     handler = logging.StreamHandler()
     handler.setFormatter(formatter)
     root = logging.getLogger()
-    root.setLevel(logging.DEBUG)
+    root.setLevel(os.getenv("LOG_LEVEL", "INFO").strip().upper())
     root.addHandler(handler)
