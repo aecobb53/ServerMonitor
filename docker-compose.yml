@@ -1,6 +1,7 @@
 services:
   collector:
     build: ./collector
+    image: ghcr.io/${GHCR_USERNAME}/collector:latest
     container_name: Collector
     environment:
       SERVER_MONITOR_STORAGE: /app/storage
@@ -14,10 +15,11 @@ services:
 
   reporter:
     build: ./reporter
+    image: ghcr.io/${GHCR_USERNAME}/reporter:latest
     container_name: Reporter
     environment:
       SERVER_MONITOR_STORAGE: /app/storage
-      CONTROL_CORE_URL: https://server-monitor-v2.nax.lol
+      CONTROL_CORE_URL: https://control-core.nax.lol
       CONTROL_CORE_KEY: "${CONTROL_CORE_KEY:?CONTROL_CORE_KEY is required}"
       SERVER_MONITOR_CALLBACK_URL: example_callback
       REPORTER_RETRY_INITIAL_SECONDS: "1"
@@ -27,53 +29,30 @@ services:
 
   control-core:
     build: ./control_core
+    image: ghcr.io/${GHCR_USERNAME}/control-core:latest
     container_name: ControlCore
     environment:
       CONTROL_CORE_KEY: "${CONTROL_CORE_KEY:?CONTROL_CORE_KEY is required}"
-    # env_file:
-    #   - .env
     volumes:
       - ./shared/states:/app/storage:ro
       - ./control_core/content:/app/content
-      # - ./tmp_images:/app/images
       - /srv2t/server_monitor:/app/images
     ports:
       - "8210:8000"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.control_core.rule=Host(`server-monitor-v2.nax.lol`)"
+      - "traefik.http.routers.control_core.rule=Host(`control-core.nax.lol`)"
       - "traefik.http.routers.control_core.entrypoints=websecure"
       - "traefik.http.routers.control_core.tls.certresolver=myresolver"
-
-  # api:
-  #   build: ./api
-  #   container_name: GameServerMonitorAPI
-  #   depends_on:
-  #     - monitor
-  #   env_file:
-  #     - .env
-  #   volumes:
-  #     - ./shared/states:/app/storage:ro
-  #     - ./api/content:/app/content
-  #     # - ./tmp_images:/app/images
-  #     - /srv2t/server_monitor:/app/images
-  #   ports:
-  #     - "8208:8000"
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.server_monitor.rule=Host(`server-monitor.nax.lol`)"
-  #     - "traefik.http.routers.server_monitor.entrypoints=websecure"
-  #     - "traefik.http.routers.server_monitor.tls.certresolver=myresolver"
-  # ui:
-  #   build: ./ui
-  #   container_name: GameServerMonitorUI
-  #   depends_on:
-  #     - api
-  #   ports:
-  #     - "8209:80"
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.server_monitor_ui.rule=Host(`server-monitor-ui.nax.lol`)"
-  #     - "traefik.http.routers.server_monitor_ui.entrypoints=websecure"
-  #     - "traefik.http.routers.server_monitor_ui.tls.certresolver=myresolver"
+  ui:
+    build: ./ui
+    image: ghcr.io/${GHCR_USERNAME}/server-monitor-ui:latest
+    container_name: GameServerMonitorUI
+    ports:
+      - "8209:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.server_monitor_ui.rule=Host(`server-monitor-ui.nax.lol`)"
+      - "traefik.http.routers.server_monitor_ui.entrypoints=websecure"
+      - "traefik.http.routers.server_monitor_ui.tls.certresolver=myresolver"
 

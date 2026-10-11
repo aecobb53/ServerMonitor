@@ -1,0 +1,87 @@
+# Running Collector and Reporter
+
+Collector watches labeled game-server containers and writes state files. Reporter reads those files and sends them to Control Core.
+
+## docker-compose.yml
+
+Images are published by `release.sh` as `ghcr.io/aecobb53/<service>:<version>`. Only version tags are pushed, so use an explicit version rather than `latest`.
+
+```yaml
+services:
+  collector:
+    image: ghcr.io/aecobb53/collector:0.1.0
+    restart: unless-stopped
+    environment:
+      SERVER_MONITOR_STORAGE: /app/storage
+      SERVER_MONITOR_RECONCILE_SECONDS: "60"
+      SERVER_MONITOR_LOG_TAIL: "10000"
+      SERVER_MONITOR_MAX_HISTORY: "500"
+      SERVER_MONITOR_MAX_ERRORS: "100"
+    volumes:
+      - ./shared/states:/app/storage
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  reporter:
+    image: ghcr.io/aecobb53/reporter:0.1.0
+    restart: unless-stopped
+    environment:
+      SERVER_MONITOR_STORAGE: /app/storage
+      CONTROL_CORE_URL: <control-core-url>
+      CONTROL_CORE_KEY: "${CONTROL_CORE_KEY:?CONTROL_CORE_KEY is required}"
+      SERVER_MONITOR_CALLBACK_URL: "${SERVER_MONITOR_CALLBACK_URL:-}"
+      REPORTER_RETRY_INITIAL_SECONDS: "1"
+      REPORTER_RETRY_MAX_SECONDS: "60"
+    volumes:
+      - ./shared/states:/app/storage
+```
+
+Both services must mount the same host directory (`./shared/states`) so Reporter can read what Collector writes.
+
+## Required environment
+
+Create a `.env` file next to `docker-compose.yml`:
+
+```env
+CONTROL_CORE_KEY=<key provided by the Control Core owner>
+```
+
+| Variable | Service | Required | Purpose |
+| --- | --- | --- | --- |
+| `CONTROL_CORE_KEY` | Reporter | Yes | Auth key for Control Core. Compose refuses to start without it. |
+| `CONTROL_CORE_URL` | Reporter | Yes | Control Core address. Set to `https://control-core.nax.lol` in the compose file. |
+
+## Optional environment
+
+| Variable | Service | Default | Purpose |
+| --- | --- | --- | --- |
+| `SERVER_MONITOR_CALLBACK_URL` | Reporter | unset | Callback URL sent along with reports. Set it in `.env` if the Control Core owner asks for one. |
+| `SERVER_MONITOR_STORAGE` | Both | `/app/storage` | State directory inside the container. Leave as is. |
+| `SERVER_MONITOR_LOG_LEVEL` | Both | `INFO` | Logging level. |
+| `SERVER_MONITOR_RECONCILE_SECONDS` | Collector | `60` | Docker reconciliation / heartbeat interval. |
+| `SERVER_MONITOR_LOG_TAIL` | Collector | `10000` | Existing log lines scanned when tracking starts. |
+| `SERVER_MONITOR_MAX_HISTORY` | Collector | `500` | Max status-history entries per server. |
+| `SERVER_MONITOR_MAX_ERRORS` | Collector | `100` | Max retained errors per server. |
+| `REPORTER_RETRY_INITIAL_SECONDS` | Reporter | `1` | Initial retry delay after a failed send. |
+| `REPORTER_RETRY_MAX_SECONDS` | Reporter | `60` | Maximum retry delay. |
+
+## Labels on monitored game servers
+
+Collector only tracks containers with these labels:
+
+```yaml
+labels:
+  server_monitor.enabled: "true"
+  server_monitor.parser: "valheim"
+  server_monitor.server_name: "MyServerName"
+```
+
+`server_monitor.server_name` must be unique per running container. Currently supported parser: `valheim`.
+
+## Run
+
+```bash
+docker compose pull
+docker compose up -d
+```
+
+If the packages are private on GHCR, log in first with a token that has `read:packages`: `docker login ghcr.io -u <github-username>`.

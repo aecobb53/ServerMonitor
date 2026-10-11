@@ -77,7 +77,7 @@ def whats_new():
     # "Valheim is coming back",
     # "New Valheim server: Hellheim - More to come!"
     # ]
-    with open(CONTENT_DIR / 'whats-new.json', 'r') as file:
+    with open(CONTENT_DIR / 'whats_new.json', 'r') as file:
         response = json.load(file)
     return {
         "success": True,

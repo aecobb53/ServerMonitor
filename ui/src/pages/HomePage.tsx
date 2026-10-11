@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FeaturedCarousel, Card } from '@/components/ui';
 import MarkdownText from '@/components/ui/MarkdownText';
@@ -20,12 +20,6 @@ const DEFAULT_SLIDES: CarouselSlide[] = [
     title: 'Something epic is always happening',
     subtitle: "Check the events page to see what's coming up.",
   },
-];
-
-const DEFAULT_WHATS_NEW = [
-  { id: '1', text: '🗺 New server world started — jump in and explore.' },
-  { id: '2', text: '⚔ Boss fight night is coming — check the Events page.' },
-  { id: '3', text: '📸 Gallery updated with fresh community screenshots.' },
 ];
 
 type CarouselApiItem =
@@ -77,11 +71,6 @@ export default function HomePage() {
   const navigate = useNavigate();
   const [slides, setSlides] = useState<CarouselSlide[]>(DEFAULT_SLIDES);
   const [whatsNew, setWhatsNew] = useState<string[]>([]);
-
-  const whatsNewItems = useMemo(
-    () => (whatsNew.length ? whatsNew : DEFAULT_WHATS_NEW.map((item) => item.text)),
-    [whatsNew],
-  );
 
   useEffect(() => {
     let cancelled = false;
@@ -139,7 +128,7 @@ export default function HomePage() {
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>What's New</h2>
         <ul className={styles.newsList}>
-          {whatsNewItems.map((item) => (
+          {whatsNew.map((item) => (
             <li key={item} className={styles.newsItem}>
               <MarkdownText content={item} />
             </li>
