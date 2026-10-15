@@ -19,7 +19,8 @@ async function request<T>(
   path: string,
   options?: RequestInit,
 ): Promise<ApiResponse<T>> {
-  const url = `${API_BASE}${path}`;
+  // ControlCore admin routes live outside the /api prefix.
+  const url = path.startsWith('/control-core/') ? path : `${API_BASE}${path}`;
   const isFormData = options?.body instanceof FormData;
   const hasExplicitContentType = Boolean((options?.headers as Record<string, string> | undefined)?.['Content-Type']);
 

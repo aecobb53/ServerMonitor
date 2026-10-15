@@ -36,6 +36,7 @@ from routes.polls.route import router as polls_router
 from routes.gallery.route import gallery_router, map_router
 from routes.admin.route import admin_router, login_router
 from routes.control_core.route import router as control_core_router
+from routes.control_core.admin_route import admin_login_router, admin_server_router
 from core.exception_handler import server_not_found
 from common.utils import CONTENT_DIR
 
@@ -48,6 +49,8 @@ app.include_router(map_router)
 app.include_router(login_router)
 app.include_router(admin_router)
 app.include_router(control_core_router)
+app.include_router(admin_login_router)
+app.include_router(admin_server_router)
 # app.add_exception_handler(ServerNotFoundError, server_not_found)
 
 

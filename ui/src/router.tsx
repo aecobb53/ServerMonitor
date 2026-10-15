@@ -10,6 +10,7 @@ import PollsPage from '@/pages/PollsPage';
 import GalleryPage from '@/pages/GalleryPage';
 import MapsPage from '@/pages/MapsPage';
 import AdminPage from '@/pages/AdminPage';
+import ReporterAdminPage from '@/pages/ReporterAdminPage';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
       { path: 'gallery', element: <GalleryPage /> },
       { path: 'maps', element: <MapsPage /> },
       { path: 'servers/:name', element: <ServerOverviewPage /> },
+      { path: 'servers/:name/admin', element: <ReporterAdminPage /> },
       { path: 'admin', element: <AdminPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],

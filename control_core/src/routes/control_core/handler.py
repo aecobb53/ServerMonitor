@@ -64,6 +64,12 @@ class TrackedReporters:
                 return server['details']
         return None
 
+    def find_reporter_uid(self, server_name: str) -> str | None:
+        for reporter in self.tracked_reporters.values():
+            if server_name in reporter['servers']:
+                return reporter['registration'].reporter_uid
+        return None
+
     def servers_by_game(self) -> dict[str, list[ServerUpdatePOST]]:
         games: dict[str, list[ServerUpdatePOST]] = {}
         for reporter in self.tracked_reporters.values():

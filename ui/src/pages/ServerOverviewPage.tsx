@@ -238,6 +238,11 @@ export default function ServerOverviewPage() {
       <PageHeader
         title={server.display_name}
         subtitle={server.description}
+        actions={(
+          <Link to={`/servers/${encodeURIComponent(name ?? server.server_name)}/admin`} className={styles.adminLink}>
+            Admin
+          </Link>
+        )}
       />
 
       <div className={styles.content}>

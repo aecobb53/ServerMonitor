@@ -16,6 +16,10 @@ export default defineConfig({
         target: 'http://localhost:8208',
         changeOrigin: true,
       },
+      '/control-core/admin': {
+        target: 'http://localhost:8208',
+        changeOrigin: true,
+      },
     },
   },
 })
