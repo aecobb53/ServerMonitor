@@ -9,9 +9,10 @@ Images are published by `release.sh` as `ghcr.io/aecobb53/<service>:<version>`. 
 ```yaml
 services:
   collector:
-    image: ghcr.io/aecobb53/collector:0.1.0
+    image: ghcr.io/aecobb53/collector:0.1.1
     restart: unless-stopped
     environment:
+      LOG_LEVEL: WARNING
       SERVER_MONITOR_STORAGE: /app/storage
       SERVER_MONITOR_RECONCILE_SECONDS: "60"
       SERVER_MONITOR_LOG_TAIL: "10000"
@@ -22,9 +23,10 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   reporter:
-    image: ghcr.io/aecobb53/reporter:0.1.0
+    image: ghcr.io/aecobb53/reporter:0.1.1
     restart: unless-stopped
     environment:
+      LOG_LEVEL: INFO
       SERVER_MONITOR_STORAGE: /app/storage
       CONTROL_CORE_URL: <control-core-url>
       CONTROL_CORE_KEY: "${CONTROL_CORE_KEY:?CONTROL_CORE_KEY is required}"
@@ -56,7 +58,7 @@ CONTROL_CORE_KEY=<key provided by the Control Core owner>
 | --- | --- | --- | --- |
 | `SERVER_MONITOR_CALLBACK_URL` | Reporter | unset | Callback URL sent along with reports. Set it in `.env` if the Control Core owner asks for one. |
 | `SERVER_MONITOR_STORAGE` | Both | `/app/storage` | State directory inside the container. Leave as is. |
-| `SERVER_MONITOR_LOG_LEVEL` | Both | `INFO` | Logging level. |
+| `LOG_LEVEL` | Both | Collector `WARNING`, Reporter `INFO` | `DEBUG`, `INFO`, or `WARNING`. Use `DEBUG` to diagnose issues. |
 | `SERVER_MONITOR_RECONCILE_SECONDS` | Collector | `60` | Docker reconciliation / heartbeat interval. |
 | `SERVER_MONITOR_LOG_TAIL` | Collector | `10000` | Existing log lines scanned when tracking starts. |
 | `SERVER_MONITOR_MAX_HISTORY` | Collector | `500` | Max status-history entries per server. |

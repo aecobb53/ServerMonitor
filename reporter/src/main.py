@@ -21,6 +21,11 @@ reporter = Reporter(config)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    """
+    Assuming this is the correct place for it, every time an update is sent, check to see if the new ADMIN_PASSWORD has changed.
+    if it has, auto register. By default, set it to None to start and then read it in the first time.
+    This would then also trigger registering all servers upon startup which is ideal anyway.
+    """
     loop = asyncio.get_running_loop()
     observer = start_watcher(
         storage=config.storage,

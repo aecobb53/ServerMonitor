@@ -1,6 +1,7 @@
 import logging
 import os
 import secrets
+from datetime import datetime, timezone
 
 logger = logging.getLogger(__name__)
 
@@ -88,6 +89,10 @@ def patch_reporter_file(
     reporter_key: str = Header(..., ),
     server_password: str | None = Header(default=None),
     ):
+    print(f"PATCH RUN")
+    print(f"REPORT: {report}")
+    print(f"REPORTER KEY: {reporter_key}")
+    print(f"PATCH RUN")
     _require_reporter_password(server_password)
     logger.debug(f"File PATCH: reporter={reporter_key} server={report.server_name}")
     if reporter_key not in tracked_reporters:
@@ -112,24 +117,26 @@ def patch_reporter_file(
 def log_registrations(
     # server_password: str | None = Header(default=None),
     ):
-    print('THIS FUCKING FUNCTION WAS RUN')
-    logger.debug('')
-    logger.debug('')
-    logger.debug('')
-    logger.debug('Logging all registered reporters:')
+    now = datetime.now(timezone.utc)
+    log_list = []
+    log_list.append('')
+    log_list.append('')
+    log_list.append(f'Current server time: {now}')
+    log_list.append('Logging all registered reporters:')
     for reporter_key, reporter in tracked_reporters.tracked_reporters.items():
-        logger.debug('')
-        logger.debug('')
+        log_list.append('')
+        log_list.append('')
         registration = reporter['registration']
-        logger.debug(f"Reporter: {reporter_key}, Registration: {registration.model_dump()}")
-        logger.debug(f"  Callback URL: {registration.callback_url}")
+        log_list.append(f"Reporter: {reporter_key}, Registration: {registration.model_dump()}")
+        log_list.append(f"  Callback URL: {registration.callback_url}")
         for server_name, server in reporter['servers'].items():
             details = server['details']
-            logger.debug(f"  Tracked Server: {server_name}, Game: {details.game_name}, Last Updated: {server['updated']}")
-    logger.debug('')
-    logger.debug('')
-    logger.debug('')
-    logger.debug('DONE')
+            log_list.append(f"  Tracked Server: {server_name}, Game: {details.game_name}, Last Updated: {server['updated']}")
+    log_list.append('')
+    log_list.append('')
+    log_list.append('')
+    log_list.append('DONE')
+    logger.debug('\n'.join(log_list))
     return {
         "success": True,
         "data": "Received"
