@@ -1,0 +1,26 @@
+services:
+  collector:
+    build: ./collector
+    image: ghcr.io/${GHCR_USERNAME}/collector:latest
+    container_name: CollectorBuild
+    env_file:
+      - .env
+
+  reporter:
+    build: ./reporter
+    image: ghcr.io/${GHCR_USERNAME}/reporter:latest
+    container_name: ReporterBuild
+    env_file:
+      - .env
+
+  control-core:
+    build: ./control_core
+    image: ghcr.io/${GHCR_USERNAME}/control-core:latest
+    container_name: ControlCoreBuild
+    env_file:
+      - .env
+  ui:
+    build: ./ui
+    image: ghcr.io/${GHCR_USERNAME}/server-monitor-ui:latest
+    container_name: GameServerMonitorUIBuild
+

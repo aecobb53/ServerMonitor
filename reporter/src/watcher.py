@@ -1,0 +1,96 @@
+import asyncio
+import logging
+import re
+from pathlib import Path
+
+from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
+
+from .reporter import Reporter
+
+logger = logging.getLogger(__name__)
+STATE_FILE = re.compile(r"^servers/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.json$")
+
+
+class WatchHandler(FileSystemEventHandler):
+    def __init__(
+        self,
+        storage: Path,
+        reporter: Reporter,
+        loop: asyncio.AbstractEventLoop,
+    ):
+        self.storage = Path(storage)
+        self.reporter = reporter
+        self.loop = loop
+        self._locks = {}
+
+    def _is_state_file(self, path: str) -> bool:
+        try:
+            relative = self._relative(path)
+        except ValueError:
+            logger.debug(f"Ignoring file outside storage: path={path}")
+            return False
+        matched = bool(STATE_FILE.fullmatch(relative))
+        if not matched:
+            logger.debug(f"Ignoring non-state file: path={relative}")
+        return matched
+
+    def _relative(self, path: str) -> str:
+        return str(Path(path).relative_to(self.storage))
+
+    def on_created(self, event):
+        if not event.is_directory and self._is_state_file(event.src_path):
+            self._schedule_update(event.src_path)
+
+    def on_modified(self, event):
+        if not event.is_directory and self._is_state_file(event.src_path):
+            self._schedule_update(event.src_path)
+
+    def on_moved(self, event):
+        if not event.is_directory and self._is_state_file(event.dest_path):
+            self._schedule_update(event.dest_path)
+
+    def _schedule_update(self, path: str):
+        file_path = Path(path)
+
+        if not file_path.exists():
+            return
+
+        relative = self._relative(path)
+
+        lock = self._locks.setdefault(relative, asyncio.Lock())
+        asyncio.run_coroutine_threadsafe(
+            self._send_update(lock, file_path, relative),
+            self.loop,
+        )
+        logger.debug(f"Scheduled state upload: path={relative}")
+
+    async def _send_update(self, lock, path: Path, relative: str):
+        async with lock:
+            if path.exists():
+                try:
+                    await self.reporter.send_file(path, relative)
+                except Exception:
+                    logger.exception(f"State upload failed: path={relative}")
+
+    def sync_existing_files(self):
+        logger.debug(f"Scanning existing files: storage={self.storage}")
+        for path in self.storage.rglob("*.json"):
+            self._schedule_update(str(path))
+
+
+def start_watcher(
+    storage: Path,
+    reporter: Reporter,
+    loop: asyncio.AbstractEventLoop,
+) -> Observer:
+    storage = Path(storage)
+    handler = WatchHandler(storage, reporter, loop)
+
+    observer = Observer()
+    observer.schedule(handler, str(storage), recursive=True)
+    observer.start()
+    handler.sync_existing_files()
+    logger.info(f"Watching collector state files: storage={storage}")
+
+    return observer

@@ -1,0 +1,10 @@
+[
+    {
+        "id": "home-1",
+        "image": "/static/images/carousel/example.png",
+        "alt": "Example slide",
+        "title": "Example server",
+        "subtitle": "Replace this slide with your own announcement.",
+        "href": "/servers/Example"
+    }
+]

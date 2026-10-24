@@ -1,0 +1,186 @@
+.card {
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  overflow: hidden;
+}
+
+.imageWrapper {
+  width: 200px;
+  min-height: 160px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.content {
+  flex: 1;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.titleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.title {
+  margin: 0;
+  color: #f4f4f5;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.description {
+  margin: 0;
+  color: #e5e7eb;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+}
+
+.schedule {
+  margin: 0;
+  color: #a78bfa;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.location {
+  margin: 0;
+  color: #9ca3af;
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+
+.quickLinksSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.quickLinksTitle {
+  margin: 0;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+}
+
+.linkGrid {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.linkCard {
+  display: block;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.7rem;
+  color: #e5e7eb;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+
+.linkCard:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #f4f4f5;
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 0.4rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.serverBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: rgba(59, 130, 246, 0.16);
+  color: #bfdbfe;
+}
+
+.actionButtons {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  font: inherit;
+  font-size: 0.82rem;
+  flex-shrink: 0;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.iconButton:hover {
+  color: #e5e7eb;
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.copiedLabel {
+  color: #a7f3d0;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 760px) {
+  .card {
+    flex-direction: column;
+  }
+
+  .imageWrapper {
+    width: 100%;
+    min-height: 0;
+    height: 180px;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .titleRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .actionButtons {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 0.5rem;
+  }
+
+  .iconButton {
+    min-height: 2rem;
+    padding: 0.35rem 0.6rem;
+  }
+}

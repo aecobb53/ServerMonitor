@@ -1,0 +1,13 @@
+{
+  "server_name": "Example",
+  "game": "Valheim",
+  "display_name": "Example Server",
+  "expected": true,
+  "description": "An example server profile. Replace this with your own description.",
+  "news": [
+    "Welcome to the example server."
+  ],
+  "rules": [
+    "Be kind to other players."
+  ]
+}

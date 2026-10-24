@@ -1,0 +1,242 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--navbar-height);
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+  gap: var(--space-8);
+}
+
+/* ── Brand ───────────────────────────────── */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  color: var(--color-text-primary);
+  font-weight: 600;
+  font-size: var(--font-size-base);
+  transition: opacity var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.brand:hover {
+  color: var(--color-text-primary);
+  opacity: 0.8;
+}
+
+.brandIcon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.brandName {
+  letter-spacing: 0.01em;
+}
+
+/* ── Center links ────────────────────────── */
+
+.centerLinks {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: var(--space-1);
+  flex: 1;
+  justify-content: center;
+}
+
+.navLink {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.navLink:hover {
+  color: var(--color-text-primary);
+  background: var(--color-bg-card);
+}
+
+/* ── Right link ──────────────────────────── */
+
+.navLinkRight {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-blue);
+  color: #fff;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: background var(--transition-fast);
+}
+
+.navLinkRight:hover {
+  background: var(--color-accent-blue-hover);
+  color: #fff;
+}
+
+/* ── Active state (shared) ───────────────── */
+
+.navLinkActive {
+  color: var(--color-accent-blue);
+  background: transparent;
+  position: relative;
+}
+
+/* Active underline indicator for center links */
+.centerLinks .navLinkActive::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: var(--space-4);
+  right: var(--space-4);
+  height: 2px;
+  background: var(--color-accent-blue);
+  border-radius: 2px;
+}
+
+/* Right "Servers" button active state — filled purple instead */
+.navLinkRight.navLinkActive {
+  background: var(--color-accent-purple);
+  color: #fff;
+}
+
+.menuButton {
+  display: none;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: transparent;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  color: var(--color-text-primary);
+}
+
+.menuButtonBar {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.mobileMenu {
+  display: none;
+}
+
+@media (max-width: 980px) {
+  .inner {
+    padding: 0 var(--space-5);
+    gap: var(--space-4);
+  }
+
+  .centerLinks,
+  .navLinkRight {
+    display: none;
+  }
+
+  .menuButton {
+    display: inline-flex;
+  }
+
+  .mobileMenu {
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    border-top: 1px solid transparent;
+    background: var(--color-bg-surface);
+    transition: max-height var(--transition-base), border-color var(--transition-base);
+  }
+
+  .mobileMenuOpen {
+    max-height: 70vh;
+    border-top-color: var(--color-border);
+  }
+
+  .mobileLinks {
+    list-style: none;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: var(--space-3) var(--space-5) var(--space-5);
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .mobileNavLink,
+  .mobileServersLink {
+    display: block;
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .mobileNavLink {
+    color: var(--color-text-secondary);
+    background: transparent;
+  }
+
+  .mobileNavLink:hover {
+    color: var(--color-text-primary);
+    background: var(--color-bg-card);
+  }
+
+  .mobileNavLinkActive {
+    color: var(--color-accent-blue);
+    background: color-mix(in srgb, var(--color-accent-blue) 12%, transparent);
+  }
+
+  .mobileServersLink {
+    background: var(--color-accent-blue);
+    color: #fff;
+    text-align: center;
+  }
+
+  .mobileServersLink:hover {
+    background: var(--color-accent-blue-hover);
+    color: #fff;
+  }
+
+  .mobileServersLinkActive {
+    background: var(--color-accent-purple);
+  }
+}
+
+@media (max-width: 560px) {
+  .brandName {
+    font-size: var(--font-size-sm);
+  }
+
+  .inner {
+    padding: 0 var(--space-4);
+  }
+
+  .mobileLinks {
+    padding: var(--space-3) var(--space-4) var(--space-4);
+  }
+}

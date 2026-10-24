@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Monitor</title>
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script defer src="/static/js/server.js"></script>
+</head>
+
+<body>
+
+<header>
+    <div class="title">Server Monitor</div>
+
+    <nav>
+        <a href="/">All Monitors</a>
+    </nav>
+</header>
+
+<main id="server-page" data-server-name="{{ server_name | e }}">
+    <div id="server-not-found" class="error-banner hidden" role="alert"></div>
+
+    <section id="server-content" class="server-detail hidden">
+        <div class="server-detail-header">
+            <h1 id="server-title" class="server-page-title"></h1>
+            <div id="server-status-badge" class="status unknown">UNKNOWN</div>
+        </div>
+
+        <p id="server-description" class="server-page-description"></p>
+
+        <div class="server-meta-grid">
+            <div class="meta-card">
+                <div class="meta-label">Game</div>
+                <div id="server-game" class="meta-value"></div>
+            </div>
+            <div class="meta-card">
+                <div class="meta-label">Container Status</div>
+                <div id="container-status" class="meta-value"></div>
+            </div>
+            <div class="meta-card">
+                <div class="meta-label">Last Updated</div>
+                <div id="server-updated" class="meta-value"></div>
+            </div>
+        </div>
+
+        <h2 class="history-title">Status History</h2>
+        <div id="status-history" class="status-history"></div>
+    </section>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  padding-bottom: var(--space-16);
+}
+
+/* ── Carousel ─────────────────────────────── */
+
+.carouselSection {
+  /* No extra padding — carousel is flush with content edges */
+}
+
+/* ── Welcome ─────────────────────────────── */
+
+.welcome {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.welcomeTitle {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.welcomeText {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  max-width: 640px;
+  margin: 0;
+}
+
+/* ── Generic section ─────────────────────── */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* ── What's New list ─────────────────────── */
+
+.newsList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.newsItem {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--color-accent-blue);
+}
+
+/* ── Nav cards grid ──────────────────────── */
+
+.navGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+}
+
+.navCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.navIcon {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.navLabel {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.navDescription {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1000px) {
+  .root {
+    gap: var(--space-10);
+  }
+
+  .navGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .root {
+    gap: var(--space-8);
+  }
+
+  .welcomeTitle {
+    font-size: var(--font-size-2xl);
+  }
+
+  .welcomeText {
+    font-size: var(--font-size-base);
+  }
+
+  .newsItem {
+    padding: var(--space-3) var(--space-4);
+    overflow-wrap: anywhere;
+  }
+
+  .navGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .navCard {
+    gap: var(--space-2);
+  }
+}

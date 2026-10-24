@@ -1,0 +1,256 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem 2rem;
+}
+
+.description {
+  margin: 0;
+  color: #9ca3af;
+  line-height: 1.6;
+  max-width: 65ch;
+  overflow-wrap: anywhere;
+}
+
+.lastUpdated {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #6b7280;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex-shrink: 0;
+}
+
+.lastUpdatedLabel {
+  font-weight: 600;
+  color: #9ca3af;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Map + legend layout ─────────────────────── */
+
+.mapSection {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.legend {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  position: sticky;
+  top: 1rem;
+}
+
+.legendTitle {
+  margin: 0 0 0.75rem;
+  color: #f4f4f5;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.legendList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.legendSymbol {
+  font-size: 1rem;
+  flex-shrink: 0;
+  width: 1.4rem;
+  text-align: center;
+}
+
+.legendLabel {
+  color: #d1d5db;
+  font-size: 0.88rem;
+}
+
+/* ── Map container ───────────────────────────── */
+
+.mapContainer {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-subtle);
+  background: #020617;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  aspect-ratio: 16 / 10;
+}
+
+.mapContainer:active {
+  cursor: grabbing;
+}
+
+.mapContainer.fullscreen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+  border: none;
+  aspect-ratio: unset;
+  z-index: 100;
+}
+
+.mapImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* ── Controls ────────────────────────────────── */
+
+.controls {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  gap: 0.4rem;
+  z-index: 10;
+}
+
+.controlButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.6rem;
+  color: #d1d5db;
+  cursor: pointer;
+  padding: 0.4rem 0.75rem;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  backdrop-filter: blur(6px);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.controlButton:hover {
+  background: rgba(15, 23, 42, 0.95);
+  color: #f4f4f5;
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.controlButtonActive {
+  background: rgba(109, 40, 217, 0.35);
+  border-color: rgba(167, 139, 250, 0.4);
+  color: #e9d5ff;
+}
+
+/* ── Fullscreen legend overlay ───────────────── */
+
+.legendOverlay {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  backdrop-filter: blur(8px);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.legendOverlayTitle {
+  margin: 0 0 0.6rem;
+  color: #9ca3af;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 900px) {
+  .mapSection {
+    grid-template-columns: 1fr;
+  }
+
+  .legend {
+    position: static;
+  }
+
+  .mapContainer {
+    aspect-ratio: 16 / 12;
+  }
+
+  .controls {
+    left: 0.75rem;
+    right: 0.75rem;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .controlButton {
+    min-height: 2.15rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .root {
+    gap: 1rem;
+  }
+
+  .meta {
+    gap: 0.5rem;
+  }
+
+  .description {
+    font-size: 0.92rem;
+  }
+
+  .mapContainer {
+    aspect-ratio: 4 / 3;
+  }
+
+  .controls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.35rem;
+  }
+
+  .controlButton {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .legendOverlay {
+    max-width: calc(100% - 1.5rem);
+    overflow: hidden;
+  }
+}

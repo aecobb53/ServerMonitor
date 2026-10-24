@@ -1,0 +1,15 @@
+{
+    "id": "req-001",
+    "server": "Example",
+    "title": "Example request",
+    "requested_by": "ExampleUser",
+    "urgency": "WHENEVER",
+    "description": "A sample request for materials.",
+    "image": null,
+    "quick_links": [],
+    "created_at": "2026-01-01T00:00:00Z",
+    "completed": false,
+    "archived": false,
+    "updated_at": null,
+    "changelog": []
+}
